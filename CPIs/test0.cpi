@@ -1,0 +1,88 @@
+{
+  "type": "sequence",
+  "id": 0,
+  "head": {
+    "type": "task",
+    "id": 1,
+    "duration": 2,
+    "impacts": {
+      "impact_1": 0.5,
+      "impact_2": 0.3
+    }
+  },
+  "tail": {
+    "type": "parallel",
+    "id": 2,
+    "first_split": {
+      "type": "sequence",
+      "id": 3,
+      "head": {
+        "type": "task",
+        "id": 4,
+        "duration": 3,
+        "impacts": {
+          "impact_1": 0.4,
+          "impact_2": 0.6
+        }
+      },
+      "tail": {
+        "type": "choice",
+        "id": 5,
+        "true": {
+          "type": "task",
+          "id": 6,
+          "duration": 2,
+          "impacts": {
+            "impact_1": 0.3,
+            "impact_2": 0.4
+          }
+        },
+        "false": {
+          "type": "task",
+          "id": 7,
+          "duration": 3,
+          "impacts": {
+            "impact_1": 0.5,
+            "impact_2": 0.5
+          }
+        }
+      }
+    },
+    "second_split": {
+      "type": "sequence",
+      "id": 8,
+      "head": {
+        "type": "task",
+        "id": 9,
+        "duration": 3,
+        "impacts": {
+          "impact_1": 0.4,
+          "impact_2": 0.5
+        }
+      },
+      "tail": {
+        "type": "nature",
+        "id": 10,
+        "probability": 0.3,
+        "true": {
+          "type": "task",
+          "id": 11,
+          "duration": 4,
+          "impacts": {
+            "impact_1": 0.6,
+            "impact_2": 0.4
+          }
+        },
+        "false": {
+          "type": "task",
+          "id": 12,
+          "duration": 3,
+          "impacts": {
+            "impact_1": 0.4,
+            "impact_2": 0.5
+          }
+        }
+      }
+    }
+  }
+}

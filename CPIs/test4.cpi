@@ -1,0 +1,61 @@
+{
+    "type": "sequence",
+    "id": 0,
+    "head": {
+        "type": "parallel",
+        "id": 1,
+        "first_split": {
+            "type": "task",
+            "id": 2,
+            "duration": 3,
+            "impacts": {
+                "impact_1": 0.8,
+                "impact_2": 0.5
+            }
+        },
+        "second_split": {
+            "type": "task",
+            "id": 3,
+            "duration": 2,
+            "impacts": {
+                "impact_1": 0.6,
+                "impact_2": 0.4
+            }
+        }
+    },
+    "tail": {
+        "type": "choice",
+        "id": 4,
+        "true": {
+            "type": "task",
+            "id": 5,
+            "duration": 4,
+            "impacts": {
+                "impact_1": 0.9,
+                "impact_2": 0.7
+            }
+        },
+        "false": {
+            "type": "sequence",
+            "id": 6,
+            "head": {
+                "type": "task",
+                "id": 7,
+                "duration": 2,
+                "impacts": {
+                    "impact_1": 0.3,
+                    "impact_2": 0.2
+                }
+            },
+            "tail": {
+                "type": "task",
+                "id": 8,
+                "duration": 1,
+                "impacts": {
+                    "impact_1": 0.4,
+                    "impact_2": 0.3
+                }
+            }
+        }
+    }
+}

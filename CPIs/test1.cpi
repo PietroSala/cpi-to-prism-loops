@@ -1,0 +1,16 @@
+{
+    "type": "sequence",
+    "id": 0,
+    "head": {
+        "type": "task",
+        "id": 1,
+        "duration": 3,
+        "impacts": {"impact_1": 1.0}
+    },
+    "tail": {
+        "type": "task",
+        "id": 2,
+        "duration": 3,
+        "impacts": {"impact_1": 1.0}
+    }
+}
