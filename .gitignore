@@ -1,1 +1,4 @@
 .DS_Store
+sources/__pycache__/
+sources/cpi_to_mdp/__pycache__/
+models/test*.*
