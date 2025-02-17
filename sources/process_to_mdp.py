@@ -30,7 +30,7 @@ def cpi_to_mdp(root_dict):
         elif node['type'] == 'parallel':
             collect_regions(node['first_split'])
             collect_regions(node['second_split'])
-        elif node['type'] == 'choice':
+        elif node['type'] in ['choice','nature']:
             collect_regions(node['true'])
             collect_regions(node['false'])
     

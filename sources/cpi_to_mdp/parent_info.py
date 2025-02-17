@@ -10,7 +10,7 @@ def get_parent_info(child_id, root_dict, regions):
         dict: Parent information containing:
             - parent_id: ID of direct parent
             - position: Position in parent ('head', 'tail', 'true', 'false', etc.)
-            - choice_info: Information about nearest choice ancestor if any
+            - choice_info: Information about nearest choice/nature ancestor if any
     """
     def check_node(node, path=None):
         if path is None:
@@ -38,7 +38,7 @@ def get_parent_info(child_id, root_dict, regions):
                 return result
             return check_node(node['second_split'], path)
             
-        elif node['type'] == 'choice':
+        elif node['type'] in ['choice', 'nature']:
             if node['true']['id'] == child_id:
                 return node['id'], 'true', path
             if node['false']['id'] == child_id:
@@ -56,12 +56,14 @@ def get_parent_info(child_id, root_dict, regions):
     parent_id, position, path = check_node(root_dict)
     
     if parent_id is not None:
-        # Find nearest choice ancestor and siblings if any
+        # Find nearest choice/nature ancestor and siblings if any
         choice_info = None
         for node_type, node_id in reversed(path):
-            if node_type == 'choice':
+            if node_type in ['choice', 'nature']:
                 choice_info = {
-                    'choice_id': node_id,
+                    'type': node_type,  # Added to distinguish between choice and nature
+                    'id': node_id,
+                    'probability': regions[node_id].get('probability') if node_type == 'nature' else None,
                     'true_id': regions[node_id]['true']['id'],
                     'false_id': regions[node_id]['false']['id']
                 }
