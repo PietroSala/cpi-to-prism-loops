@@ -7,6 +7,8 @@ from cpi_to_mdp.formula_generators import (
 )
 from cpi_to_mdp.module_generators import generate_module
 from cpi_to_mdp.parent_info import get_parent_info
+from cpi_to_mdp.rewards_generators import generate_rewards, integrate_rewards_to_mdp
+
 
 def cpi_to_mdp(root_dict):
     """
@@ -163,5 +165,11 @@ def cpi_to_mdp(root_dict):
         label = f'label "ActiveClosingPending_{region["type"]}{region_id}" = {formula};'
         labels.append(label)
     
+    mdp_content = '\n'.join(formulas + modules + labels)
+
+    # Generate and integrate rewards sections
+    rewards_content = generate_rewards(root_dict)
+
     # Combine everything into final output
-    return '\n'.join(formulas + modules + labels)
+    return integrate_rewards_to_mdp(mdp_content, rewards_content)
+
