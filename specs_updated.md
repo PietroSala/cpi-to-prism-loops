@@ -169,28 +169,28 @@ When calculating formulas that reference multiple regions (like ActiveReadyPendi
 # Rewards
 
 ## Structure
-Each impact type defined in task nodes generates a separate rewards structure. The rewards are structured as follows:
+Each impact type defined in task nodes generates a separate rewards structure, organized as follows:
 
 ```
 rewards "impact_name"
-    condition1: cost1;
+    [running_to_completed_{root_type}{root_id}] condition1: cost1;
     ...
-    conditionN: costN;
+    [running_to_completed_{root_type}{root_id}] conditionN: costN;
 endrewards
 ```
 
 ## Reward Conditions
 For each task that has impacts defined, a reward condition is generated when:
-- The root module reaches completion (state{root_id} = 4)
 - The task was not excluded from execution (state{task_id} != 0)
 - The task has moved beyond its initial state (state{task_id} != 1)
 
 ## Format
 Each reward entry follows the pattern:
 ```
-state{root_id}=4 & state{task_id}!=0 & state{task_id}!=1 : impact_value;
+[running_to_completed_{root_type}{root_id}] state{task_id}!=0 & state{task_id}!=1 : impact_value;
 ```
 Where:
+- root_type: The type of the root module (e.g., "sequence", "parallel", etc.)
 - root_id: The identifier of the root module
 - task_id: The identifier of the task being rewarded
 - impact_value: The numerical value associated with this impact in the task's impacts dictionary
@@ -202,16 +202,16 @@ Where:
 - Impact names are sorted alphabetically in the output
 
 ## Example
-For a CPI with two tasks having impacts:
+For a CPI with root ID 1 and type "sequence" and two tasks having impacts:
 ```
 rewards "cost"
-    state1=4 & state4!=0 & state4!=1 : 100;
-    state1=4 & state7!=0 & state7!=1 : 150;
+    [running_to_completed_sequence1] state4!=0 & state4!=1 : 100;
+    [running_to_completed_sequence1] state7!=0 & state7!=1 : 150;
 endrewards
 
 rewards "time"
-    state1=4 & state4!=0 & state4!=1 : 2;
-    state1=4 & state7!=0 & state7!=1 : 3;
+    [running_to_completed_sequence1] state4!=0 & state4!=1 : 2;
+    [running_to_completed_sequence1] state7!=0 & state7!=1 : 3;
 endrewards
 ```
 
