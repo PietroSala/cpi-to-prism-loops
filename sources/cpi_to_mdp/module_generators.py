@@ -17,12 +17,10 @@ def generate_module_transitions(region, root_dict, regions):
         return []
         
     parent_info = get_parent_info(region_id, root_dict, regions)
+
     parent_id = parent_info['parent_id']
     position = parent_info['position']
-    
-    if not parent_id:
-        return [f"    [open_to_started_{region['type']}{region_id}] ActiveReadyPending_{region['type']}{region_id} -> (state{region_id}'=2);"]
-        
+       
     parent = regions[parent_id]
     transitions = []
     
@@ -52,7 +50,7 @@ def generate_module_transitions(region, root_dict, regions):
             ])
     else:
         transitions.append(f"    [open_to_started_{region['type']}{region_id}] ActiveReadyPending_{region['type']}{region_id} -> (state{region_id}'=2);")
-        
+
     return transitions
 
 def generate_task_module(region, root_dict, regions):
