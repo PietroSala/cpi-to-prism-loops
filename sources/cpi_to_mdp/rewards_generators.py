@@ -36,6 +36,7 @@ def generate_rewards(root_dict):
     Returns:
         str: The rewards sections as a string
     """
+
     # Collect all tasks with their impacts
     tasks_with_impacts = collect_tasks_with_impacts(root_dict)
     
@@ -47,7 +48,7 @@ def generate_rewards(root_dict):
     # Generate rewards sections for each impact
     rewards_sections = []
     root_id = root_dict['id']
-    
+        
     for impact_name in sorted(all_impacts):
         rewards_lines = [f'rewards "{impact_name}"']
         
@@ -55,10 +56,8 @@ def generate_rewards(root_dict):
         for task_id, impacts in tasks_with_impacts:
             if impact_name in impacts:
                 impact_value = impacts[impact_name]
-                # Format according to specification:
-                # state{root_id} = 4 & (state{task_id} != 0) : impact_value;
-                condition = f'    state{root_id}=4 & state{task_id}!=0 & state{task_id}!=1 : {impact_value};'
-                rewards_lines.append(condition)
+                # Format with just task state condition and running_to_complete action
+                rewards_lines.append(f'    [running_to_completed_{root_dict["type"]}{root_id}] state{task_id}!=0 & state{task_id}!=1 : {impact_value};')
         
         rewards_lines.append('endrewards\n')
         rewards_sections.append('\n'.join(rewards_lines))
