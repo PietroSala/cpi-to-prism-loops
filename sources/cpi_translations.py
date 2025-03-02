@@ -27,6 +27,7 @@ def cpi_to_standard_format(cpi_dict):
         'NAMES': {},
         'DELAYS': {},
         'LOOP_ROUND': {},
+        'LOOP_PROB': {},
         'H': 0
     }
     
