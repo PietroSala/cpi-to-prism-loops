@@ -98,6 +98,8 @@ def analyze_bounds(model_name: str, thresholds: Dict[str, float]) -> Dict[str, A
     # Run PRISM with the model and property files
     cmd = [
         os.path.abspath(prism_path),
+        "-cuddmaxmem",
+        "10g",
         os.path.abspath(model_path),
         os.path.abspath(pctl_path),
         "-verbose"
