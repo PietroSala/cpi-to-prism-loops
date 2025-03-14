@@ -31,8 +31,6 @@ def load_token():
             data = json.load(file)
             return data.get("bot_token", "")
     except (FileNotFoundError, json.JSONDecodeError):
-
-        print(f"File not found: {TELEGRAM_CONFIG}")
         return ""
 
 

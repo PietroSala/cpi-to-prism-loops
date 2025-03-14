@@ -40,6 +40,8 @@ def refine_bounds(process_name: str, num_refinements: int, verbose: bool=False) 
         impact_name: [0.0, bound_value]
         for impact_name, bound_value in initial_bounds.items()
     }
+
+    solutionFound = False
     
     # Perform refinements
     for iteration in range(num_refinements):
@@ -56,6 +58,7 @@ def refine_bounds(process_name: str, num_refinements: int, verbose: bool=False) 
             
             # Update interval based on result
             if result['result']:  # Property satisfied
+                solutionFound = True
                 intervals[current_impact][1] = (intervals[current_impact][0] + intervals[current_impact][1]) / 2
             else:  # Property not satisfied
                 intervals[current_impact][0] = (intervals[current_impact][0] + intervals[current_impact][1]) / 2
@@ -68,7 +71,10 @@ def refine_bounds(process_name: str, num_refinements: int, verbose: bool=False) 
         impact_name: interval[1]
         for impact_name, interval in intervals.items()
     }
-    
+
+    if solutionFound is False:
+        raise Exception("No solution found, bounds: " + str(initial_bounds))
+
     return final_bounds
 
 def print_refinement_progress(iteration: int, impact_name: str, intervals: Dict[str, List[float]],

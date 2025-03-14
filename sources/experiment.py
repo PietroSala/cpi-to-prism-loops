@@ -2,6 +2,7 @@ import datetime
 import json
 
 from sources.refinements import refine_bounds
+from telegram.telegram_bot import send_telegram_message
 
 
 def single_execution(cursor, conn, x, y, w, bundle):
@@ -48,9 +49,16 @@ def single_execution(cursor, conn, x, y, w, bundle):
     )
     conn.commit()
 
+    error = ""
     # Run refinement analysis
     print(f"\nRunning benchmark for x={x}, y={y}, w={w}")
-    refine_bounds('current_benchmark', 10, verbose=True)
+
+    try:
+        refine_bounds('current_benchmark', 10, verbose=True)
+    except Exception as e:
+        s = f"Error during benchmark x={x}, y={y}, w={w}: {str(e)}"
+        send_telegram_message(s)
+        error = s
 
     # Record end time
     vte = datetime.datetime.now().isoformat()
@@ -59,10 +67,10 @@ def single_execution(cursor, conn, x, y, w, bundle):
     cursor.execute(
         """
 		UPDATE experiments 
-		SET vte = ? 
+		SET vte = ?, error = ?
 		WHERE x = ? AND y = ? AND w = ?
 		""",
-        (vte, x, y, w)
+        (vte, error, x, y, w)
     )
     conn.commit()
 
