@@ -3,7 +3,7 @@ import os
 import graphviz
 import json
 import re
-import datetime
+from datetime import datetime
 
 def run_prism_analysis(process_name):
     """
