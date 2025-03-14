@@ -3,7 +3,7 @@
 # Startup script for PRISM (Linux/Solaris)
 
 # PRISM home directory
-PRISM_DIR="/home/ubuntu/prism/prism"
+PRISM_DIR="/home/user/Projects/GitHub/cpi-to-prism/prism-4.8.1-linux64-x86"
 
 # Command to launch Java
 PRISM_JAVA=${PRISM_JAVA:-java}

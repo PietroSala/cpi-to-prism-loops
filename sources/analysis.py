@@ -77,6 +77,7 @@ def analyze_bounds(model_name: str, thresholds: Dict[str, float]) -> Dict[str, A
     model_path = os.path.join('models', f'{model_name}.nm')
     pctl_path = os.path.join('models', f'{model_name}.pctl')
     prism_path = "prism-4.8.1-mac64-arm/bin/prism"
+    prism_path = "prism-4.8.1-linux64-x86/bin/prism"
     
     # Generate and write PCTL property
     property_str = generate_multi_rewards_requirement(thresholds)
@@ -94,17 +95,22 @@ def analyze_bounds(model_name: str, thresholds: Dict[str, float]) -> Dict[str, A
             'warnings': [],
             'property': property_str
         }
+
+    print("pctl_path: ", pctl_path)
+    print("model_path: ", model_path)
     
     # Run PRISM with the model and property files
     cmd = [
         os.path.abspath(prism_path),
         "-cuddmaxmem",
         "10g",
+        "-javamaxmem",
+        "2g",
         os.path.abspath(model_path),
         os.path.abspath(pctl_path),
         "-verbose"
     ]
-    
+    print(cmd)
     try:
         result = subprocess.run(cmd, 
                               capture_output=True, 
@@ -118,6 +124,8 @@ def analyze_bounds(model_name: str, thresholds: Dict[str, float]) -> Dict[str, A
         states_info: Dict[str, Optional[int]] = {}
         result_value: Optional[bool] = None
         warnings: list[str] = []
+
+        print(f'Prism output:\n{prism_output}')
         
         for line in prism_output.split('\n'):
             line = line.strip()

@@ -4,3 +4,9 @@ sources/cpi_to_mdp/__pycache__/
 models/test*.*
 
 .idea/
+
+CPIs/
+
+models/current_benchmark.nm
+
+models/current_benchmark.pctl
