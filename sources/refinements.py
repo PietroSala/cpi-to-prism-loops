@@ -72,10 +72,11 @@ def refine_bounds(process_name: str, num_refinements: int, verbose: bool=False) 
         for impact_name, interval in intervals.items()
     }
 
+    s = ""
     if solutionFound is False:
-        raise Exception("No solution found, bounds: " + str(initial_bounds))
+        s = "No solution found"
 
-    return final_bounds
+    return initial_bounds, final_bounds, s
 
 def print_refinement_progress(iteration: int, impact_name: str, intervals: Dict[str, List[float]],
                             test_bounds: Dict[str, float], result: bool) -> None:

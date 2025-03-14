@@ -50,11 +50,13 @@ def single_execution(cursor, conn, x, y, w, bundle):
     conn.commit()
 
     error = ""
+    initial_bounds = {}
+    final_bounds = {}
     # Run refinement analysis
     print(f"\nRunning benchmark for x={x}, y={y}, w={w}")
 
     try:
-        refine_bounds('current_benchmark', 10, verbose=True)
+        initial_bounds, final_bounds, error = refine_bounds('current_benchmark', 10, verbose=True)
     except Exception as e:
         s = f"Error during benchmark x={x}, y={y}, w={w}: {str(e)}"
         send_telegram_message(s)
@@ -67,10 +69,11 @@ def single_execution(cursor, conn, x, y, w, bundle):
     cursor.execute(
         """
 		UPDATE experiments 
-		SET vte = ?, error = ?
+		SET vte = ?, initial_bounds = ?, final_bounds = ?, error = ?
 		WHERE x = ? AND y = ? AND w = ?
 		""",
-        (vte, error, x, y, w)
+        (vte, str(initial_bounds), str(final_bounds), error,
+         x, y, w)
     )
     conn.commit()
 

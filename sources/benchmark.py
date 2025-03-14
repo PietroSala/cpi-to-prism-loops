@@ -43,6 +43,8 @@ def run_benchmarks():
             duration_interval_max INTEGER,
             vts TIMESTAMP,
             vte TIMESTAMP,
+            initial_bounds TEXT,
+            final_bounds TEXT,
             error TEXT,
             PRIMARY KEY (x, y, w)
         )
