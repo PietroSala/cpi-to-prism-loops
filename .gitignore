@@ -10,3 +10,7 @@ CPIs/
 models/current_benchmark.nm
 
 models/current_benchmark.pctl
+
+benchmarks.sqlite
+
+benchmark_output.log
