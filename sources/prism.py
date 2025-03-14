@@ -3,7 +3,7 @@ import os
 import graphviz
 import json
 import re
-from datetime import datetime
+import datetime
 
 def run_prism_analysis(process_name):
     """
@@ -16,7 +16,9 @@ def run_prism_analysis(process_name):
         dict: Analysis information including modules, variables, and timing
     """
     # Define paths
+
     prism_path = "prism-4.8.1-mac64-arm/bin/prism"
+    prism_path = "prism-4.8.1-linux64-x86/bin/prism"
     model_path = os.path.join("models", f"{process_name}.nm")
     dot_path = os.path.join("models", f"{process_name}.dot")
     info_path = os.path.join("models", f"{process_name}.info")

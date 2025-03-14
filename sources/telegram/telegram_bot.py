@@ -1,11 +1,11 @@
+import datetime
 import json
 import time
-from datetime import datetime
 import requests
+import os
 
-from sources.benchmark import LOG_FILENAME
+TELEGRAM_CONFIG = os.path.join(os.path.dirname(__file__), "telegram_config.json")
 
-TELEGRAM_CONFIG = "telegram_config.json"
 
 
 def load_subscribers():
@@ -31,6 +31,8 @@ def load_token():
             data = json.load(file)
             return data.get("bot_token", "")
     except (FileNotFoundError, json.JSONDecodeError):
+
+        print(f"File not found: {TELEGRAM_CONFIG}")
         return ""
 
 
@@ -71,15 +73,6 @@ def reply_to_message(message, chat_id):
             send_telegram_message(
                 "You have unsubscribed from benchmark notifications!",
                         specific_user_id=chat_id)
-
-    elif message == "/logs":
-        with open(LOG_FILENAME, "r") as file:
-            s = file.readlines()
-            if s is not None:
-                if len(s) > 10:
-                    send_telegram_message(s[-10:], specific_user_id=chat_id)
-                else:
-                    send_telegram_message(s[-len(s):], specific_user_id=chat_id)
 
     else:
         send_telegram_message(

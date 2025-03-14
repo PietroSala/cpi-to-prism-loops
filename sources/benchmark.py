@@ -2,9 +2,8 @@ import sqlite3
 import signal
 import sys
 import time
-import datetime
+from datetime import datetime
 from read import read_cpi_bundles
-from refinements import refine_bounds
 from sources.experiment import single_execution
 from sources.telegram.telegram_bot import send_telegram_message
 
@@ -44,15 +43,6 @@ def run_benchmarks():
             duration_interval_max INTEGER,
             vts TIMESTAMP,
             vte TIMESTAMP,
-            time_create_execution_tree REAL,
-            time_evaluate_cei_execution_tree REAL,
-            found_strategy_time REAL,
-            build_strategy_time REAL,
-            time_explain_strategy REAL, 
-            strategy_tree_time REAL,
-            initial_bounds TEXT,
-            final_bounds TEXT,
-            error TEXT,
             PRIMARY KEY (x, y, w)
         )
     ''')
@@ -78,7 +68,7 @@ def run_benchmarks():
                         for w in range(0, len(bundle)):
                             single_execution(cursor, conn, x, y, w, bundle)
 
-                            if time.time() - last_time > 1:
+                            if time.time() - last_time > 60:
                                 last_time = time.time()
                                 send_telegram_message(f"x={x}, y={y}, w={w} Done")
 
