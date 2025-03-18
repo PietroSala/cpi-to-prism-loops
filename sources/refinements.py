@@ -40,7 +40,8 @@ def refine_bounds(process_name: str, num_refinements: int, verbose: bool=False) 
         impact_name: [0.0, bound_value]
         for impact_name, bound_value in initial_bounds.items()
     }
-    
+    final_bounds = initial_bounds
+
     # Perform refinements
     for iteration in range(num_refinements):
         for current_impact in intervals.keys():
@@ -56,6 +57,9 @@ def refine_bounds(process_name: str, num_refinements: int, verbose: bool=False) 
             
             # Update interval based on result
             if result['result']:  # Property satisfied
+                final_bounds = {
+                    impact_name: interval[1] for impact_name, interval in intervals.items()
+                }
                 intervals[current_impact][1] = (intervals[current_impact][0] + intervals[current_impact][1]) / 2
             else:  # Property not satisfied
                 intervals[current_impact][0] = (intervals[current_impact][0] + intervals[current_impact][1]) / 2
@@ -63,13 +67,14 @@ def refine_bounds(process_name: str, num_refinements: int, verbose: bool=False) 
             # Print progress
             print_refinement_progress(iteration, current_impact, intervals, test_bounds, result['result']) if verbose else None
 
-    # Extract final upper bounds
-    final_bounds = {
-        impact_name: interval[1]
-        for impact_name, interval in intervals.items()
-    }
-    
-    return final_bounds
+
+    result = analyze_bounds(process_name, final_bounds)
+
+    s = ""
+    if not result['result']: # Solution not found
+        s = "No solution found"
+
+    return initial_bounds, final_bounds, s
 
 def print_refinement_progress(iteration: int, impact_name: str, intervals: Dict[str, List[float]],
                             test_bounds: Dict[str, float], result: bool) -> None:

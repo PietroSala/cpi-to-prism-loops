@@ -2,3 +2,15 @@
 sources/__pycache__/
 sources/cpi_to_mdp/__pycache__/
 models/test*.*
+
+.idea/
+
+CPIs/
+
+models/current_benchmark.nm
+
+models/current_benchmark.pctl
+
+benchmarks.sqlite
+
+benchmark_output.log
