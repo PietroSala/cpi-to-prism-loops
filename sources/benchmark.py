@@ -56,8 +56,8 @@ def run_benchmarks():
     last_time = time.time() + 10
 
     try:
-        for k in range(2, 20):
-            for x in range(1, k-1):
+        for k in range(2, 21):
+            for x in range(1, k):
                 y = k - x
 
                 if x <= 10 and y <= 10:
