@@ -2,6 +2,9 @@ import os
 import subprocess
 from typing import Dict, Any, Optional, Union
 
+from sources.env import PRISM_PATH
+
+
 def generate_multi_rewards_requirement(thresholds: Dict[str, float]) -> str:
     """
     Generate a PRISM property for multi-cumulative rewards with thresholds.
@@ -76,8 +79,6 @@ def analyze_bounds(model_name: str, thresholds: Dict[str, float]) -> Dict[str, A
     # Define paths
     model_path = os.path.join('models', f'{model_name}.nm')
     pctl_path = os.path.join('models', f'{model_name}.pctl')
-    prism_path = "prism-4.8.1-mac64-arm/bin/prism"
-    prism_path = "prism-4.8.1-linux64-x86/bin/prism"
     
     # Generate and write PCTL property
     property_str = generate_multi_rewards_requirement(thresholds)
@@ -101,7 +102,7 @@ def analyze_bounds(model_name: str, thresholds: Dict[str, float]) -> Dict[str, A
     
     # Run PRISM with the model and property files
     cmd = [
-        os.path.abspath(prism_path),
+        os.path.abspath(PRISM_PATH),
         "-cuddmaxmem",
         "10g",
         "-javamaxmem",

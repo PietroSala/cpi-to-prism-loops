@@ -5,6 +5,9 @@ import json
 import re
 from datetime import datetime
 
+from sources.env import PRISM_PATH
+
+
 def run_prism_analysis(process_name):
     """
     Runs PRISM analysis on a model file and saves results.
@@ -17,8 +20,6 @@ def run_prism_analysis(process_name):
     """
     # Define paths
 
-    prism_path = "prism-4.8.1-mac64-arm/bin/prism"
-    prism_path = "prism-4.8.1-linux64-x86/bin/prism"
     model_path = os.path.join("models", f"{process_name}.nm")
     dot_path = os.path.join("models", f"{process_name}.dot")
     info_path = os.path.join("models", f"{process_name}.info")
@@ -44,7 +45,7 @@ def run_prism_analysis(process_name):
 
     # Run PRISM command
     cmd = [
-        os.path.abspath(prism_path),
+        os.path.abspath(PRISM_PATH),
         os.path.abspath(model_path),
         "-exporttransdotstates",
         os.path.abspath(dot_path),
