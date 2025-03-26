@@ -12,6 +12,7 @@ Generating PRISM code
 
 - **Python 3.12+**
 - **Prism**
+
 To install **Python**, follow the instructions on [Python's official website](https://www.python.org/downloads/). To install **Prism**, follow the instructions on [PRISM model checker](https://www.prismmodelchecker.org/download.php) (version 4.8.1 or higher)
 ---
 
