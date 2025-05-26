@@ -9,7 +9,7 @@ def get_parent_info(child_id, root_dict, regions):
     Returns:
         dict: Parent information containing:
             - parent_id: ID of direct parent
-            - position: Position in parent ('head', 'tail', 'true', 'false', etc.)
+            - position: Position in parent ('head', 'tail', 'true', 'false', 'first', 'second', 'child')
             - choice_info: Information about nearest choice/nature ancestor if any
     """
     def check_node(node, path=None):
@@ -47,6 +47,13 @@ def get_parent_info(child_id, root_dict, regions):
             if result[0] is not None:
                 return result
             return check_node(node['false'], path)
+            
+        elif node['type'] == 'loop':
+            if node['child']['id'] == child_id:
+                return node['id'], 'child', path
+            result = check_node(node['child'], path)
+            if result[0] is not None:
+                return result
             
         elif node['type'] == 'task':
             return None, None, path

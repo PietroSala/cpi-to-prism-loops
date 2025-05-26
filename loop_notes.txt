@@ -1,0 +1,28 @@
+Now I want to extend  the syntax and the semantics with the loop region  construct
+in the json
+denoted by 
+"type": "loop",
+        "id": <some id>,
+        "probability": < probability of repeating the loop>,
+        "child": {
+          <the single child region of the loop>
+          }
+        
+Whe we encounter a loop region teh execution works as follows
+it executes th echild region and when such region is completed it decides with <probability of repeating the loop> is the probability taht the child region is repeated otherwise we go on 
+this can be implemented in the framework as follows
+-when it is the turn of a started loop region it starts its child region loop=2
+and child=2
+-when the child region is completed and the loop is  running then  the child must be set to 1 
+- any descendant of child  (use the id order to avoid shuflling)
+if it sees that we have
+loop: RUNNING and child: COMPLETED
+they set themselves to 1
+- when the loop is running and the child region is set to 1 (it measn that the loop has executed at leats one iteeration)
+at this point (whent it id is ready) the child region decide with  <probability of repeating the loop> to put itself to started (2) or to 0  
+- now if the loop is running and the child region is set to 0 then the loop set itself to completed 
+- if the loop is completed and the child region is 0 the the child region set itself to 1
+
+ALL the above transitions are atemporal meaning that if they are not resolved [step] cannot be executed
+
+what modification to the code do you propose?

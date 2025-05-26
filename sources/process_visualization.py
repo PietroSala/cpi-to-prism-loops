@@ -36,6 +36,11 @@ def process_to_dot(region_dict):
             label = f"{node_id}\\np={region['probability']}"
             dot_lines.append(f'    {node_id} [label="{label}"];')
         
+        elif region['type'] == 'loop':
+            # For loop nodes, include probability in label
+            label = f"{node_id}\\nrepeat_p={region['probability']}"
+            dot_lines.append(f'    {node_id} [label="{label}"];')
+        
         else:
             # For other node types, use simple identifier as label
             dot_lines.append(f'    {node_id} [label="{node_id}"];')
@@ -70,6 +75,15 @@ def process_to_dot(region_dict):
             # Recursively process both branches
             add_node(region['true'])
             add_node(region['false'])
+            
+        elif region['type'] == 'loop':
+            # Loop regions have a single child connection with a loop-back arrow
+            child_id = f"{region['child']['type']}{region['child']['id']}"
+            dot_lines.append(f'    {node_id} -> {child_id} [label="child"];')
+            # Add a visual loop-back edge (dashed)
+            dot_lines.append(f'    {child_id} -> {node_id} [label="repeat", style="dashed", color="gray"];')
+            # Recursively process child
+            add_node(region['child'])
     
     # Start processing from the root region
     add_node(region_dict)

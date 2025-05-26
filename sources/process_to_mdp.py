@@ -3,7 +3,9 @@ from cpi_to_mdp.formula_generators import (
     generate_ready_pending_formula,
     generate_step_ready_formula,
     generate_active_ready_pending_formula,
-    generate_active_closing_pending_formula
+    generate_active_closing_pending_formula,
+    generate_loop_specific_formulas,
+    generate_step_available_formula
 )
 from cpi_to_mdp.module_generators import generate_module
 from cpi_to_mdp.parent_info import get_parent_info
@@ -35,8 +37,14 @@ def cpi_to_mdp(root_dict):
         elif node['type'] in ['choice','nature']:
             collect_regions(node['true'])
             collect_regions(node['false'])
+        elif node['type'] == 'loop':
+            collect_regions(node['child'])
     
     collect_regions(root_dict)
+    
+    # Separate regions by type
+    task_regions = [r for r in regions.values() if r['type'] == 'task']
+    loop_regions = [r for r in regions.values() if r['type'] == 'loop']
     
     # Generate formula definitions
     formulas = ["mdp\n\n// Formula definitions"]
@@ -58,6 +66,15 @@ def cpi_to_mdp(root_dict):
             formulas.append(f"formula ReadyPending_{region['type']}{region_id} = {ready_pending};")
     
     formulas.append("")
+    
+    # Add loop-specific formulas
+    for region in loop_regions:
+        loop_formulas = generate_loop_specific_formulas(region, regions)
+        for formula_name, formula_body in loop_formulas.items():
+            formulas.append(f"formula {formula_name} = {formula_body};")
+    
+    if loop_regions:
+        formulas.append("")
     
     # Get lists of regions with ready/closing pending for later use
     ready_pending_regions = [(rid, r) for rid, r in non_root_regions 
@@ -82,11 +99,9 @@ def cpi_to_mdp(root_dict):
     
     formulas.append("")
     
-    # Add StepAvailable formula
-    step_ready_terms = [f"StepReady_task{region_id}" 
-                       for region_id, region in regions.items() 
-                       if region['type'] == 'task']
-    formulas.append(f"formula StepAvailable = ReadyPendingCleared & ClosingPendingCleared & ({' | '.join(step_ready_terms)});")
+    # Add StepAvailable formula (updated to handle loops)
+    step_available_formula = generate_step_available_formula(task_regions, loop_regions)
+    formulas.append(f"formula StepAvailable = {step_available_formula};")
     formulas.append("")
     
     # Add ActiveReadyPending formulas
@@ -132,6 +147,15 @@ def cpi_to_mdp(root_dict):
     
     labels.append("")
     
+    # Labels for loop-specific formulas
+    for region in loop_regions:
+        loop_formulas = generate_loop_specific_formulas(region, regions)
+        for formula_name, formula_body in loop_formulas.items():
+            labels.append(f'label "{formula_name}" = {formula_body};')
+    
+    if loop_regions:
+        labels.append("")
+    
     # Labels for ReadyPendingCleared and ClosingPendingCleared
     labels.append(f'label "ReadyPendingCleared" = {" & ".join(ready_pending_terms)};')
     labels.append(f'label "ClosingPendingCleared" = {" & ".join(closing_pending_terms)};')
@@ -148,7 +172,7 @@ def cpi_to_mdp(root_dict):
     labels.append("")
     
     # Label for StepAvailable
-    labels.append(f'label "StepAvailable" = ReadyPendingCleared & ClosingPendingCleared & ({" | ".join(step_ready_terms)});')
+    labels.append(f'label "StepAvailable" = {step_available_formula};')
     labels.append("")
     
     # Labels for ActiveReadyPending
@@ -172,4 +196,3 @@ def cpi_to_mdp(root_dict):
 
     # Combine everything into final output
     return integrate_rewards_to_mdp(mdp_content, rewards_content)
-
