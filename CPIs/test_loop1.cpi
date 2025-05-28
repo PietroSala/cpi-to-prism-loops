@@ -1,85 +1,14 @@
 {
-    "type": "sequence",
-    "id": 0,
-    "head": {
-      "type": "task",
-      "id": 1,
-      "duration": 2,
-      "impacts": {
-        "cost": 20,
-        "time": 5
-      }
-    },
-    "tail": {
-      "type": "parallel",
-      "id": 2,
-      "first_split": {
-        "type": "loop",
-        "id": 3,
-        "probability": 0.3,
-        "child": {
-          "type": "sequence",
-          "id": 4,
-          "head": {
-            "type": "task",
-            "id": 5,
-            "duration": 1,
-            "impacts": {
-              "cost": 5,
-              "quality": 2
-            }
-          },
-          "tail": {
-            "type": "nature",
-            "id": 6,
-            "probability": 0.7,
-            "true": {
-              "type": "task",
-              "id": 7,
-              "duration": 3,
-              "impacts": {
-                "cost": 10,
-                "quality": 5
-              }
-            },
-            "false": {
-              "type": "task",
-              "id": 8,
-              "duration": 1,
-              "impacts": {
-                "cost": 3,
-                "quality": 1
-              }
-            }
-          }
-        }
-      },
-      "second_split": {
-        "type": "choice",
-        "id": 9,
-        "true": {
-          "type": "loop",
-          "id": 10,
-          "probability": 0.8,
-          "child": {
-            "type": "task",
-            "id": 11,
-            "duration": 2,
-            "impacts": {
-              "cost": 12,
-              "time": 4
-            }
-          }
-        },
-        "false": {
-          "type": "task",
-          "id": 12,
-          "duration": 1,
-          "impacts": {
-            "cost": 2,
-            "time": 1
-          }
-        }
-      }
+  "type": "loop",
+  "id": 0,
+  "probability": 0.8,
+  "child": {
+    "type": "task",
+    "id": 1,
+    "duration": 2,
+    "impacts": {
+      "cost": 12,
+      "time": 4
     }
   }
+}

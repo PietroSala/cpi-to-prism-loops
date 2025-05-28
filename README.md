@@ -1,7 +1,7 @@
 # CPI to MDP Pipeline
 ![Python Version](https://img.shields.io/badge/python-3.12%2B-blue)
 
-The main notebook demonstrates how to convert a Control Process Interface (CPI) dictionary that is used to calculate the strategy in https://github.com/danielamadori98/PACO into a Markov Decision Process (MDP) format suitable for the PRISM model checker. We'll walk through:
+The main notebook demonstrates how to convert a Control Process Interface (CPI) dictionary that is used to calculate the strategy in https://github.com/danielamadori/PACO into a Markov Decision Process (MDP) format suitable for the PRISM model checker. We'll walk through:
 
 Loading and examining a CPI dictionary
 Understanding the conversion process

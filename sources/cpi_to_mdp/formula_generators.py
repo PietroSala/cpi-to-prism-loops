@@ -69,9 +69,9 @@ def generate_ready_pending_formula(region, root_dict, regions):
             true_id = parent['true']['id']
             return f"{base_condition} & (state{parent_id}=2 | state{parent_id}=3) & (state{true_id}=0 | state{true_id}=2)"
     elif parent['type'] == 'loop':
-        # Child of loop: ready when loop is running and child should start
-        return f"{base_condition} & state{parent_id}=3"
-            
+        # Child of loop: open only if loop is STARTED (first activation) in order to avoid duplicated transitions
+        return f"{base_condition} & state{parent_id}=2"
+
     raise ValueError(f"Unknown parent type: {parent['type']}")
 
 def generate_step_ready_formula(region):

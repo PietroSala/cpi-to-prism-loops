@@ -1,0 +1,17 @@
+action step state0 state1 step1
+- 0 2 1 0
+[open_to_started_task1] 1 2 2 0
+[step] 2 3 3 1
+[step] 3 3 4 2
+[loop_child_completed_sync0] 4 3 1 2
+[loop_decision_sync0] 5 3 2 0
+[step] 6 3 3 1
+[step] 7 3 4 2
+[loop_child_completed_sync0] 8 3 1 2
+[loop_decision_sync0] 9 3 2 0
+[step] 10 3 3 1
+[step] 11 3 4 2
+[loop_child_completed_sync0] 12 3 1 2
+[loop_decision_sync0] 13 3 0 2
+[running_to_completed_loop0] 14 4 0 2
+[loop_final_reset0] 15 4 1 2

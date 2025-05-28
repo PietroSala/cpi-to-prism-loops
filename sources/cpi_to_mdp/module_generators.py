@@ -71,50 +71,64 @@ def generate_module_transitions(region, root_dict, regions):
             ])
     elif parent['type'] == 'loop':
         probability = parent['probability']
-        transitions.extend([
-            # First activation (must always run once): allow only to started
+        resets = [f"( {var}'={init} )" for var, init in get_local_resets(region)]
+        reset_expr = ' & '.join(resets)
+        main_update = f"(state{region_id}'=2)"
+        transitions = [
             f"    [open_to_started_{region['type']}{region_id}] ActiveReadyPending_{region['type']}{region_id} -> (state{region_id}'=2);",
-            # Synchronize child reset to READY after completion (must be in child module, not loop module)
-            f"    [loop_child_completed_sync{parent_id}] state{region_id}=4 -> (state{region_id}'=1);",
-            # Probabilistic decision for repeating or disabling the loop (child changes its own state)
-            f"    [loop_decision_sync{parent_id}] state{region_id}=1 -> {probability}:(state{region_id}'=2) + {1-probability}:(state{region_id}'=0);",
-            # When loop is completed and child is excluded, synchronize reset child to READY
+            f"    [loop_child_completed_sync{parent_id}] state{region_id}=4 -> (state{region_id}'=1);"
+        ]
+        if reset_expr:
+            trans_prob = f"{probability}:{main_update} & {reset_expr}"
+        else:
+            trans_prob = f"{probability}:{main_update}"
+        trans_else = f"{1-probability}:(state{region_id}'=0)"
+        transitions.append(
+            f"    [loop_decision_sync{parent_id}] state{region_id}=1 & state{parent_id}=3 -> {trans_prob} + {trans_else};"
+        )
+        transitions.append(
             f"    [loop_final_reset{parent_id}] state{region_id}=0 -> (state{region_id}'=1);"
-        ])
+        )
+
+
 
     else:
         transitions.append(f"    [open_to_started_{region['type']}{region_id}] ActiveReadyPending_{region['type']}{region_id} -> (state{region_id}'=2);")
     return transitions
 
+def get_local_resets(region):
+    """
+    Returns a list of (var_name, initial_value) pairs for all local variables
+    that must be reset when a region (task, sequence, parallel, etc.) is re-activated by a loop.
+    Extend this if you add more local variables to other region types!
+    """
+    resets = []
+    region_id = region['id']
+    if region['type'] == 'task':
+        resets.append((f"step{region_id}", 0))
+    # If you have other variables in future (e.g., for sequence, parallel...), add them here.
+    # Example for future:
+    # if region['type'] == 'sequence':
+    #     resets.append((f"yourvar{region_id}", 0))
+    return resets
+
+
 def generate_loop_module(region, root_dict, regions):
-    """
-    Generate module definition for a loop region.
-    This module never changes the child's state, only participates in synchronization.
-    """
     region_id = region['id']
     child_id = region['child']['id']
     lines = []
     lines.append(f"module loop{region_id}")
-    # State encoding: 0=EXCLUDED, 1=OPEN, 2=STARTED, 3=RUNNING, 4=COMPLETED, 5=EXPIRED
     lines.append(f"    state{region_id} : [0..5] init {'2' if region_id == root_dict['id'] else '1'};")
-    # Add transitions based on parent type
     lines.extend(generate_module_transitions(region, root_dict, regions))
 
-    # Core loop transitions as per loop_notes.txt:
-    # 1. Allow only open_to_started on first activation (cannot skip loop on first activation)
-    #lines.append(f"    [open_to_started_loop{region_id}] state{region_id}=1 -> (state{region_id}'=2);")
-    # 2. When in STARTED, move to RUNNING on step
-    lines.append(f"    [step] StepAvailable & state{region_id}=2 -> (state{region_id}'=3);")
-    # 3. Synchronization: after child is completed, just synchronize (child does the actual reset)
+    lines.append(f"    [step] StepAvailable & state{region_id}=2 & state{child_id}>=2 -> (state{region_id}'=3);")
+
     lines.append(f"    [loop_child_completed_sync{region_id}] state{region_id}=3 & state{child_id}=4 -> true;")
-    # 4. Synchronization: probabilistic decision handled in child (just synchronize here)
     lines.append(f"    [loop_decision_sync{region_id}] state{region_id}=3 & state{child_id}=1 -> true;")
-    # 5. End loop when child is excluded
     lines.append(f"    [running_to_completed_loop{region_id}] state{region_id}=3 & state{child_id}=0 -> (state{region_id}'=4);")
-    # 6. When loop is completed and child is excluded, synchronize so child resets to READY (see below)
+
     lines.append(f"    [loop_final_reset{region_id}] state{region_id}=4 & state{child_id}=0 -> true;")
 
-    # 7. Standard step transitions (completed to expired, etc.)
     lines.append(f"    [step] StepAvailable & (state{region_id}=0 | state{region_id}=1 | state{region_id}=5 | state{region_id}=3) -> true;")
     lines.append(f"    [step] StepAvailable & state{region_id}=4 -> (state{region_id}'=5);")
     lines.append("endmodule")
