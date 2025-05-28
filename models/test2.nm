@@ -1,0 +1,83 @@
+mdp
+
+// Formula definitions
+formula ClosingPending_parallel0 = state0=3 & (state1=4 | state1=5) & (state2=4 | state2=5);
+formula ClosingPending_task1 = state1=3 & step1=3;
+formula ClosingPending_task2 = state2=3 & step2=4;
+
+formula ReadyPending_task1 = state1=1 & (state0=2 | state0=3);
+formula ReadyPending_task2 = state2=1 & (state0=2 | state0=3);
+
+formula ReadyPendingCleared = !ReadyPending_task1 & !ReadyPending_task2;
+formula ClosingPendingCleared = !ClosingPending_parallel0 & !ClosingPending_task1 & !ClosingPending_task2;
+
+formula StepReady_task1 = (state1=2 | state1=3) & step1 < 3;
+formula StepReady_task2 = (state2=2 | state2=3) & step2 < 4;
+
+formula StepAvailable = ReadyPendingCleared & ClosingPendingCleared & (StepReady_task1 | StepReady_task2);
+
+formula ActiveReadyPending_task1 = ReadyPending_task1;
+formula ActiveReadyPending_task2 = ReadyPending_task2 & !ReadyPending_task1;
+
+formula ActiveClosingPending_parallel0 = ReadyPendingCleared & ClosingPending_parallel0;
+formula ActiveClosingPending_task1 = ReadyPendingCleared & ClosingPending_task1 & !ClosingPending_parallel0;
+formula ActiveClosingPending_task2 = ReadyPendingCleared & ClosingPending_task2 & !ClosingPending_parallel0 & !ClosingPending_task1;
+
+module parallel0
+    state0 : [0..5] init 2;
+    [running_to_completed_parallel0] ActiveClosingPending_parallel0 -> (state0'=4);
+    [step] StepAvailable & (state0=0 | state0=1 | state0=5 | state0=3) -> true;
+    [step] StepAvailable & state0=2 -> (state0'=3);
+    [step] StepAvailable & state0=4 -> (state0'=5);
+endmodule
+
+module task1
+    state1 : [0..5] init 1;
+    step1 : [0..3] init 0;
+    [open_to_started_task1] ActiveReadyPending_task1 -> (state1'=2);
+    [step] StepAvailable & state1=2 -> (step1'=1) & (state1'=3);
+    [step] StepAvailable & state1=3 & step1<2 -> (step1'=step1+1);
+    [step] StepAvailable & state1=3 & step1=2 -> (step1'=step1+1) & (state1'=4);
+    [step] StepAvailable & state1=4 -> (state1'=5);
+    [step] StepAvailable & (state1=0 | state1=1 | state1=5) -> true;
+endmodule
+
+module task2
+    state2 : [0..5] init 1;
+    step2 : [0..4] init 0;
+    [open_to_started_task2] ActiveReadyPending_task2 -> (state2'=2);
+    [step] StepAvailable & state2=2 -> (step2'=1) & (state2'=3);
+    [step] StepAvailable & state2=3 & step2<3 -> (step2'=step2+1);
+    [step] StepAvailable & state2=3 & step2=3 -> (step2'=step2+1) & (state2'=4);
+    [step] StepAvailable & state2=4 -> (state2'=5);
+    [step] StepAvailable & (state2=0 | state2=1 | state2=5) -> true;
+endmodule
+
+
+// Labels for formulas
+label "ClosingPending_parallel0" = state0=3 & (state1=4 | state1=5) & (state2=4 | state2=5);
+label "ClosingPending_task1" = state1=3 & step1=3;
+label "ClosingPending_task2" = state2=3 & step2=4;
+
+label "ReadyPending_task1" = state1=1 & (state0=2 | state0=3);
+label "ReadyPending_task2" = state2=1 & (state0=2 | state0=3);
+
+label "ReadyPendingCleared" = !ReadyPending_task1 & !ReadyPending_task2;
+label "ClosingPendingCleared" = !ClosingPending_parallel0 & !ClosingPending_task1 & !ClosingPending_task2;
+
+label "StepReady_task1" = (state1=2 | state1=3) & step1 < 3;
+label "StepReady_task2" = (state2=2 | state2=3) & step2 < 4;
+
+label "StepAvailable" = ReadyPendingCleared & ClosingPendingCleared & (StepReady_task1 | StepReady_task2);
+
+label "ActiveReadyPending_task1" = ReadyPending_task1;
+label "ActiveReadyPending_task2" = ReadyPending_task2 & !ReadyPending_task1;
+
+label "ActiveClosingPending_parallel0" = ReadyPendingCleared & ClosingPending_parallel0;
+label "ActiveClosingPending_task1" = ReadyPendingCleared & ClosingPending_task1 & !ClosingPending_parallel0;
+label "ActiveClosingPending_task2" = ReadyPendingCleared & ClosingPending_task2 & !ClosingPending_parallel0 & !ClosingPending_task1;
+
+rewards "impact_1"
+    [running_to_completed_parallel0] state1!=0 & state1!=1 : 1.0;
+    [running_to_completed_parallel0] state2!=0 & state2!=1 : 1.0;
+endrewards
