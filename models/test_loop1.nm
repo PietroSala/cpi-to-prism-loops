@@ -38,8 +38,9 @@ module task1
     step1 : [0..2] init 0;
     [open_to_started_task1] ActiveReadyPending_task1 -> (state1'=2);
     [loop_child_completed_sync0] state1=4 -> (state1'=1);
-    [loop_decision_sync0] state1=1 & state0=3 -> 0.8:(state1'=2) & ( step1'=0 ) + 0.19999999999999996:(state1'=0);
+    [loop_decision_sync0] state1=1 & state0=3 -> 0.8:(state1'=2) + 0.19999999999999996:(state1'=0);
     [loop_final_reset0] state1=0 -> (state1'=1);
+    [loop_decision_sync0] state1=1 -> (step1'=0);
     [step] StepAvailable & state1=2 -> (step1'=1) & (state1'=3);
     [step] StepAvailable & state1=3 & step1<1 -> (step1'=step1+1);
     [step] StepAvailable & state1=3 & step1=1 -> (step1'=step1+1) & (state1'=4);

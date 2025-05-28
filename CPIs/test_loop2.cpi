@@ -1,0 +1,27 @@
+{
+  "type": "loop",
+  "id": 0,
+  "probability": 0.7,
+  "child": {
+    "type": "sequence",
+    "id": 1,
+    "head": {
+      "type": "task",
+      "id": 2,
+      "duration": 2,
+      "impacts": {
+        "cost": 5,
+        "time": 2
+      }
+    },
+    "tail": {
+      "type": "task",
+      "id": 3,
+      "duration": 1,
+      "impacts": {
+        "cost": 2,
+        "time": 1
+      }
+    }
+  }
+}

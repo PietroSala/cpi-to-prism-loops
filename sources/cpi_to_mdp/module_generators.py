@@ -71,45 +71,63 @@ def generate_module_transitions(region, root_dict, regions):
             ])
     elif parent['type'] == 'loop':
         probability = parent['probability']
-        resets = [f"( {var}'={init} )" for var, init in get_local_resets(region)]
-        reset_expr = ' & '.join(resets)
-        main_update = f"(state{region_id}'=2)"
         transitions = [
             f"    [open_to_started_{region['type']}{region_id}] ActiveReadyPending_{region['type']}{region_id} -> (state{region_id}'=2);",
-            f"    [loop_child_completed_sync{parent_id}] state{region_id}=4 -> (state{region_id}'=1);"
-        ]
-        if reset_expr:
-            trans_prob = f"{probability}:{main_update} & {reset_expr}"
-        else:
-            trans_prob = f"{probability}:{main_update}"
-        trans_else = f"{1-probability}:(state{region_id}'=0)"
-        transitions.append(
-            f"    [loop_decision_sync{parent_id}] state{region_id}=1 & state{parent_id}=3 -> {trans_prob} + {trans_else};"
-        )
-        transitions.append(
-            f"    [loop_final_reset{parent_id}] state{region_id}=0 -> (state{region_id}'=1);"
-        )
+            f"    [loop_child_completed_sync{parent_id}] state{region_id}=4 -> (state{region_id}'=1);",
 
+            f"    [loop_decision_sync{parent_id}] state{region_id}=1 & state{parent_id}=3 -> "
+            f"{probability}:(state{region_id}'=2) + {1-probability}:(state{region_id}'=0);",
+            f"    [loop_final_reset{parent_id}] state{region_id}=0 -> (state{region_id}'=1);"
+        ]
 
 
     else:
         transitions.append(f"    [open_to_started_{region['type']}{region_id}] ActiveReadyPending_{region['type']}{region_id} -> (state{region_id}'=2);")
     return transitions
 
-def get_local_resets(region):
+def get_local_resets(region, regions):
     """
-    Returns a list of (var_name, initial_value) pairs for all local variables
-    that must be reset when a region (task, sequence, parallel, etc.) is re-activated by a loop.
-    Extend this if you add more local variables to other region types!
+    Returns a list of (var_name, initial_value) for all local variables in this region
+    and in all its descendants, to be reset when the region is re-activated by a loop.
+    """
+    resets = []
+    region_id = region['id']
+    # Task: reset step
+    if region['type'] == 'task':
+        resets.append((f"step{region_id}", 0))
+    # Sequence: reset itself, then recursively its children
+    elif region['type'] == 'sequence':
+        # Add own resets here if needed (e.g. sequence-level variables)
+        head = region['head']
+        tail = region['tail']
+        resets += get_local_resets(head, regions)
+        resets += get_local_resets(tail, regions)
+    # Parallel: reset itself, then recursively its children
+    elif region['type'] == 'parallel':
+        first = region['first_split']
+        second = region['second_split']
+        resets += get_local_resets(first, regions)
+        resets += get_local_resets(second, regions)
+    # Choice/Nature: reset both branches
+    elif region['type'] in ['choice', 'nature']:
+        resets += get_local_resets(region['true'], regions)
+        resets += get_local_resets(region['false'], regions)
+    # Loop: reset child recursively
+    elif region['type'] == 'loop':
+        resets += get_local_resets(region['child'], regions)
+    # Estendi se aggiungi altre regioni composite...
+    return resets
+
+def get_module_local_resets(region):
+    """
+    Returns a list of reset updates for local variables of this module only.
     """
     resets = []
     region_id = region['id']
     if region['type'] == 'task':
-        resets.append((f"step{region_id}", 0))
-    # If you have other variables in future (e.g., for sequence, parallel...), add them here.
-    # Example for future:
-    # if region['type'] == 'sequence':
-    #     resets.append((f"yourvar{region_id}", 0))
+        resets.append(f"step{region_id}'=0")
+    # Aggiungi qui altri tipi e variabili locali se servono
+    # if region['type'] == 'sequence': ...
     return resets
 
 
@@ -146,9 +164,11 @@ def generate_task_module(region, root_dict, regions):
     # Add loop descendant reset if this task is a descendant of a loop
     loop_ancestor_id = find_loop_ancestor(region_id, root_dict, regions)
     if loop_ancestor_id is not None:
+        lines.append(f"    [loop_decision_sync{loop_ancestor_id}] state{region_id}=1 -> (step{region_id}'=0);")
         loop_child_id = regions[loop_ancestor_id]['child']['id']
         if region_id > loop_child_id:
             lines.append(f"    [loop_child_completed_sync{loop_ancestor_id}] state{region_id}!=1 -> (state{region_id}'=1);")
+
     # Handle step transitions
     if region['duration'] == 1:
         lines.append(f"    [step] StepAvailable & state{region_id}=2 -> (step{region_id}'=1) & (state{region_id}'=4);")

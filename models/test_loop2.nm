@@ -1,0 +1,112 @@
+mdp
+
+// Formula definitions
+formula ClosingPending_loop0 = state0=3 & state1=0;
+formula ClosingPending_sequence1 = state1=3 & (state3=4 | state3=5);
+formula ClosingPending_task2 = state2=3 & step2=2;
+formula ClosingPending_task3 = state3=3 & step3=1;
+
+formula ReadyPending_sequence1 = state1=1 & state0=2;
+formula ReadyPending_task2 = state2=1 & state1=2;
+formula ReadyPending_task3 = state3=1 & (state1=2 | state1=3) & (state2=4 | state2=5);
+
+formula LoopChildCompleted_loop0 = state0=3 & state1=4;
+formula LoopShouldRestart_loop0 = state0=3 & state1=1;
+formula LoopChildExcluded_loop0 = state0=3 & state1=0;
+
+formula ReadyPendingCleared = !ReadyPending_sequence1 & !ReadyPending_task2 & !ReadyPending_task3;
+formula ClosingPendingCleared = !ClosingPending_loop0 & !ClosingPending_sequence1 & !ClosingPending_task2 & !ClosingPending_task3;
+
+formula StepReady_task2 = (state2=2 | state2=3) & step2 < 2;
+formula StepReady_task3 = (state3=2 | state3=3) & step3 < 1;
+
+formula StepAvailable = ReadyPendingCleared & ClosingPendingCleared & !LoopChildCompleted_loop0 & !LoopShouldRestart_loop0 & !LoopChildExcluded_loop0 & (StepReady_task2 | StepReady_task3);
+
+formula ActiveReadyPending_sequence1 = ReadyPending_sequence1;
+formula ActiveReadyPending_task2 = ReadyPending_task2 & !ReadyPending_sequence1;
+formula ActiveReadyPending_task3 = ReadyPending_task3 & !ReadyPending_sequence1 & !ReadyPending_task2;
+
+formula ActiveClosingPending_loop0 = ReadyPendingCleared & ClosingPending_loop0;
+formula ActiveClosingPending_sequence1 = ReadyPendingCleared & ClosingPending_sequence1 & !ClosingPending_loop0;
+formula ActiveClosingPending_task2 = ReadyPendingCleared & ClosingPending_task2 & !ClosingPending_loop0 & !ClosingPending_sequence1;
+formula ActiveClosingPending_task3 = ReadyPendingCleared & ClosingPending_task3 & !ClosingPending_loop0 & !ClosingPending_sequence1 & !ClosingPending_task2;
+
+module loop0
+    state0 : [0..5] init 2;
+    [step] StepAvailable & state0=2 & state1>=2 -> (state0'=3);
+    [loop_child_completed_sync0] state0=3 & state1=4 -> true;
+    [loop_decision_sync0] state0=3 & state1=1 -> true;
+    [running_to_completed_loop0] state0=3 & state1=0 -> (state0'=4);
+    [loop_final_reset0] state0=4 & state1=0 -> true;
+    [step] StepAvailable & (state0=0 | state0=1 | state0=5 | state0=3) -> true;
+    [step] StepAvailable & state0=4 -> (state0'=5);
+endmodule
+
+module sequence1
+    state1 : [0..5] init 1;
+    [open_to_started_sequence1] ActiveReadyPending_sequence1 -> (state1'=2);
+    [loop_child_completed_sync0] state1=4 -> (state1'=1);
+    [loop_decision_sync0] state1=1 & state0=3 -> 0.7:(state1'=2) + 0.30000000000000004:(state1'=0);
+    [loop_final_reset0] state1=0 -> (state1'=1);
+    [running_to_completed_sequence1] ActiveClosingPending_sequence1 -> (state1'=4);
+    [step] StepAvailable & (state1=0 | state1=1 | state1=5 | state1=3) -> true;
+    [step] StepAvailable & state1=2 -> (state1'=3);
+    [step] StepAvailable & state1=4 -> (state1'=5);
+endmodule
+
+module task2
+    state2 : [0..5] init 1;
+    step2 : [0..2] init 0;
+    [open_to_started_task2] ActiveReadyPending_task2 -> (state2'=2);
+    [loop_decision_sync0] state2=1 -> (step2'=0);
+    [loop_child_completed_sync0] state2!=1 -> (state2'=1);
+    [step] StepAvailable & state2=2 -> (step2'=1) & (state2'=3);
+    [step] StepAvailable & state2=3 & step2<1 -> (step2'=step2+1);
+    [step] StepAvailable & state2=3 & step2=1 -> (step2'=step2+1) & (state2'=4);
+    [step] StepAvailable & state2=4 -> (state2'=5);
+    [step] StepAvailable & (state2=0 | state2=1 | state2=5) -> true;
+endmodule
+
+module task3
+    state3 : [0..5] init 1;
+    step3 : [0..1] init 0;
+    [open_to_started_task3] ActiveReadyPending_task3 -> (state3'=2);
+    [loop_decision_sync0] state3=1 -> (step3'=0);
+    [loop_child_completed_sync0] state3!=1 -> (state3'=1);
+    [step] StepAvailable & state3=2 -> (step3'=1) & (state3'=4);
+    [step] StepAvailable & state3=4 -> (state3'=5);
+    [step] StepAvailable & (state3=0 | state3=1 | state3=5) -> true;
+endmodule
+
+
+// Labels for formulas
+label "ClosingPending_loop0" = state0=3 & state1=0;
+label "ClosingPending_sequence1" = state1=3 & (state3=4 | state3=5);
+label "ClosingPending_task2" = state2=3 & step2=2;
+label "ClosingPending_task3" = state3=3 & step3=1;
+
+label "ReadyPending_sequence1" = state1=1 & state0=2;
+label "ReadyPending_task2" = state2=1 & state1=2;
+label "ReadyPending_task3" = state3=1 & (state1=2 | state1=3) & (state2=4 | state2=5);
+
+label "LoopChildCompleted_loop0" = state0=3 & state1=4;
+label "LoopShouldRestart_loop0" = state0=3 & state1=1;
+label "LoopChildExcluded_loop0" = state0=3 & state1=0;
+
+label "ReadyPendingCleared" = !ReadyPending_sequence1 & !ReadyPending_task2 & !ReadyPending_task3;
+label "ClosingPendingCleared" = !ClosingPending_loop0 & !ClosingPending_sequence1 & !ClosingPending_task2 & !ClosingPending_task3;
+
+label "StepReady_task2" = (state2=2 | state2=3) & step2 < 2;
+label "StepReady_task3" = (state3=2 | state3=3) & step3 < 1;
+
+label "StepAvailable" = ReadyPendingCleared & ClosingPendingCleared & !LoopChildCompleted_loop0 & !LoopShouldRestart_loop0 & !LoopChildExcluded_loop0 & (StepReady_task2 | StepReady_task3);
+
+label "ActiveReadyPending_sequence1" = ReadyPending_sequence1;
+label "ActiveReadyPending_task2" = ReadyPending_task2 & !ReadyPending_sequence1;
+label "ActiveReadyPending_task3" = ReadyPending_task3 & !ReadyPending_sequence1 & !ReadyPending_task2;
+
+label "ActiveClosingPending_loop0" = ReadyPendingCleared & ClosingPending_loop0;
+label "ActiveClosingPending_sequence1" = ReadyPendingCleared & ClosingPending_sequence1 & !ClosingPending_loop0;
+label "ActiveClosingPending_task2" = ReadyPendingCleared & ClosingPending_task2 & !ClosingPending_loop0 & !ClosingPending_sequence1;
+label "ActiveClosingPending_task3" = ReadyPendingCleared & ClosingPending_task3 & !ClosingPending_loop0 & !ClosingPending_sequence1 & !ClosingPending_task2;
+
