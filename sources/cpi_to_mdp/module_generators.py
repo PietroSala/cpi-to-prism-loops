@@ -1,27 +1,16 @@
 from .parent_info import get_parent_info
 
-
 def find_loop_ancestor(region_id, root_dict, regions):
     """Find if a region is a descendant of any loop.
-    
-    Args:
-        region_id (int): ID of the region to check
-        root_dict (dict): Root of the CPI dictionary
-        regions (dict): Dictionary of all regions indexed by ID
-        
-    Returns:
-        int or None: ID of the loop ancestor, or None if no loop ancestor
+    Returns the nearest ancestor loop's id or None.
     """
     def check_ancestry(node, target_id, path=[]):
         if node['id'] == target_id:
-            # Found the target, check if any ancestor in path is a loop
             for ancestor_id in reversed(path):
                 if regions[ancestor_id]['type'] == 'loop':
                     return ancestor_id
             return None
-        
         new_path = path + [node['id']]
-        
         if node['type'] == 'sequence':
             result = check_ancestry(node['head'], target_id, new_path)
             if result is not None:
@@ -39,35 +28,23 @@ def find_loop_ancestor(region_id, root_dict, regions):
             return check_ancestry(node['false'], target_id, new_path)
         elif node['type'] == 'loop':
             return check_ancestry(node['child'], target_id, new_path)
-            
         return None
-    
     return check_ancestry(root_dict, region_id)
 
-
 def generate_module_transitions(region, root_dict, regions):
-    """Generate transitions for any module based on its relationship to parent.
-    
-    Args:
-        region (dict): The region dictionary
-        root_dict (dict): The root CPI dictionary
-        regions (dict): Dictionary of all regions indexed by ID
-        
-    Returns:
-        list: Lines containing the opening transitions based on parent type
+    """
+    Generate transitions for a module based on its parent.
+    This function also handles synchronization for loop children.
     """
     region_id = region['id']
     if region_id == root_dict['id']:
         return []
-        
     parent_info = get_parent_info(region_id, root_dict, regions)
-
     parent_id = parent_info['parent_id']
     position = parent_info['position']
-       
     parent = regions[parent_id]
     transitions = []
-    
+
     if parent['type'] == 'choice':
         if position == 'true':
             transitions.extend([
@@ -93,94 +70,72 @@ def generate_module_transitions(region, root_dict, regions):
                 f"    [open_to_disabled_{region['type']}{region_id}] ActiveReadyPending_{region['type']}{region_id} & state{true_id}=2 -> (state{region_id}'=0);"
             ])
     elif parent['type'] == 'loop':
-        # Child of loop: respond to loop synchronization actions
         probability = parent['probability']
         transitions.extend([
+            # First activation (must always run once): allow only to started
             f"    [open_to_started_{region['type']}{region_id}] ActiveReadyPending_{region['type']}{region_id} -> (state{region_id}'=2);",
-            # When loop child completes, reset to open state
+            # Synchronize child reset to READY after completion (must be in child module, not loop module)
             f"    [loop_child_completed_sync{parent_id}] state{region_id}=4 -> (state{region_id}'=1);",
-            # When loop makes decision, either restart or exclude (child makes the probabilistic choice)
+            # Probabilistic decision for repeating or disabling the loop (child changes its own state)
             f"    [loop_decision_sync{parent_id}] state{region_id}=1 -> {probability}:(state{region_id}'=2) + {1-probability}:(state{region_id}'=0);",
-            # When loop completes and child is excluded, reset to open
-            f"    [loop_final_reset{parent_id}] state{parent_id}=4 & state{region_id}=0 -> (state{region_id}'=1);"
+            # When loop is completed and child is excluded, synchronize reset child to READY
+            f"    [loop_final_reset{parent_id}] state{region_id}=0 -> (state{region_id}'=1);"
         ])
+
     else:
         transitions.append(f"    [open_to_started_{region['type']}{region_id}] ActiveReadyPending_{region['type']}{region_id} -> (state{region_id}'=2);")
-
     return transitions
 
-
 def generate_loop_module(region, root_dict, regions):
-    """Generate module definition for a loop region.
-    
-    Args:
-        region (dict): Loop region dictionary
-        root_dict (dict): Root of the CPI dictionary
-        regions (dict): Dictionary of all regions indexed by ID
-        
-    Returns:
-        list: Lines of the module definition
+    """
+    Generate module definition for a loop region.
+    This module never changes the child's state, only participates in synchronization.
     """
     region_id = region['id']
     child_id = region['child']['id']
     lines = []
-    
     lines.append(f"module loop{region_id}")
+    # State encoding: 0=EXCLUDED, 1=OPEN, 2=STARTED, 3=RUNNING, 4=COMPLETED, 5=EXPIRED
     lines.append(f"    state{region_id} : [0..5] init {'2' if region_id == root_dict['id'] else '1'};")
-    
     # Add transitions based on parent type
     lines.extend(generate_module_transitions(region, root_dict, regions))
-    
-    # Loop-specific synchronization transitions
-    # When child completes, participate in sync but don't change own state
-    lines.append(f"    [loop_child_completed_sync{region_id}] LoopChildCompleted_loop{region_id} -> true;")
-    
-    # When child is ready to restart, make the probabilistic decision
-    probability = region['probability']
-    lines.append(f"    [loop_decision_sync{region_id}] LoopShouldRestart_loop{region_id} -> true;")
-    
-    # Loop completion when child is excluded
-    lines.append(f"    [running_to_completed_loop{region_id}] ActiveClosingPending_loop{region_id} -> (state{region_id}'=4);")
-    
-    # Add step transitions
-    lines.append(f"    [step] StepAvailable & (state{region_id}=0 | state{region_id}=1 | state{region_id}=5 | state{region_id}=3) -> true;")
+
+    # Core loop transitions as per loop_notes.txt:
+    # 1. Allow only open_to_started on first activation (cannot skip loop on first activation)
+    #lines.append(f"    [open_to_started_loop{region_id}] state{region_id}=1 -> (state{region_id}'=2);")
+    # 2. When in STARTED, move to RUNNING on step
     lines.append(f"    [step] StepAvailable & state{region_id}=2 -> (state{region_id}'=3);")
+    # 3. Synchronization: after child is completed, just synchronize (child does the actual reset)
+    lines.append(f"    [loop_child_completed_sync{region_id}] state{region_id}=3 & state{child_id}=4 -> true;")
+    # 4. Synchronization: probabilistic decision handled in child (just synchronize here)
+    lines.append(f"    [loop_decision_sync{region_id}] state{region_id}=3 & state{child_id}=1 -> true;")
+    # 5. End loop when child is excluded
+    lines.append(f"    [running_to_completed_loop{region_id}] state{region_id}=3 & state{child_id}=0 -> (state{region_id}'=4);")
+    # 6. When loop is completed and child is excluded, synchronize so child resets to READY (see below)
+    lines.append(f"    [loop_final_reset{region_id}] state{region_id}=4 & state{child_id}=0 -> true;")
+
+    # 7. Standard step transitions (completed to expired, etc.)
+    lines.append(f"    [step] StepAvailable & (state{region_id}=0 | state{region_id}=1 | state{region_id}=5 | state{region_id}=3) -> true;")
     lines.append(f"    [step] StepAvailable & state{region_id}=4 -> (state{region_id}'=5);")
-    
     lines.append("endmodule")
     return lines
 
-
 def generate_task_module(region, root_dict, regions):
-    """Generate module definition for a task region.
-    
-    Args:
-        region (dict): Task region dictionary
-        root_dict (dict): Root of the CPI dictionary
-        regions (dict): Dictionary of all regions indexed by ID
-        
-    Returns:
-        list: Lines of the module definition
-    """
+    """Generate module definition for a task region."""
     region_id = region['id']
     lines = []
-    
     lines.append(f"module task{region_id}")
     lines.append(f"    state{region_id} : [0..5] init {'2' if region_id == root_dict['id'] else '1'};")
     lines.append(f"    step{region_id} : [0..{region['duration']}] init 0;")
-    
     # Add transitions based on parent type
     lines.extend(generate_module_transitions(region, root_dict, regions))
-    
     # Add loop descendant reset if this task is a descendant of a loop
     loop_ancestor_id = find_loop_ancestor(region_id, root_dict, regions)
     if loop_ancestor_id is not None:
         loop_child_id = regions[loop_ancestor_id]['child']['id']
-        # Only reset if this task's ID is greater than the loop child ID
         if region_id > loop_child_id:
             lines.append(f"    [loop_child_completed_sync{loop_ancestor_id}] state{region_id}!=1 -> (state{region_id}'=1);")
-    
-    # Handle step transitions based on duration
+    # Handle step transitions
     if region['duration'] == 1:
         lines.append(f"    [step] StepAvailable & state{region_id}=2 -> (step{region_id}'=1) & (state{region_id}'=4);")
         lines.append(f"    [step] StepAvailable & state{region_id}=4 -> (state{region_id}'=5);")
@@ -189,181 +144,89 @@ def generate_task_module(region, root_dict, regions):
         lines.append(f"    [step] StepAvailable & state{region_id}=3 & step{region_id}<{region['duration']-1} -> (step{region_id}'=step{region_id}+1);")
         lines.append(f"    [step] StepAvailable & state{region_id}=3 & step{region_id}={region['duration']-1} -> (step{region_id}'=step{region_id}+1) & (state{region_id}'=4);")
         lines.append(f"    [step] StepAvailable & state{region_id}=4 -> (state{region_id}'=5);")
-    
-    # Add true transition for inactive states
+    # Inactive states
     lines.append(f"    [step] StepAvailable & (state{region_id}=0 | state{region_id}=1 | state{region_id}=5) -> true;")
-    
     lines.append("endmodule")
     return lines
-
 
 def generate_choice_module(region, root_dict, regions):
-    """Generate module definition for a choice region.
-    
-    Args:
-        region (dict): Choice region dictionary
-        root_dict (dict): Root of the CPI dictionary
-        regions (dict): Dictionary of all regions indexed by ID
-        
-    Returns:
-        list: Lines of the module definition
-    """
+    """Generate module definition for a choice region."""
     region_id = region['id']
     lines = []
-    
     lines.append(f"module choice{region_id}")
     lines.append(f"    state{region_id} : [0..5] init {'2' if region_id == root_dict['id'] else '1'};")
-    
-    # Add transitions based on parent type
     lines.extend(generate_module_transitions(region, root_dict, regions))
-    
-    # Add loop descendant reset if this choice is a descendant of a loop
     loop_ancestor_id = find_loop_ancestor(region_id, root_dict, regions)
     if loop_ancestor_id is not None:
         loop_child_id = regions[loop_ancestor_id]['child']['id']
-        # Only reset if this choice's ID is greater than the loop child ID
         if region_id > loop_child_id:
             lines.append(f"    [loop_child_completed_sync{loop_ancestor_id}] state{region_id}!=1 -> (state{region_id}'=1);")
-    
     lines.append(f"    [running_to_completed_choice{region_id}] ActiveClosingPending_choice{region_id} -> (state{region_id}'=4);")
-    
-    # Add step transitions
     lines.append(f"    [step] StepAvailable & (state{region_id}=0 | state{region_id}=1 | state{region_id}=5 | state{region_id}=3) -> true;")
     lines.append(f"    [step] StepAvailable & state{region_id}=2 -> (state{region_id}'=3);")
     lines.append(f"    [step] StepAvailable & state{region_id}=4 -> (state{region_id}'=5);")
-    
     lines.append("endmodule")
     return lines
-
 
 def generate_nature_module(region, root_dict, regions):
-    """Generate module definition for a nature region.
-    
-    Args:
-        region (dict): Nature region dictionary
-        root_dict (dict): Root of the CPI dictionary
-        regions (dict): Dictionary of all regions indexed by ID
-        
-    Returns:
-        list: Lines of the module definition
-    """
+    """Generate module definition for a nature region."""
     region_id = region['id']
     lines = []
-    
     lines.append(f"module nature{region_id}")
     lines.append(f"    state{region_id} : [0..5] init {'2' if region_id == root_dict['id'] else '1'};")
-    
-    # Add transitions based on parent type
     lines.extend(generate_module_transitions(region, root_dict, regions))
-    
-    # Add loop descendant reset if this nature is a descendant of a loop
     loop_ancestor_id = find_loop_ancestor(region_id, root_dict, regions)
     if loop_ancestor_id is not None:
         loop_child_id = regions[loop_ancestor_id]['child']['id']
-        # Only reset if this nature's ID is greater than the loop child ID
         if region_id > loop_child_id:
             lines.append(f"    [loop_child_completed_sync{loop_ancestor_id}] state{region_id}!=1 -> (state{region_id}'=1);")
-    
     lines.append(f"    [running_to_completed_nature{region_id}] ActiveClosingPending_nature{region_id} -> (state{region_id}'=4);")
-    
-    # Add step transitions
     lines.append(f"    [step] StepAvailable & (state{region_id}=0 | state{region_id}=1 | state{region_id}=5 | state{region_id}=3) -> true;")
     lines.append(f"    [step] StepAvailable & state{region_id}=2 -> (state{region_id}'=3);")
     lines.append(f"    [step] StepAvailable & state{region_id}=4 -> (state{region_id}'=5);")
-    
     lines.append("endmodule")
     return lines
-
 
 def generate_sequence_module(region, root_dict, regions):
-    """Generate module definition for a sequence region.
-    
-    Args:
-        region (dict): Sequence region dictionary
-        root_dict (dict): Root of the CPI dictionary
-        regions (dict): Dictionary of all regions indexed by ID
-        
-    Returns:
-        list: Lines of the module definition
-    """
+    """Generate module definition for a sequence region."""
     region_id = region['id']
     lines = []
-    
     lines.append(f"module sequence{region_id}")
     lines.append(f"    state{region_id} : [0..5] init {'2' if region_id == root_dict['id'] else '1'};")
-    
-    # Add transitions based on parent type
     lines.extend(generate_module_transitions(region, root_dict, regions))
-    
-    # Add loop descendant reset if this sequence is a descendant of a loop
     loop_ancestor_id = find_loop_ancestor(region_id, root_dict, regions)
     if loop_ancestor_id is not None:
         loop_child_id = regions[loop_ancestor_id]['child']['id']
-        # Only reset if this sequence's ID is greater than the loop child ID
         if region_id > loop_child_id:
             lines.append(f"    [loop_child_completed_sync{loop_ancestor_id}] state{region_id}!=1 -> (state{region_id}'=1);")
-    
     lines.append(f"    [running_to_completed_sequence{region_id}] ActiveClosingPending_sequence{region_id} -> (state{region_id}'=4);")
-    
-    # Add step transitions
     lines.append(f"    [step] StepAvailable & (state{region_id}=0 | state{region_id}=1 | state{region_id}=5 | state{region_id}=3) -> true;")
     lines.append(f"    [step] StepAvailable & state{region_id}=2 -> (state{region_id}'=3);")
     lines.append(f"    [step] StepAvailable & state{region_id}=4 -> (state{region_id}'=5);")
-    
     lines.append("endmodule")
     return lines
-
 
 def generate_parallel_module(region, root_dict, regions):
-    """Generate module definition for a parallel region.
-    
-    Args:
-        region (dict): Parallel region dictionary
-        root_dict (dict): Root of the CPI dictionary
-        regions (dict): Dictionary of all regions indexed by ID
-        
-    Returns:
-        list: Lines of the module definition
-    """
+    """Generate module definition for a parallel region."""
     region_id = region['id']
     lines = []
-    
     lines.append(f"module parallel{region_id}")
     lines.append(f"    state{region_id} : [0..5] init {'2' if region_id == root_dict['id'] else '1'};")
-    
-    # Add transitions based on parent type
     lines.extend(generate_module_transitions(region, root_dict, regions))
-    
-    # Add loop descendant reset if this parallel is a descendant of a loop
     loop_ancestor_id = find_loop_ancestor(region_id, root_dict, regions)
     if loop_ancestor_id is not None:
         loop_child_id = regions[loop_ancestor_id]['child']['id']
-        # Only reset if this parallel's ID is greater than the loop child ID
         if region_id > loop_child_id:
             lines.append(f"    [loop_child_completed_sync{loop_ancestor_id}] state{region_id}!=1 -> (state{region_id}'=1);")
-    
     lines.append(f"    [running_to_completed_parallel{region_id}] ActiveClosingPending_parallel{region_id} -> (state{region_id}'=4);")
-    
-    # Add step transitions
     lines.append(f"    [step] StepAvailable & (state{region_id}=0 | state{region_id}=1 | state{region_id}=5 | state{region_id}=3) -> true;")
     lines.append(f"    [step] StepAvailable & state{region_id}=2 -> (state{region_id}'=3);")
     lines.append(f"    [step] StepAvailable & state{region_id}=4 -> (state{region_id}'=5);")
-    
     lines.append("endmodule")
     return lines
 
-
 def generate_module(region, root_dict, regions):
-    """Generate appropriate module definition based on region type.
-    
-    Args:
-        region (dict): Region dictionary
-        root_dict (dict): Root of the CPI dictionary
-        regions (dict): Dictionary of all regions indexed by ID
-        
-    Returns:
-        list: Lines of the module definition
-    """
+    """Dispatch to the correct module generator based on region type."""
     if region['type'] == 'task':
         return generate_task_module(region, root_dict, regions)
     elif region['type'] == 'choice':
