@@ -1,0 +1,11 @@
+action step state0 state1 step1 state2 step2
+- 0 2 1 0 1 0
+[open_to_started_task1] 1 2 2 0 1 0
+[step] 2 3 3 1 1 0
+[step] 3 3 3 2 1 0
+[step] 4 3 4 3 1 0
+[open_to_started_task2] 5 3 4 3 2 0
+[step] 6 3 5 3 3 1
+[step] 7 3 5 3 3 2
+[step] 8 3 5 3 4 3
+[running_to_completed_sequence0] 9 4 5 3 4 3

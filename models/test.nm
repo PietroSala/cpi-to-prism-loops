@@ -1,0 +1,353 @@
+mdp
+
+// Formula definitions
+formula ClosingPending_parallel0 = state0=3 & (state1=4 | state1=5) & (state10=4 | state10=5);
+formula ClosingPending_sequence1 = state1=3 & (state5=4 | state5=5);
+formula ClosingPending_sequence2 = state2=3 & (state4=4 | state4=5);
+formula ClosingPending_task3 = state3=3 & step3=8;
+formula ClosingPending_task4 = state4=3 & step4=1;
+formula ClosingPending_parallel5 = state5=3 & (state6=4 | state6=5) & (state7=4 | state7=5);
+formula ClosingPending_task6 = state6=3 & step6=4;
+formula ClosingPending_sequence7 = state7=3 & (state9=4 | state9=5);
+formula ClosingPending_task8 = state8=3 & step8=7;
+formula ClosingPending_task9 = state9=3 & step9=7;
+formula ClosingPending_sequence10 = state10=3 & (state16=4 | state16=5);
+formula ClosingPending_sequence11 = state11=3 & (state15=4 | state15=5);
+formula ClosingPending_nature12 = state12=3 & ((state13=4 | state13=5) | (state14=4 | state14=5));
+formula ClosingPending_task13 = state13=3 & step13=5;
+formula ClosingPending_task14 = state14=3 & step14=1;
+formula ClosingPending_task15 = state15=3 & step15=9;
+formula ClosingPending_task16 = state16=3 & step16=8;
+
+formula ReadyPending_sequence1 = state1=1 & (state0=2 | state0=3);
+formula ReadyPending_sequence2 = state2=1 & state1=2;
+formula ReadyPending_task3 = state3=1 & state2=2;
+formula ReadyPending_task4 = state4=1 & (state2=2 | state2=3) & (state3=4 | state3=5);
+formula ReadyPending_parallel5 = state5=1 & (state1=2 | state1=3) & (state2=4 | state2=5);
+formula ReadyPending_task6 = state6=1 & (state5=2 | state5=3);
+formula ReadyPending_sequence7 = state7=1 & (state5=2 | state5=3);
+formula ReadyPending_task8 = state8=1 & state7=2;
+formula ReadyPending_task9 = state9=1 & (state7=2 | state7=3) & (state8=4 | state8=5);
+formula ReadyPending_sequence10 = state10=1 & (state0=2 | state0=3);
+formula ReadyPending_sequence11 = state11=1 & state10=2;
+formula ReadyPending_nature12 = state12=1 & state11=2;
+formula ReadyPending_task13 = state13=1 & (state12=2 | state12=3);
+formula ReadyPending_task14 = state14=1 & (state12=2 | state12=3) & (state13=0 | state13=2);
+formula ReadyPending_task15 = state15=1 & (state11=2 | state11=3) & (state12=4 | state12=5);
+formula ReadyPending_task16 = state16=1 & (state10=2 | state10=3) & (state11=4 | state11=5);
+
+formula ReadyPendingCleared = !ReadyPending_sequence1 & !ReadyPending_sequence2 & !ReadyPending_task3 & !ReadyPending_task4 & !ReadyPending_parallel5 & !ReadyPending_task6 & !ReadyPending_sequence7 & !ReadyPending_task8 & !ReadyPending_task9 & !ReadyPending_sequence10 & !ReadyPending_sequence11 & !ReadyPending_nature12 & !ReadyPending_task13 & !ReadyPending_task14 & !ReadyPending_task15 & !ReadyPending_task16;
+formula ClosingPendingCleared = !ClosingPending_parallel0 & !ClosingPending_sequence1 & !ClosingPending_sequence2 & !ClosingPending_task3 & !ClosingPending_task4 & !ClosingPending_parallel5 & !ClosingPending_task6 & !ClosingPending_sequence7 & !ClosingPending_task8 & !ClosingPending_task9 & !ClosingPending_sequence10 & !ClosingPending_sequence11 & !ClosingPending_nature12 & !ClosingPending_task13 & !ClosingPending_task14 & !ClosingPending_task15 & !ClosingPending_task16;
+
+formula StepReady_task3 = (state3=2 | state3=3) & step3 < 8;
+formula StepReady_task4 = (state4=2 | state4=3) & step4 < 1;
+formula StepReady_task6 = (state6=2 | state6=3) & step6 < 4;
+formula StepReady_task8 = (state8=2 | state8=3) & step8 < 7;
+formula StepReady_task9 = (state9=2 | state9=3) & step9 < 7;
+formula StepReady_task13 = (state13=2 | state13=3) & step13 < 5;
+formula StepReady_task14 = (state14=2 | state14=3) & step14 < 1;
+formula StepReady_task15 = (state15=2 | state15=3) & step15 < 9;
+formula StepReady_task16 = (state16=2 | state16=3) & step16 < 8;
+
+formula StepAvailable = ReadyPendingCleared & ClosingPendingCleared & (StepReady_task3 | StepReady_task4 | StepReady_task6 | StepReady_task8 | StepReady_task9 | StepReady_task13 | StepReady_task14 | StepReady_task15 | StepReady_task16);
+
+formula ActiveReadyPending_sequence1 = ReadyPending_sequence1;
+formula ActiveReadyPending_sequence2 = ReadyPending_sequence2 & !ReadyPending_sequence1;
+formula ActiveReadyPending_task3 = ReadyPending_task3 & !ReadyPending_sequence1 & !ReadyPending_sequence2;
+formula ActiveReadyPending_task4 = ReadyPending_task4 & !ReadyPending_sequence1 & !ReadyPending_sequence2 & !ReadyPending_task3;
+formula ActiveReadyPending_parallel5 = ReadyPending_parallel5 & !ReadyPending_sequence1 & !ReadyPending_sequence2 & !ReadyPending_task3 & !ReadyPending_task4;
+formula ActiveReadyPending_task6 = ReadyPending_task6 & !ReadyPending_sequence1 & !ReadyPending_sequence2 & !ReadyPending_task3 & !ReadyPending_task4 & !ReadyPending_parallel5;
+formula ActiveReadyPending_sequence7 = ReadyPending_sequence7 & !ReadyPending_sequence1 & !ReadyPending_sequence2 & !ReadyPending_task3 & !ReadyPending_task4 & !ReadyPending_parallel5 & !ReadyPending_task6;
+formula ActiveReadyPending_task8 = ReadyPending_task8 & !ReadyPending_sequence1 & !ReadyPending_sequence2 & !ReadyPending_task3 & !ReadyPending_task4 & !ReadyPending_parallel5 & !ReadyPending_task6 & !ReadyPending_sequence7;
+formula ActiveReadyPending_task9 = ReadyPending_task9 & !ReadyPending_sequence1 & !ReadyPending_sequence2 & !ReadyPending_task3 & !ReadyPending_task4 & !ReadyPending_parallel5 & !ReadyPending_task6 & !ReadyPending_sequence7 & !ReadyPending_task8;
+formula ActiveReadyPending_sequence10 = ReadyPending_sequence10 & !ReadyPending_sequence1 & !ReadyPending_sequence2 & !ReadyPending_task3 & !ReadyPending_task4 & !ReadyPending_parallel5 & !ReadyPending_task6 & !ReadyPending_sequence7 & !ReadyPending_task8 & !ReadyPending_task9;
+formula ActiveReadyPending_sequence11 = ReadyPending_sequence11 & !ReadyPending_sequence1 & !ReadyPending_sequence2 & !ReadyPending_task3 & !ReadyPending_task4 & !ReadyPending_parallel5 & !ReadyPending_task6 & !ReadyPending_sequence7 & !ReadyPending_task8 & !ReadyPending_task9 & !ReadyPending_sequence10;
+formula ActiveReadyPending_nature12 = ReadyPending_nature12 & !ReadyPending_sequence1 & !ReadyPending_sequence2 & !ReadyPending_task3 & !ReadyPending_task4 & !ReadyPending_parallel5 & !ReadyPending_task6 & !ReadyPending_sequence7 & !ReadyPending_task8 & !ReadyPending_task9 & !ReadyPending_sequence10 & !ReadyPending_sequence11;
+formula ActiveReadyPending_task13 = ReadyPending_task13 & !ReadyPending_sequence1 & !ReadyPending_sequence2 & !ReadyPending_task3 & !ReadyPending_task4 & !ReadyPending_parallel5 & !ReadyPending_task6 & !ReadyPending_sequence7 & !ReadyPending_task8 & !ReadyPending_task9 & !ReadyPending_sequence10 & !ReadyPending_sequence11 & !ReadyPending_nature12;
+formula ActiveReadyPending_task14 = ReadyPending_task14 & !ReadyPending_sequence1 & !ReadyPending_sequence2 & !ReadyPending_task3 & !ReadyPending_task4 & !ReadyPending_parallel5 & !ReadyPending_task6 & !ReadyPending_sequence7 & !ReadyPending_task8 & !ReadyPending_task9 & !ReadyPending_sequence10 & !ReadyPending_sequence11 & !ReadyPending_nature12 & !ReadyPending_task13;
+formula ActiveReadyPending_task15 = ReadyPending_task15 & !ReadyPending_sequence1 & !ReadyPending_sequence2 & !ReadyPending_task3 & !ReadyPending_task4 & !ReadyPending_parallel5 & !ReadyPending_task6 & !ReadyPending_sequence7 & !ReadyPending_task8 & !ReadyPending_task9 & !ReadyPending_sequence10 & !ReadyPending_sequence11 & !ReadyPending_nature12 & !ReadyPending_task13 & !ReadyPending_task14;
+formula ActiveReadyPending_task16 = ReadyPending_task16 & !ReadyPending_sequence1 & !ReadyPending_sequence2 & !ReadyPending_task3 & !ReadyPending_task4 & !ReadyPending_parallel5 & !ReadyPending_task6 & !ReadyPending_sequence7 & !ReadyPending_task8 & !ReadyPending_task9 & !ReadyPending_sequence10 & !ReadyPending_sequence11 & !ReadyPending_nature12 & !ReadyPending_task13 & !ReadyPending_task14 & !ReadyPending_task15;
+
+formula ActiveClosingPending_parallel0 = ReadyPendingCleared & ClosingPending_parallel0;
+formula ActiveClosingPending_sequence1 = ReadyPendingCleared & ClosingPending_sequence1 & !ClosingPending_parallel0;
+formula ActiveClosingPending_sequence2 = ReadyPendingCleared & ClosingPending_sequence2 & !ClosingPending_parallel0 & !ClosingPending_sequence1;
+formula ActiveClosingPending_task3 = ReadyPendingCleared & ClosingPending_task3 & !ClosingPending_parallel0 & !ClosingPending_sequence1 & !ClosingPending_sequence2;
+formula ActiveClosingPending_task4 = ReadyPendingCleared & ClosingPending_task4 & !ClosingPending_parallel0 & !ClosingPending_sequence1 & !ClosingPending_sequence2 & !ClosingPending_task3;
+formula ActiveClosingPending_parallel5 = ReadyPendingCleared & ClosingPending_parallel5 & !ClosingPending_parallel0 & !ClosingPending_sequence1 & !ClosingPending_sequence2 & !ClosingPending_task3 & !ClosingPending_task4;
+formula ActiveClosingPending_task6 = ReadyPendingCleared & ClosingPending_task6 & !ClosingPending_parallel0 & !ClosingPending_sequence1 & !ClosingPending_sequence2 & !ClosingPending_task3 & !ClosingPending_task4 & !ClosingPending_parallel5;
+formula ActiveClosingPending_sequence7 = ReadyPendingCleared & ClosingPending_sequence7 & !ClosingPending_parallel0 & !ClosingPending_sequence1 & !ClosingPending_sequence2 & !ClosingPending_task3 & !ClosingPending_task4 & !ClosingPending_parallel5 & !ClosingPending_task6;
+formula ActiveClosingPending_task8 = ReadyPendingCleared & ClosingPending_task8 & !ClosingPending_parallel0 & !ClosingPending_sequence1 & !ClosingPending_sequence2 & !ClosingPending_task3 & !ClosingPending_task4 & !ClosingPending_parallel5 & !ClosingPending_task6 & !ClosingPending_sequence7;
+formula ActiveClosingPending_task9 = ReadyPendingCleared & ClosingPending_task9 & !ClosingPending_parallel0 & !ClosingPending_sequence1 & !ClosingPending_sequence2 & !ClosingPending_task3 & !ClosingPending_task4 & !ClosingPending_parallel5 & !ClosingPending_task6 & !ClosingPending_sequence7 & !ClosingPending_task8;
+formula ActiveClosingPending_sequence10 = ReadyPendingCleared & ClosingPending_sequence10 & !ClosingPending_parallel0 & !ClosingPending_sequence1 & !ClosingPending_sequence2 & !ClosingPending_task3 & !ClosingPending_task4 & !ClosingPending_parallel5 & !ClosingPending_task6 & !ClosingPending_sequence7 & !ClosingPending_task8 & !ClosingPending_task9;
+formula ActiveClosingPending_sequence11 = ReadyPendingCleared & ClosingPending_sequence11 & !ClosingPending_parallel0 & !ClosingPending_sequence1 & !ClosingPending_sequence2 & !ClosingPending_task3 & !ClosingPending_task4 & !ClosingPending_parallel5 & !ClosingPending_task6 & !ClosingPending_sequence7 & !ClosingPending_task8 & !ClosingPending_task9 & !ClosingPending_sequence10;
+formula ActiveClosingPending_nature12 = ReadyPendingCleared & ClosingPending_nature12 & !ClosingPending_parallel0 & !ClosingPending_sequence1 & !ClosingPending_sequence2 & !ClosingPending_task3 & !ClosingPending_task4 & !ClosingPending_parallel5 & !ClosingPending_task6 & !ClosingPending_sequence7 & !ClosingPending_task8 & !ClosingPending_task9 & !ClosingPending_sequence10 & !ClosingPending_sequence11;
+formula ActiveClosingPending_task13 = ReadyPendingCleared & ClosingPending_task13 & !ClosingPending_parallel0 & !ClosingPending_sequence1 & !ClosingPending_sequence2 & !ClosingPending_task3 & !ClosingPending_task4 & !ClosingPending_parallel5 & !ClosingPending_task6 & !ClosingPending_sequence7 & !ClosingPending_task8 & !ClosingPending_task9 & !ClosingPending_sequence10 & !ClosingPending_sequence11 & !ClosingPending_nature12;
+formula ActiveClosingPending_task14 = ReadyPendingCleared & ClosingPending_task14 & !ClosingPending_parallel0 & !ClosingPending_sequence1 & !ClosingPending_sequence2 & !ClosingPending_task3 & !ClosingPending_task4 & !ClosingPending_parallel5 & !ClosingPending_task6 & !ClosingPending_sequence7 & !ClosingPending_task8 & !ClosingPending_task9 & !ClosingPending_sequence10 & !ClosingPending_sequence11 & !ClosingPending_nature12 & !ClosingPending_task13;
+formula ActiveClosingPending_task15 = ReadyPendingCleared & ClosingPending_task15 & !ClosingPending_parallel0 & !ClosingPending_sequence1 & !ClosingPending_sequence2 & !ClosingPending_task3 & !ClosingPending_task4 & !ClosingPending_parallel5 & !ClosingPending_task6 & !ClosingPending_sequence7 & !ClosingPending_task8 & !ClosingPending_task9 & !ClosingPending_sequence10 & !ClosingPending_sequence11 & !ClosingPending_nature12 & !ClosingPending_task13 & !ClosingPending_task14;
+formula ActiveClosingPending_task16 = ReadyPendingCleared & ClosingPending_task16 & !ClosingPending_parallel0 & !ClosingPending_sequence1 & !ClosingPending_sequence2 & !ClosingPending_task3 & !ClosingPending_task4 & !ClosingPending_parallel5 & !ClosingPending_task6 & !ClosingPending_sequence7 & !ClosingPending_task8 & !ClosingPending_task9 & !ClosingPending_sequence10 & !ClosingPending_sequence11 & !ClosingPending_nature12 & !ClosingPending_task13 & !ClosingPending_task14 & !ClosingPending_task15;
+
+module parallel0
+    state0 : [0..5] init 2;
+    [running_to_completed_parallel0] ActiveClosingPending_parallel0 -> (state0'=4);
+    [step] StepAvailable & (state0=0 | state0=1 | state0=5 | state0=3) -> true;
+    [step] StepAvailable & state0=2 -> (state0'=3);
+    [step] StepAvailable & state0=4 -> (state0'=5);
+endmodule
+
+module sequence1
+    state1 : [0..5] init 1;
+    [open_to_started_sequence1] ActiveReadyPending_sequence1 -> (state1'=2);
+    [running_to_completed_sequence1] ActiveClosingPending_sequence1 -> (state1'=4);
+    [step] StepAvailable & (state1=0 | state1=1 | state1=5 | state1=3) -> true;
+    [step] StepAvailable & state1=2 -> (state1'=3);
+    [step] StepAvailable & state1=4 -> (state1'=5);
+endmodule
+
+module sequence2
+    state2 : [0..5] init 1;
+    [open_to_started_sequence2] ActiveReadyPending_sequence2 -> (state2'=2);
+    [running_to_completed_sequence2] ActiveClosingPending_sequence2 -> (state2'=4);
+    [step] StepAvailable & (state2=0 | state2=1 | state2=5 | state2=3) -> true;
+    [step] StepAvailable & state2=2 -> (state2'=3);
+    [step] StepAvailable & state2=4 -> (state2'=5);
+endmodule
+
+module task3
+    state3 : [0..5] init 1;
+    step3 : [0..8] init 0;
+    [open_to_started_task3] ActiveReadyPending_task3 -> (state3'=2);
+    [step] StepAvailable & state3=2 -> (step3'=1) & (state3'=3);
+    [step] StepAvailable & state3=3 & step3<7 -> (step3'=step3+1);
+    [step] StepAvailable & state3=3 & step3=7 -> (step3'=step3+1) & (state3'=4);
+    [step] StepAvailable & state3=4 -> (state3'=5);
+    [step] StepAvailable & (state3=0 | state3=1 | state3=5) -> true;
+endmodule
+
+module task4
+    state4 : [0..5] init 1;
+    step4 : [0..1] init 0;
+    [open_to_started_task4] ActiveReadyPending_task4 -> (state4'=2);
+    [step] StepAvailable & state4=2 -> (step4'=1) & (state4'=4);
+    [step] StepAvailable & state4=4 -> (state4'=5);
+    [step] StepAvailable & (state4=0 | state4=1 | state4=5) -> true;
+endmodule
+
+module parallel5
+    state5 : [0..5] init 1;
+    [open_to_started_parallel5] ActiveReadyPending_parallel5 -> (state5'=2);
+    [running_to_completed_parallel5] ActiveClosingPending_parallel5 -> (state5'=4);
+    [step] StepAvailable & (state5=0 | state5=1 | state5=5 | state5=3) -> true;
+    [step] StepAvailable & state5=2 -> (state5'=3);
+    [step] StepAvailable & state5=4 -> (state5'=5);
+endmodule
+
+module task6
+    state6 : [0..5] init 1;
+    step6 : [0..4] init 0;
+    [open_to_started_task6] ActiveReadyPending_task6 -> (state6'=2);
+    [step] StepAvailable & state6=2 -> (step6'=1) & (state6'=3);
+    [step] StepAvailable & state6=3 & step6<3 -> (step6'=step6+1);
+    [step] StepAvailable & state6=3 & step6=3 -> (step6'=step6+1) & (state6'=4);
+    [step] StepAvailable & state6=4 -> (state6'=5);
+    [step] StepAvailable & (state6=0 | state6=1 | state6=5) -> true;
+endmodule
+
+module sequence7
+    state7 : [0..5] init 1;
+    [open_to_started_sequence7] ActiveReadyPending_sequence7 -> (state7'=2);
+    [running_to_completed_sequence7] ActiveClosingPending_sequence7 -> (state7'=4);
+    [step] StepAvailable & (state7=0 | state7=1 | state7=5 | state7=3) -> true;
+    [step] StepAvailable & state7=2 -> (state7'=3);
+    [step] StepAvailable & state7=4 -> (state7'=5);
+endmodule
+
+module task8
+    state8 : [0..5] init 1;
+    step8 : [0..7] init 0;
+    [open_to_started_task8] ActiveReadyPending_task8 -> (state8'=2);
+    [step] StepAvailable & state8=2 -> (step8'=1) & (state8'=3);
+    [step] StepAvailable & state8=3 & step8<6 -> (step8'=step8+1);
+    [step] StepAvailable & state8=3 & step8=6 -> (step8'=step8+1) & (state8'=4);
+    [step] StepAvailable & state8=4 -> (state8'=5);
+    [step] StepAvailable & (state8=0 | state8=1 | state8=5) -> true;
+endmodule
+
+module task9
+    state9 : [0..5] init 1;
+    step9 : [0..7] init 0;
+    [open_to_started_task9] ActiveReadyPending_task9 -> (state9'=2);
+    [step] StepAvailable & state9=2 -> (step9'=1) & (state9'=3);
+    [step] StepAvailable & state9=3 & step9<6 -> (step9'=step9+1);
+    [step] StepAvailable & state9=3 & step9=6 -> (step9'=step9+1) & (state9'=4);
+    [step] StepAvailable & state9=4 -> (state9'=5);
+    [step] StepAvailable & (state9=0 | state9=1 | state9=5) -> true;
+endmodule
+
+module sequence10
+    state10 : [0..5] init 1;
+    [open_to_started_sequence10] ActiveReadyPending_sequence10 -> (state10'=2);
+    [running_to_completed_sequence10] ActiveClosingPending_sequence10 -> (state10'=4);
+    [step] StepAvailable & (state10=0 | state10=1 | state10=5 | state10=3) -> true;
+    [step] StepAvailable & state10=2 -> (state10'=3);
+    [step] StepAvailable & state10=4 -> (state10'=5);
+endmodule
+
+module sequence11
+    state11 : [0..5] init 1;
+    [open_to_started_sequence11] ActiveReadyPending_sequence11 -> (state11'=2);
+    [running_to_completed_sequence11] ActiveClosingPending_sequence11 -> (state11'=4);
+    [step] StepAvailable & (state11=0 | state11=1 | state11=5 | state11=3) -> true;
+    [step] StepAvailable & state11=2 -> (state11'=3);
+    [step] StepAvailable & state11=4 -> (state11'=5);
+endmodule
+
+module nature12
+    state12 : [0..5] init 1;
+    [open_to_started_nature12] ActiveReadyPending_nature12 -> (state12'=2);
+    [running_to_completed_nature12] ActiveClosingPending_nature12 -> (state12'=4);
+    [step] StepAvailable & (state12=0 | state12=1 | state12=5 | state12=3) -> true;
+    [step] StepAvailable & state12=2 -> (state12'=3);
+    [step] StepAvailable & state12=4 -> (state12'=5);
+endmodule
+
+module task13
+    state13 : [0..5] init 1;
+    step13 : [0..5] init 0;
+    [open_to_nature_task13] ActiveReadyPending_task13 -> 0.20874507734446635:(state13'=2) + 0.7912549226555337:(state13'=0);
+    [step] StepAvailable & state13=2 -> (step13'=1) & (state13'=3);
+    [step] StepAvailable & state13=3 & step13<4 -> (step13'=step13+1);
+    [step] StepAvailable & state13=3 & step13=4 -> (step13'=step13+1) & (state13'=4);
+    [step] StepAvailable & state13=4 -> (state13'=5);
+    [step] StepAvailable & (state13=0 | state13=1 | state13=5) -> true;
+endmodule
+
+module task14
+    state14 : [0..5] init 1;
+    step14 : [0..1] init 0;
+    [open_to_started_task14] ActiveReadyPending_task14 & state13=0 -> (state14'=2);
+    [open_to_disabled_task14] ActiveReadyPending_task14 & state13=2 -> (state14'=0);
+    [step] StepAvailable & state14=2 -> (step14'=1) & (state14'=4);
+    [step] StepAvailable & state14=4 -> (state14'=5);
+    [step] StepAvailable & (state14=0 | state14=1 | state14=5) -> true;
+endmodule
+
+module task15
+    state15 : [0..5] init 1;
+    step15 : [0..9] init 0;
+    [open_to_started_task15] ActiveReadyPending_task15 -> (state15'=2);
+    [step] StepAvailable & state15=2 -> (step15'=1) & (state15'=3);
+    [step] StepAvailable & state15=3 & step15<8 -> (step15'=step15+1);
+    [step] StepAvailable & state15=3 & step15=8 -> (step15'=step15+1) & (state15'=4);
+    [step] StepAvailable & state15=4 -> (state15'=5);
+    [step] StepAvailable & (state15=0 | state15=1 | state15=5) -> true;
+endmodule
+
+module task16
+    state16 : [0..5] init 1;
+    step16 : [0..8] init 0;
+    [open_to_started_task16] ActiveReadyPending_task16 -> (state16'=2);
+    [step] StepAvailable & state16=2 -> (step16'=1) & (state16'=3);
+    [step] StepAvailable & state16=3 & step16<7 -> (step16'=step16+1);
+    [step] StepAvailable & state16=3 & step16=7 -> (step16'=step16+1) & (state16'=4);
+    [step] StepAvailable & state16=4 -> (state16'=5);
+    [step] StepAvailable & (state16=0 | state16=1 | state16=5) -> true;
+endmodule
+
+
+// Labels for formulas
+label "ClosingPending_parallel0" = state0=3 & (state1=4 | state1=5) & (state10=4 | state10=5);
+label "ClosingPending_sequence1" = state1=3 & (state5=4 | state5=5);
+label "ClosingPending_sequence2" = state2=3 & (state4=4 | state4=5);
+label "ClosingPending_task3" = state3=3 & step3=8;
+label "ClosingPending_task4" = state4=3 & step4=1;
+label "ClosingPending_parallel5" = state5=3 & (state6=4 | state6=5) & (state7=4 | state7=5);
+label "ClosingPending_task6" = state6=3 & step6=4;
+label "ClosingPending_sequence7" = state7=3 & (state9=4 | state9=5);
+label "ClosingPending_task8" = state8=3 & step8=7;
+label "ClosingPending_task9" = state9=3 & step9=7;
+label "ClosingPending_sequence10" = state10=3 & (state16=4 | state16=5);
+label "ClosingPending_sequence11" = state11=3 & (state15=4 | state15=5);
+label "ClosingPending_nature12" = state12=3 & ((state13=4 | state13=5) | (state14=4 | state14=5));
+label "ClosingPending_task13" = state13=3 & step13=5;
+label "ClosingPending_task14" = state14=3 & step14=1;
+label "ClosingPending_task15" = state15=3 & step15=9;
+label "ClosingPending_task16" = state16=3 & step16=8;
+
+label "ReadyPending_sequence1" = state1=1 & (state0=2 | state0=3);
+label "ReadyPending_sequence2" = state2=1 & state1=2;
+label "ReadyPending_task3" = state3=1 & state2=2;
+label "ReadyPending_task4" = state4=1 & (state2=2 | state2=3) & (state3=4 | state3=5);
+label "ReadyPending_parallel5" = state5=1 & (state1=2 | state1=3) & (state2=4 | state2=5);
+label "ReadyPending_task6" = state6=1 & (state5=2 | state5=3);
+label "ReadyPending_sequence7" = state7=1 & (state5=2 | state5=3);
+label "ReadyPending_task8" = state8=1 & state7=2;
+label "ReadyPending_task9" = state9=1 & (state7=2 | state7=3) & (state8=4 | state8=5);
+label "ReadyPending_sequence10" = state10=1 & (state0=2 | state0=3);
+label "ReadyPending_sequence11" = state11=1 & state10=2;
+label "ReadyPending_nature12" = state12=1 & state11=2;
+label "ReadyPending_task13" = state13=1 & (state12=2 | state12=3);
+label "ReadyPending_task14" = state14=1 & (state12=2 | state12=3) & (state13=0 | state13=2);
+label "ReadyPending_task15" = state15=1 & (state11=2 | state11=3) & (state12=4 | state12=5);
+label "ReadyPending_task16" = state16=1 & (state10=2 | state10=3) & (state11=4 | state11=5);
+
+label "ReadyPendingCleared" = !ReadyPending_sequence1 & !ReadyPending_sequence2 & !ReadyPending_task3 & !ReadyPending_task4 & !ReadyPending_parallel5 & !ReadyPending_task6 & !ReadyPending_sequence7 & !ReadyPending_task8 & !ReadyPending_task9 & !ReadyPending_sequence10 & !ReadyPending_sequence11 & !ReadyPending_nature12 & !ReadyPending_task13 & !ReadyPending_task14 & !ReadyPending_task15 & !ReadyPending_task16;
+label "ClosingPendingCleared" = !ClosingPending_parallel0 & !ClosingPending_sequence1 & !ClosingPending_sequence2 & !ClosingPending_task3 & !ClosingPending_task4 & !ClosingPending_parallel5 & !ClosingPending_task6 & !ClosingPending_sequence7 & !ClosingPending_task8 & !ClosingPending_task9 & !ClosingPending_sequence10 & !ClosingPending_sequence11 & !ClosingPending_nature12 & !ClosingPending_task13 & !ClosingPending_task14 & !ClosingPending_task15 & !ClosingPending_task16;
+
+label "StepReady_task3" = (state3=2 | state3=3) & step3 < 8;
+label "StepReady_task4" = (state4=2 | state4=3) & step4 < 1;
+label "StepReady_task6" = (state6=2 | state6=3) & step6 < 4;
+label "StepReady_task8" = (state8=2 | state8=3) & step8 < 7;
+label "StepReady_task9" = (state9=2 | state9=3) & step9 < 7;
+label "StepReady_task13" = (state13=2 | state13=3) & step13 < 5;
+label "StepReady_task14" = (state14=2 | state14=3) & step14 < 1;
+label "StepReady_task15" = (state15=2 | state15=3) & step15 < 9;
+label "StepReady_task16" = (state16=2 | state16=3) & step16 < 8;
+
+label "StepAvailable" = ReadyPendingCleared & ClosingPendingCleared & (StepReady_task3 | StepReady_task4 | StepReady_task6 | StepReady_task8 | StepReady_task9 | StepReady_task13 | StepReady_task14 | StepReady_task15 | StepReady_task16);
+
+label "ActiveReadyPending_sequence1" = ReadyPending_sequence1;
+label "ActiveReadyPending_sequence2" = ReadyPending_sequence2 & !ReadyPending_sequence1;
+label "ActiveReadyPending_task3" = ReadyPending_task3 & !ReadyPending_sequence1 & !ReadyPending_sequence2;
+label "ActiveReadyPending_task4" = ReadyPending_task4 & !ReadyPending_sequence1 & !ReadyPending_sequence2 & !ReadyPending_task3;
+label "ActiveReadyPending_parallel5" = ReadyPending_parallel5 & !ReadyPending_sequence1 & !ReadyPending_sequence2 & !ReadyPending_task3 & !ReadyPending_task4;
+label "ActiveReadyPending_task6" = ReadyPending_task6 & !ReadyPending_sequence1 & !ReadyPending_sequence2 & !ReadyPending_task3 & !ReadyPending_task4 & !ReadyPending_parallel5;
+label "ActiveReadyPending_sequence7" = ReadyPending_sequence7 & !ReadyPending_sequence1 & !ReadyPending_sequence2 & !ReadyPending_task3 & !ReadyPending_task4 & !ReadyPending_parallel5 & !ReadyPending_task6;
+label "ActiveReadyPending_task8" = ReadyPending_task8 & !ReadyPending_sequence1 & !ReadyPending_sequence2 & !ReadyPending_task3 & !ReadyPending_task4 & !ReadyPending_parallel5 & !ReadyPending_task6 & !ReadyPending_sequence7;
+label "ActiveReadyPending_task9" = ReadyPending_task9 & !ReadyPending_sequence1 & !ReadyPending_sequence2 & !ReadyPending_task3 & !ReadyPending_task4 & !ReadyPending_parallel5 & !ReadyPending_task6 & !ReadyPending_sequence7 & !ReadyPending_task8;
+label "ActiveReadyPending_sequence10" = ReadyPending_sequence10 & !ReadyPending_sequence1 & !ReadyPending_sequence2 & !ReadyPending_task3 & !ReadyPending_task4 & !ReadyPending_parallel5 & !ReadyPending_task6 & !ReadyPending_sequence7 & !ReadyPending_task8 & !ReadyPending_task9;
+label "ActiveReadyPending_sequence11" = ReadyPending_sequence11 & !ReadyPending_sequence1 & !ReadyPending_sequence2 & !ReadyPending_task3 & !ReadyPending_task4 & !ReadyPending_parallel5 & !ReadyPending_task6 & !ReadyPending_sequence7 & !ReadyPending_task8 & !ReadyPending_task9 & !ReadyPending_sequence10;
+label "ActiveReadyPending_nature12" = ReadyPending_nature12 & !ReadyPending_sequence1 & !ReadyPending_sequence2 & !ReadyPending_task3 & !ReadyPending_task4 & !ReadyPending_parallel5 & !ReadyPending_task6 & !ReadyPending_sequence7 & !ReadyPending_task8 & !ReadyPending_task9 & !ReadyPending_sequence10 & !ReadyPending_sequence11;
+label "ActiveReadyPending_task13" = ReadyPending_task13 & !ReadyPending_sequence1 & !ReadyPending_sequence2 & !ReadyPending_task3 & !ReadyPending_task4 & !ReadyPending_parallel5 & !ReadyPending_task6 & !ReadyPending_sequence7 & !ReadyPending_task8 & !ReadyPending_task9 & !ReadyPending_sequence10 & !ReadyPending_sequence11 & !ReadyPending_nature12;
+label "ActiveReadyPending_task14" = ReadyPending_task14 & !ReadyPending_sequence1 & !ReadyPending_sequence2 & !ReadyPending_task3 & !ReadyPending_task4 & !ReadyPending_parallel5 & !ReadyPending_task6 & !ReadyPending_sequence7 & !ReadyPending_task8 & !ReadyPending_task9 & !ReadyPending_sequence10 & !ReadyPending_sequence11 & !ReadyPending_nature12 & !ReadyPending_task13;
+label "ActiveReadyPending_task15" = ReadyPending_task15 & !ReadyPending_sequence1 & !ReadyPending_sequence2 & !ReadyPending_task3 & !ReadyPending_task4 & !ReadyPending_parallel5 & !ReadyPending_task6 & !ReadyPending_sequence7 & !ReadyPending_task8 & !ReadyPending_task9 & !ReadyPending_sequence10 & !ReadyPending_sequence11 & !ReadyPending_nature12 & !ReadyPending_task13 & !ReadyPending_task14;
+label "ActiveReadyPending_task16" = ReadyPending_task16 & !ReadyPending_sequence1 & !ReadyPending_sequence2 & !ReadyPending_task3 & !ReadyPending_task4 & !ReadyPending_parallel5 & !ReadyPending_task6 & !ReadyPending_sequence7 & !ReadyPending_task8 & !ReadyPending_task9 & !ReadyPending_sequence10 & !ReadyPending_sequence11 & !ReadyPending_nature12 & !ReadyPending_task13 & !ReadyPending_task14 & !ReadyPending_task15;
+
+label "ActiveClosingPending_parallel0" = ReadyPendingCleared & ClosingPending_parallel0;
+label "ActiveClosingPending_sequence1" = ReadyPendingCleared & ClosingPending_sequence1 & !ClosingPending_parallel0;
+label "ActiveClosingPending_sequence2" = ReadyPendingCleared & ClosingPending_sequence2 & !ClosingPending_parallel0 & !ClosingPending_sequence1;
+label "ActiveClosingPending_task3" = ReadyPendingCleared & ClosingPending_task3 & !ClosingPending_parallel0 & !ClosingPending_sequence1 & !ClosingPending_sequence2;
+label "ActiveClosingPending_task4" = ReadyPendingCleared & ClosingPending_task4 & !ClosingPending_parallel0 & !ClosingPending_sequence1 & !ClosingPending_sequence2 & !ClosingPending_task3;
+label "ActiveClosingPending_parallel5" = ReadyPendingCleared & ClosingPending_parallel5 & !ClosingPending_parallel0 & !ClosingPending_sequence1 & !ClosingPending_sequence2 & !ClosingPending_task3 & !ClosingPending_task4;
+label "ActiveClosingPending_task6" = ReadyPendingCleared & ClosingPending_task6 & !ClosingPending_parallel0 & !ClosingPending_sequence1 & !ClosingPending_sequence2 & !ClosingPending_task3 & !ClosingPending_task4 & !ClosingPending_parallel5;
+label "ActiveClosingPending_sequence7" = ReadyPendingCleared & ClosingPending_sequence7 & !ClosingPending_parallel0 & !ClosingPending_sequence1 & !ClosingPending_sequence2 & !ClosingPending_task3 & !ClosingPending_task4 & !ClosingPending_parallel5 & !ClosingPending_task6;
+label "ActiveClosingPending_task8" = ReadyPendingCleared & ClosingPending_task8 & !ClosingPending_parallel0 & !ClosingPending_sequence1 & !ClosingPending_sequence2 & !ClosingPending_task3 & !ClosingPending_task4 & !ClosingPending_parallel5 & !ClosingPending_task6 & !ClosingPending_sequence7;
+label "ActiveClosingPending_task9" = ReadyPendingCleared & ClosingPending_task9 & !ClosingPending_parallel0 & !ClosingPending_sequence1 & !ClosingPending_sequence2 & !ClosingPending_task3 & !ClosingPending_task4 & !ClosingPending_parallel5 & !ClosingPending_task6 & !ClosingPending_sequence7 & !ClosingPending_task8;
+label "ActiveClosingPending_sequence10" = ReadyPendingCleared & ClosingPending_sequence10 & !ClosingPending_parallel0 & !ClosingPending_sequence1 & !ClosingPending_sequence2 & !ClosingPending_task3 & !ClosingPending_task4 & !ClosingPending_parallel5 & !ClosingPending_task6 & !ClosingPending_sequence7 & !ClosingPending_task8 & !ClosingPending_task9;
+label "ActiveClosingPending_sequence11" = ReadyPendingCleared & ClosingPending_sequence11 & !ClosingPending_parallel0 & !ClosingPending_sequence1 & !ClosingPending_sequence2 & !ClosingPending_task3 & !ClosingPending_task4 & !ClosingPending_parallel5 & !ClosingPending_task6 & !ClosingPending_sequence7 & !ClosingPending_task8 & !ClosingPending_task9 & !ClosingPending_sequence10;
+label "ActiveClosingPending_nature12" = ReadyPendingCleared & ClosingPending_nature12 & !ClosingPending_parallel0 & !ClosingPending_sequence1 & !ClosingPending_sequence2 & !ClosingPending_task3 & !ClosingPending_task4 & !ClosingPending_parallel5 & !ClosingPending_task6 & !ClosingPending_sequence7 & !ClosingPending_task8 & !ClosingPending_task9 & !ClosingPending_sequence10 & !ClosingPending_sequence11;
+label "ActiveClosingPending_task13" = ReadyPendingCleared & ClosingPending_task13 & !ClosingPending_parallel0 & !ClosingPending_sequence1 & !ClosingPending_sequence2 & !ClosingPending_task3 & !ClosingPending_task4 & !ClosingPending_parallel5 & !ClosingPending_task6 & !ClosingPending_sequence7 & !ClosingPending_task8 & !ClosingPending_task9 & !ClosingPending_sequence10 & !ClosingPending_sequence11 & !ClosingPending_nature12;
+label "ActiveClosingPending_task14" = ReadyPendingCleared & ClosingPending_task14 & !ClosingPending_parallel0 & !ClosingPending_sequence1 & !ClosingPending_sequence2 & !ClosingPending_task3 & !ClosingPending_task4 & !ClosingPending_parallel5 & !ClosingPending_task6 & !ClosingPending_sequence7 & !ClosingPending_task8 & !ClosingPending_task9 & !ClosingPending_sequence10 & !ClosingPending_sequence11 & !ClosingPending_nature12 & !ClosingPending_task13;
+label "ActiveClosingPending_task15" = ReadyPendingCleared & ClosingPending_task15 & !ClosingPending_parallel0 & !ClosingPending_sequence1 & !ClosingPending_sequence2 & !ClosingPending_task3 & !ClosingPending_task4 & !ClosingPending_parallel5 & !ClosingPending_task6 & !ClosingPending_sequence7 & !ClosingPending_task8 & !ClosingPending_task9 & !ClosingPending_sequence10 & !ClosingPending_sequence11 & !ClosingPending_nature12 & !ClosingPending_task13 & !ClosingPending_task14;
+label "ActiveClosingPending_task16" = ReadyPendingCleared & ClosingPending_task16 & !ClosingPending_parallel0 & !ClosingPending_sequence1 & !ClosingPending_sequence2 & !ClosingPending_task3 & !ClosingPending_task4 & !ClosingPending_parallel5 & !ClosingPending_task6 & !ClosingPending_sequence7 & !ClosingPending_task8 & !ClosingPending_task9 & !ClosingPending_sequence10 & !ClosingPending_sequence11 & !ClosingPending_nature12 & !ClosingPending_task13 & !ClosingPending_task14 & !ClosingPending_task15;
+
+rewards "impact_1"
+    [running_to_completed_parallel0] state3!=0 & state3!=1 : 0.07782981756122748;
+    [running_to_completed_parallel0] state4!=0 & state4!=1 : 0.028854375736701788;
+    [running_to_completed_parallel0] state6!=0 & state6!=1 : 0.08529702640727252;
+    [running_to_completed_parallel0] state8!=0 & state8!=1 : 0.042224541208959764;
+    [running_to_completed_parallel0] state9!=0 & state9!=1 : 0.05762294309228572;
+    [running_to_completed_parallel0] state13!=0 & state13!=1 : 0.06586053427939484;
+    [running_to_completed_parallel0] state14!=0 & state14!=1 : 0.07499378758546676;
+    [running_to_completed_parallel0] state15!=0 & state15!=1 : 0.0680804903476456;
+    [running_to_completed_parallel0] state16!=0 & state16!=1 : 0.059124842916624364;
+endrewards

@@ -1,0 +1,9 @@
+action step state0 state1 step1 state2 step2
+- 0 2 1 0 1 0
+[open_to_started_task1] 1 2 2 0 1 0
+[open_to_started_task2] 2 2 2 0 2 0
+[step] 3 3 3 1 3 1
+[step] 4 3 3 2 3 2
+[step] 5 3 4 3 3 3
+[step] 6 3 5 3 4 4
+[running_to_completed_parallel0] 7 4 5 3 4 4
