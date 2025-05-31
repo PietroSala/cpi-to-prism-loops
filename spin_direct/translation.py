@@ -63,17 +63,61 @@ class SPINtoPRISM:
         """Generate PRISM global variables for places"""
         lines = ["// Global variables for places"]
         
+        # Manager stage variable first
+        lines.append("global STAGE : [0..5] init 0;")
+        lines.append("")
+        
+        # All place_value variables
+        lines.append("// Place value variables")
         for place_name in self.get_sorted_places():
             place = self.places[place_name]
             init_value = 0 if place.is_initial else -1
             lines.append(f"global {place_name}_value : [-1..{place.duration}] init {init_value};")
+        
+        lines.append("")
+        
+        # All place_updated variables
+        lines.append("// Place updated variables")
+        for place_name in self.get_sorted_places():
             lines.append(f"global {place_name}_updated : [0..1] init 0;")
             
-        # Manager stage variable
-        lines.append("global STAGE : [0..5] init 0;")
+        return "\n".join(lines)
+    
+    def generate_reward_structures(self) -> str:
+        """Generate PRISM reward structures for impacts"""
+        lines = []
+        impact_dims = self.get_impact_dimensions()
+        
+        if impact_dims == 0:
+            return ""
+        
+        # Create reward structure for each impact dimension
+        for i in range(impact_dims):
+            lines.append(f'rewards "impact_{i}"')
+            
+            # Add rewards for each task transition that has impacts
+            for transition in self.transitions:
+                if (transition.type == TransitionType.TASK and 
+                    transition.impact_vector and 
+                    i < len(transition.impact_vector) and 
+                    transition.impact_vector[i] != 0):
+                    
+                    # Reward is given when the task fires (using action label)
+                    lines.append(f'  [fire_{transition.name}] true : {transition.impact_vector[i]};')
+            
+            lines.append("endrewards")
+            lines.append("")
         
         return "\n".join(lines)
-        
+
+    def get_impact_dimensions(self) -> int:
+        """Get the number of impact dimensions from transitions"""
+        max_dims = 0
+        for transition in self.transitions:
+            if transition.impact_vector:
+                max_dims = max(max_dims, len(transition.impact_vector))
+        return max_dims
+
     def generate_manager_module(self) -> str:
         """Generate the manager module"""
         lines = ["module manager"]
@@ -114,7 +158,7 @@ class SPINtoPRISM:
         
         lines.append("endmodule")
         return "\n".join(lines)
-        
+    
     def generate_transition_modules(self) -> str:
         """Generate modules for transitions"""
         lines = []
@@ -134,18 +178,23 @@ class SPINtoPRISM:
             
             all_duration_met = " & ".join(duration_conditions)
             
-            # Rule 1: All incoming places have met their duration -> activate (state = 1)
-            lines.append(f"  [] STAGE=0 & psi_idle_{transition.name} & ({all_duration_met}) -> ({transition.name}_state'=1);")
+            # Rule 1: LABEL HERE for TASK transitions (decision to fire)
+            if transition.type == TransitionType.TASK:
+                action_label = f"[fire_{transition.name}]"
+            else:
+                action_label = "[]"
             
-            # Rule 2: At least one incoming place has not met duration -> deactivate (state = -1)  
+            lines.append(f"  {action_label} STAGE=0 & psi_idle_{transition.name} & ({all_duration_met}) -> ({transition.name}_state'=1);")
+            
+            # Rule 2: NO LABEL - just deactivation  
             lines.append(f"  [] STAGE=0 & psi_idle_{transition.name} & !({all_duration_met}) -> ({transition.name}_state'=-1);")
             
             if transition.type != TransitionType.NATURE:
-                # Non-nature transitions (Stage 4)
+                # Non-nature transitions (Stage 4) - NO LABELS, just mechanical execution
                 lines.append(f"  // Stage 4: Non-nature transition firing")
                 lines.append(f"  [] STAGE=4 & psi_first_but_nature_not_idle_{transition.name} & {transition.name}_state=-1 -> ({transition.name}_state'=0);")
                 
-                # Fire transition based on type
+                # Fire transition based on type - NO LABELS (mechanical execution)
                 if transition.type == TransitionType.SINGLE or transition.type == TransitionType.TASK:
                     p_in = transition.input_places[0]
                     p_out = transition.output_places[0]
@@ -168,11 +217,11 @@ class SPINtoPRISM:
                     lines.append(f"  [] STAGE=4 & psi_first_but_nature_not_idle_{transition.name} & {transition.name}_state=1 -> ({transition.name}_state'=0) & ({p_in}_value'=-1) & ({p_false}_value'=0);")
                     
             else:
-                # Nature transitions (Stage 5)
+                # Nature transitions (Stage 5) - NO LABELS
                 lines.append(f"  // Stage 5: Nature transition firing")
                 lines.append(f"  [] STAGE=5 & psi_first_nature_not_idle_{transition.name} & {transition.name}_state=-1 -> ({transition.name}_state'=0);")
                 
-                # Fire nature transition with probability
+                # Fire nature transition with probability - NO LABEL
                 p_in = transition.input_places[0]
                 p_true, p_false = transition.output_places
                 prob = transition.probability
@@ -344,7 +393,9 @@ class SPINtoPRISM:
             "",
             self.generate_manager_module(),
             "",
-            self.generate_transition_modules()
+            self.generate_transition_modules(),
+            "",
+            self.generate_reward_structures() 
         ]
         return "\n".join(sections)
         
