@@ -129,8 +129,8 @@ class SPINtoPRISM:
         lines.append("  // Stage 0 -> 2: Terminated")
         lines.append("  [] STAGE=0 & !psi_step & psi_noone_idle & !psi_atleastone_active -> (STAGE'=2);")
         
-        lines.append("  // Stage 0 -> 4: Fire transitions")
-        lines.append("  [] STAGE=0 & !psi_step & psi_atleastone_active -> (STAGE'=4);")
+        lines.append("  // Stage 0 -> 4: Fire transitions (FIXED: added psi_noone_idle)")
+        lines.append("  [] STAGE=0 & !psi_step & psi_noone_idle & psi_atleastone_active -> (STAGE'=4);")
         
         # Stage 3: Update places
         for place_name in self.get_sorted_places():
@@ -279,9 +279,14 @@ class SPINtoPRISM:
         all_not_updated = [f"{p}_updated=0" for p in self.get_sorted_places()]
         lines.append(f"formula psi_all_step_not_updated = {' & '.join(all_not_updated)};")
         
-        # Generate psi_idle formulas for ALL transitions
-        for transition in self.get_sorted_transitions():
-            lines.append(f"formula psi_idle_{transition.name} = !psi_step & {transition.name}_state=0;")
+        # FIXED: Generate psi_idle formulas with proper ordering (psi_first_idle pattern)
+        all_transitions = self.get_sorted_transitions()
+        for i, transition in enumerate(all_transitions):
+            if i == 0:
+                lines.append(f"formula psi_idle_{transition.name} = !psi_step & {transition.name}_state=0;")
+            else:
+                prev_conditions = [f"{t.name}_state!=0" for t in all_transitions[:i]]
+                lines.append(f"formula psi_idle_{transition.name} = !psi_step & {transition.name}_state=0 & {' & '.join(prev_conditions)};")
         
         # Transition ordering formulas
         non_nature_transitions = [t for t in self.get_sorted_transitions() if t.type != TransitionType.NATURE]
