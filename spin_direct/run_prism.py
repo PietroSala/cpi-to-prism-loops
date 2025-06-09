@@ -1,12 +1,12 @@
-import datetime
+from datetime import datetime
 import json
 import os
 import re
 import subprocess
-from env import PRISM_PATH
 
 
-def run_prism_analysis(process_name):
+
+def run_prism_analysis(process_name, PRISM_PATH = ''):
 	"""
 	Runs PRISM analysis on a model file and saves results.
 
@@ -17,12 +17,14 @@ def run_prism_analysis(process_name):
 		dict: Analysis information including modules, variables, and timing
 	"""
 	# Define paths
-
 	model_path = os.path.join("../models", f"{process_name}.nm")
 	dot_path = os.path.join("../models", f"{process_name}.dot")
 	info_path = os.path.join("../models", f"{process_name}.info")
 	cpi_path = os.path.join("../CPIs", f"{process_name}.cpi")
-
+    os.makedirs(os.path.join("../results/"), exist_ok=True)
+	states_path = os.path.join("../results", f"{process_name}/{process_name}_states.csv")
+	trans_path = os.path.join("../results", f"{process_name}/{process_name}_trans.csv")    
+	os.makedirs(os.path.join("../results/", f"{process_name}"), exist_ok=True)
 	# Read CPI file to get task impacts
 	with open(cpi_path, 'r') as f:
 		cpi_data = json.load(f)
@@ -47,6 +49,12 @@ def run_prism_analysis(process_name):
 		os.path.abspath(model_path),
 		"-exporttransdotstates",
 		os.path.abspath(dot_path),
+		"-exportstates",
+		os.path.abspath(states_path),
+		"-exportrows",
+		"-exporttrans",
+		os.path.abspath(trans_path),
+		"-exportrows",
 		"-verbose"
 	]
 	print(f"Running PRISM command: {' '.join(cmd)}")

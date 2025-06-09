@@ -152,9 +152,13 @@ class SPINtoPRISM:
         
         # Stage 4 -> 5: All non-nature transitions processed
         lines.append("  [] STAGE=4 & psi_all_idle_but_nature -> (STAGE'=5);")
-        
-        # Stage 5 -> 0: All nature transitions processed
-        lines.append("  [] STAGE=5 & psi_all_idle_nature -> (STAGE'=0);")
+        natures_exists = False
+        for transition in self.transitions:
+            if transition.type == TransitionType.NATURE:
+                natures_exists = True
+        if natures_exists:
+            # Stage 5 -> 0: All nature transitions processed
+            lines.append("  [] STAGE=5 & psi_all_idle_nature -> (STAGE'=0);")
         
         lines.append("endmodule")
         return "\n".join(lines)
