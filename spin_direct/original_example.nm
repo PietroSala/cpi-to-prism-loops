@@ -1,0 +1,557 @@
+// Global variables for places
+global STAGE : [0..5] init 0;
+
+// Place value variables
+global after_cut_value : [-1..1] init -1;
+global bending_value : [-1..2] init -1;
+global cutting_value : [-1..2] init -1;
+global depos_done_value : [-1..1] init -1;
+global end_value : [-1..1] init -1;
+global fine_depos_value : [-1..1] init -1;
+global heavy_polish_value : [-1..2] init -1;
+global hphs_paint_value : [-1..2] init -1;
+global light_polish_value : [-1..1] init -1;
+global lpls_paint_value : [-1..3] init -1;
+global milling_value : [-1..3] init -1;
+global polish_done_value : [-1..1] init -1;
+global ready_paint_value : [-1..1] init -1;
+global rough_depos_value : [-1..1] init -1;
+global start_value : [-1..1] init 0;
+
+// Place updated variables
+global after_cut_updated : [0..1] init 0;
+global bending_updated : [0..1] init 0;
+global cutting_updated : [0..1] init 0;
+global depos_done_updated : [0..1] init 0;
+global end_updated : [0..1] init 0;
+global fine_depos_updated : [0..1] init 0;
+global heavy_polish_updated : [0..1] init 0;
+global hphs_paint_updated : [0..1] init 0;
+global light_polish_updated : [0..1] init 0;
+global lpls_paint_updated : [0..1] init 0;
+global milling_updated : [0..1] init 0;
+global polish_done_updated : [0..1] init 0;
+global ready_paint_updated : [0..1] init 0;
+global rough_depos_updated : [0..1] init 0;
+global start_updated : [0..1] init 0;
+
+// Formulas
+formula is_active_t_cut_done = (cutting_value >= 2);
+formula is_active_t_cutting = (start_value >= 1);
+formula is_active_t_depos_choice = (milling_value >= 3);
+formula is_active_t_fine_dep = (fine_depos_value >= 1);
+formula is_active_t_heavy_pol = (heavy_polish_value >= 2);
+formula is_active_t_hphs = (hphs_paint_value >= 2);
+formula is_active_t_light_pol = (light_polish_value >= 1);
+formula is_active_t_lpls = (lpls_paint_value >= 3);
+formula is_active_t_paint_choice = (ready_paint_value >= 1);
+formula is_active_t_parallel_merge = (polish_done_value >= 1) & (depos_done_value >= 1);
+formula is_active_t_parallel_split = (after_cut_value >= 1);
+formula is_active_t_quality_check = (bending_value >= 2);
+formula is_active_t_rough_dep = (rough_depos_value >= 1);
+formula psi_at_least_one_remaining_duration = (after_cut_value >= 0 & after_cut_value < 1) | (bending_value >= 0 & bending_value < 2) | (cutting_value >= 0 & cutting_value < 2) | (depos_done_value >= 0 & depos_done_value < 1) | (end_value >= 0 & end_value < 1) | (fine_depos_value >= 0 & fine_depos_value < 1) | (heavy_polish_value >= 0 & heavy_polish_value < 2) | (hphs_paint_value >= 0 & hphs_paint_value < 2) | (light_polish_value >= 0 & light_polish_value < 1) | (lpls_paint_value >= 0 & lpls_paint_value < 3) | (milling_value >= 0 & milling_value < 3) | (polish_done_value >= 0 & polish_done_value < 1) | (ready_paint_value >= 0 & ready_paint_value < 1) | (rough_depos_value >= 0 & rough_depos_value < 1) | (start_value >= 0 & start_value < 1);
+formula psi_step = (!is_active_t_cut_done & !is_active_t_cutting & !is_active_t_depos_choice & !is_active_t_fine_dep & !is_active_t_heavy_pol & !is_active_t_hphs & !is_active_t_light_pol & !is_active_t_lpls & !is_active_t_paint_choice & !is_active_t_parallel_merge & !is_active_t_parallel_split & !is_active_t_quality_check & !is_active_t_rough_dep) & psi_at_least_one_remaining_duration;
+formula step_updated_after_cut = after_cut_updated=0;
+formula step_updated_bending = bending_updated=0 & after_cut_updated=1;
+formula step_updated_cutting = cutting_updated=0 & after_cut_updated=1 & bending_updated=1;
+formula step_updated_depos_done = depos_done_updated=0 & after_cut_updated=1 & bending_updated=1 & cutting_updated=1;
+formula step_updated_end = end_updated=0 & after_cut_updated=1 & bending_updated=1 & cutting_updated=1 & depos_done_updated=1;
+formula step_updated_fine_depos = fine_depos_updated=0 & after_cut_updated=1 & bending_updated=1 & cutting_updated=1 & depos_done_updated=1 & end_updated=1;
+formula step_updated_heavy_polish = heavy_polish_updated=0 & after_cut_updated=1 & bending_updated=1 & cutting_updated=1 & depos_done_updated=1 & end_updated=1 & fine_depos_updated=1;
+formula step_updated_hphs_paint = hphs_paint_updated=0 & after_cut_updated=1 & bending_updated=1 & cutting_updated=1 & depos_done_updated=1 & end_updated=1 & fine_depos_updated=1 & heavy_polish_updated=1;
+formula step_updated_light_polish = light_polish_updated=0 & after_cut_updated=1 & bending_updated=1 & cutting_updated=1 & depos_done_updated=1 & end_updated=1 & fine_depos_updated=1 & heavy_polish_updated=1 & hphs_paint_updated=1;
+formula step_updated_lpls_paint = lpls_paint_updated=0 & after_cut_updated=1 & bending_updated=1 & cutting_updated=1 & depos_done_updated=1 & end_updated=1 & fine_depos_updated=1 & heavy_polish_updated=1 & hphs_paint_updated=1 & light_polish_updated=1;
+formula step_updated_milling = milling_updated=0 & after_cut_updated=1 & bending_updated=1 & cutting_updated=1 & depos_done_updated=1 & end_updated=1 & fine_depos_updated=1 & heavy_polish_updated=1 & hphs_paint_updated=1 & light_polish_updated=1 & lpls_paint_updated=1;
+formula step_updated_polish_done = polish_done_updated=0 & after_cut_updated=1 & bending_updated=1 & cutting_updated=1 & depos_done_updated=1 & end_updated=1 & fine_depos_updated=1 & heavy_polish_updated=1 & hphs_paint_updated=1 & light_polish_updated=1 & lpls_paint_updated=1 & milling_updated=1;
+formula step_updated_ready_paint = ready_paint_updated=0 & after_cut_updated=1 & bending_updated=1 & cutting_updated=1 & depos_done_updated=1 & end_updated=1 & fine_depos_updated=1 & heavy_polish_updated=1 & hphs_paint_updated=1 & light_polish_updated=1 & lpls_paint_updated=1 & milling_updated=1 & polish_done_updated=1;
+formula step_updated_rough_depos = rough_depos_updated=0 & after_cut_updated=1 & bending_updated=1 & cutting_updated=1 & depos_done_updated=1 & end_updated=1 & fine_depos_updated=1 & heavy_polish_updated=1 & hphs_paint_updated=1 & light_polish_updated=1 & lpls_paint_updated=1 & milling_updated=1 & polish_done_updated=1 & ready_paint_updated=1;
+formula step_updated_start = start_updated=0 & after_cut_updated=1 & bending_updated=1 & cutting_updated=1 & depos_done_updated=1 & end_updated=1 & fine_depos_updated=1 & heavy_polish_updated=1 & hphs_paint_updated=1 & light_polish_updated=1 & lpls_paint_updated=1 & milling_updated=1 & polish_done_updated=1 & ready_paint_updated=1 & rough_depos_updated=1;
+formula psi_all_step_updated = after_cut_updated=1 & bending_updated=1 & cutting_updated=1 & depos_done_updated=1 & end_updated=1 & fine_depos_updated=1 & heavy_polish_updated=1 & hphs_paint_updated=1 & light_polish_updated=1 & lpls_paint_updated=1 & milling_updated=1 & polish_done_updated=1 & ready_paint_updated=1 & rough_depos_updated=1 & start_updated=1;
+formula step_not_updated_after_cut = after_cut_updated=1;
+formula step_not_updated_bending = bending_updated=1 & after_cut_updated=0;
+formula step_not_updated_cutting = cutting_updated=1 & after_cut_updated=0 & bending_updated=0;
+formula step_not_updated_depos_done = depos_done_updated=1 & after_cut_updated=0 & bending_updated=0 & cutting_updated=0;
+formula step_not_updated_end = end_updated=1 & after_cut_updated=0 & bending_updated=0 & cutting_updated=0 & depos_done_updated=0;
+formula step_not_updated_fine_depos = fine_depos_updated=1 & after_cut_updated=0 & bending_updated=0 & cutting_updated=0 & depos_done_updated=0 & end_updated=0;
+formula step_not_updated_heavy_polish = heavy_polish_updated=1 & after_cut_updated=0 & bending_updated=0 & cutting_updated=0 & depos_done_updated=0 & end_updated=0 & fine_depos_updated=0;
+formula step_not_updated_hphs_paint = hphs_paint_updated=1 & after_cut_updated=0 & bending_updated=0 & cutting_updated=0 & depos_done_updated=0 & end_updated=0 & fine_depos_updated=0 & heavy_polish_updated=0;
+formula step_not_updated_light_polish = light_polish_updated=1 & after_cut_updated=0 & bending_updated=0 & cutting_updated=0 & depos_done_updated=0 & end_updated=0 & fine_depos_updated=0 & heavy_polish_updated=0 & hphs_paint_updated=0;
+formula step_not_updated_lpls_paint = lpls_paint_updated=1 & after_cut_updated=0 & bending_updated=0 & cutting_updated=0 & depos_done_updated=0 & end_updated=0 & fine_depos_updated=0 & heavy_polish_updated=0 & hphs_paint_updated=0 & light_polish_updated=0;
+formula step_not_updated_milling = milling_updated=1 & after_cut_updated=0 & bending_updated=0 & cutting_updated=0 & depos_done_updated=0 & end_updated=0 & fine_depos_updated=0 & heavy_polish_updated=0 & hphs_paint_updated=0 & light_polish_updated=0 & lpls_paint_updated=0;
+formula step_not_updated_polish_done = polish_done_updated=1 & after_cut_updated=0 & bending_updated=0 & cutting_updated=0 & depos_done_updated=0 & end_updated=0 & fine_depos_updated=0 & heavy_polish_updated=0 & hphs_paint_updated=0 & light_polish_updated=0 & lpls_paint_updated=0 & milling_updated=0;
+formula step_not_updated_ready_paint = ready_paint_updated=1 & after_cut_updated=0 & bending_updated=0 & cutting_updated=0 & depos_done_updated=0 & end_updated=0 & fine_depos_updated=0 & heavy_polish_updated=0 & hphs_paint_updated=0 & light_polish_updated=0 & lpls_paint_updated=0 & milling_updated=0 & polish_done_updated=0;
+formula step_not_updated_rough_depos = rough_depos_updated=1 & after_cut_updated=0 & bending_updated=0 & cutting_updated=0 & depos_done_updated=0 & end_updated=0 & fine_depos_updated=0 & heavy_polish_updated=0 & hphs_paint_updated=0 & light_polish_updated=0 & lpls_paint_updated=0 & milling_updated=0 & polish_done_updated=0 & ready_paint_updated=0;
+formula step_not_updated_start = start_updated=1 & after_cut_updated=0 & bending_updated=0 & cutting_updated=0 & depos_done_updated=0 & end_updated=0 & fine_depos_updated=0 & heavy_polish_updated=0 & hphs_paint_updated=0 & light_polish_updated=0 & lpls_paint_updated=0 & milling_updated=0 & polish_done_updated=0 & ready_paint_updated=0 & rough_depos_updated=0;
+formula psi_all_step_not_updated = after_cut_updated=0 & bending_updated=0 & cutting_updated=0 & depos_done_updated=0 & end_updated=0 & fine_depos_updated=0 & heavy_polish_updated=0 & hphs_paint_updated=0 & light_polish_updated=0 & lpls_paint_updated=0 & milling_updated=0 & polish_done_updated=0 & ready_paint_updated=0 & rough_depos_updated=0 & start_updated=0;
+formula psi_idle_t_cut_done = !psi_step & t_cut_done_state=0;
+formula psi_idle_t_cutting = !psi_step & t_cutting_state=0 & t_cut_done_state!=0;
+formula psi_idle_t_depos_choice = !psi_step & t_depos_choice_state=0 & t_cut_done_state!=0 & t_cutting_state!=0;
+formula psi_idle_t_fine_dep = !psi_step & t_fine_dep_state=0 & t_cut_done_state!=0 & t_cutting_state!=0 & t_depos_choice_state!=0;
+formula psi_idle_t_heavy_pol = !psi_step & t_heavy_pol_state=0 & t_cut_done_state!=0 & t_cutting_state!=0 & t_depos_choice_state!=0 & t_fine_dep_state!=0;
+formula psi_idle_t_hphs = !psi_step & t_hphs_state=0 & t_cut_done_state!=0 & t_cutting_state!=0 & t_depos_choice_state!=0 & t_fine_dep_state!=0 & t_heavy_pol_state!=0;
+formula psi_idle_t_light_pol = !psi_step & t_light_pol_state=0 & t_cut_done_state!=0 & t_cutting_state!=0 & t_depos_choice_state!=0 & t_fine_dep_state!=0 & t_heavy_pol_state!=0 & t_hphs_state!=0;
+formula psi_idle_t_lpls = !psi_step & t_lpls_state=0 & t_cut_done_state!=0 & t_cutting_state!=0 & t_depos_choice_state!=0 & t_fine_dep_state!=0 & t_heavy_pol_state!=0 & t_hphs_state!=0 & t_light_pol_state!=0;
+formula psi_idle_t_paint_choice = !psi_step & t_paint_choice_state=0 & t_cut_done_state!=0 & t_cutting_state!=0 & t_depos_choice_state!=0 & t_fine_dep_state!=0 & t_heavy_pol_state!=0 & t_hphs_state!=0 & t_light_pol_state!=0 & t_lpls_state!=0;
+formula psi_idle_t_parallel_merge = !psi_step & t_parallel_merge_state=0 & t_cut_done_state!=0 & t_cutting_state!=0 & t_depos_choice_state!=0 & t_fine_dep_state!=0 & t_heavy_pol_state!=0 & t_hphs_state!=0 & t_light_pol_state!=0 & t_lpls_state!=0 & t_paint_choice_state!=0;
+formula psi_idle_t_parallel_split = !psi_step & t_parallel_split_state=0 & t_cut_done_state!=0 & t_cutting_state!=0 & t_depos_choice_state!=0 & t_fine_dep_state!=0 & t_heavy_pol_state!=0 & t_hphs_state!=0 & t_light_pol_state!=0 & t_lpls_state!=0 & t_paint_choice_state!=0 & t_parallel_merge_state!=0;
+formula psi_idle_t_quality_check = !psi_step & t_quality_check_state=0 & t_cut_done_state!=0 & t_cutting_state!=0 & t_depos_choice_state!=0 & t_fine_dep_state!=0 & t_heavy_pol_state!=0 & t_hphs_state!=0 & t_light_pol_state!=0 & t_lpls_state!=0 & t_paint_choice_state!=0 & t_parallel_merge_state!=0 & t_parallel_split_state!=0;
+formula psi_idle_t_rough_dep = !psi_step & t_rough_dep_state=0 & t_cut_done_state!=0 & t_cutting_state!=0 & t_depos_choice_state!=0 & t_fine_dep_state!=0 & t_heavy_pol_state!=0 & t_hphs_state!=0 & t_light_pol_state!=0 & t_lpls_state!=0 & t_paint_choice_state!=0 & t_parallel_merge_state!=0 & t_parallel_split_state!=0 & t_quality_check_state!=0;
+formula psi_first_but_nature_not_idle_t_cut_done = t_cut_done_state!=0;
+formula psi_first_but_nature_not_idle_t_cutting = t_cutting_state!=0 & t_cut_done_state=0;
+formula psi_first_but_nature_not_idle_t_depos_choice = t_depos_choice_state!=0 & t_cut_done_state=0 & t_cutting_state=0;
+formula psi_first_but_nature_not_idle_t_fine_dep = t_fine_dep_state!=0 & t_cut_done_state=0 & t_cutting_state=0 & t_depos_choice_state=0;
+formula psi_first_but_nature_not_idle_t_heavy_pol = t_heavy_pol_state!=0 & t_cut_done_state=0 & t_cutting_state=0 & t_depos_choice_state=0 & t_fine_dep_state=0;
+formula psi_first_but_nature_not_idle_t_hphs = t_hphs_state!=0 & t_cut_done_state=0 & t_cutting_state=0 & t_depos_choice_state=0 & t_fine_dep_state=0 & t_heavy_pol_state=0;
+formula psi_first_but_nature_not_idle_t_light_pol = t_light_pol_state!=0 & t_cut_done_state=0 & t_cutting_state=0 & t_depos_choice_state=0 & t_fine_dep_state=0 & t_heavy_pol_state=0 & t_hphs_state=0;
+formula psi_first_but_nature_not_idle_t_lpls = t_lpls_state!=0 & t_cut_done_state=0 & t_cutting_state=0 & t_depos_choice_state=0 & t_fine_dep_state=0 & t_heavy_pol_state=0 & t_hphs_state=0 & t_light_pol_state=0;
+formula psi_first_but_nature_not_idle_t_paint_choice = t_paint_choice_state!=0 & t_cut_done_state=0 & t_cutting_state=0 & t_depos_choice_state=0 & t_fine_dep_state=0 & t_heavy_pol_state=0 & t_hphs_state=0 & t_light_pol_state=0 & t_lpls_state=0;
+formula psi_first_but_nature_not_idle_t_parallel_merge = t_parallel_merge_state!=0 & t_cut_done_state=0 & t_cutting_state=0 & t_depos_choice_state=0 & t_fine_dep_state=0 & t_heavy_pol_state=0 & t_hphs_state=0 & t_light_pol_state=0 & t_lpls_state=0 & t_paint_choice_state=0;
+formula psi_first_but_nature_not_idle_t_parallel_split = t_parallel_split_state!=0 & t_cut_done_state=0 & t_cutting_state=0 & t_depos_choice_state=0 & t_fine_dep_state=0 & t_heavy_pol_state=0 & t_hphs_state=0 & t_light_pol_state=0 & t_lpls_state=0 & t_paint_choice_state=0 & t_parallel_merge_state=0;
+formula psi_first_but_nature_not_idle_t_rough_dep = t_rough_dep_state!=0 & t_cut_done_state=0 & t_cutting_state=0 & t_depos_choice_state=0 & t_fine_dep_state=0 & t_heavy_pol_state=0 & t_hphs_state=0 & t_light_pol_state=0 & t_lpls_state=0 & t_paint_choice_state=0 & t_parallel_merge_state=0 & t_parallel_split_state=0;
+formula psi_first_nature_not_idle_t_quality_check = t_quality_check_state!=0;
+formula psi_all_idle_but_nature = t_cut_done_state=0 & t_cutting_state=0 & t_depos_choice_state=0 & t_fine_dep_state=0 & t_heavy_pol_state=0 & t_hphs_state=0 & t_light_pol_state=0 & t_lpls_state=0 & t_paint_choice_state=0 & t_parallel_merge_state=0 & t_parallel_split_state=0 & t_rough_dep_state=0;
+formula psi_all_idle_nature = t_quality_check_state=0;
+formula psi_noone_idle = t_cut_done_state!=0 & t_cutting_state!=0 & t_depos_choice_state!=0 & t_fine_dep_state!=0 & t_heavy_pol_state!=0 & t_hphs_state!=0 & t_light_pol_state!=0 & t_lpls_state!=0 & t_paint_choice_state!=0 & t_parallel_merge_state!=0 & t_parallel_split_state!=0 & t_quality_check_state!=0 & t_rough_dep_state!=0;
+formula psi_atleastone_active = is_active_t_cut_done | is_active_t_cutting | is_active_t_depos_choice | is_active_t_fine_dep | is_active_t_heavy_pol | is_active_t_hphs | is_active_t_light_pol | is_active_t_lpls | is_active_t_paint_choice | is_active_t_parallel_merge | is_active_t_parallel_split | is_active_t_quality_check | is_active_t_rough_dep;
+
+// State Labels for Simulator
+label "psi_step" = psi_step;
+label "psi_at_least_one_remaining_duration" = psi_at_least_one_remaining_duration;
+label "psi_all_step_updated" = psi_all_step_updated;
+label "psi_all_step_not_updated" = psi_all_step_not_updated;
+label "psi_noone_idle" = psi_noone_idle;
+label "psi_atleastone_active" = psi_atleastone_active;
+label "psi_idle_t_cut_done" = psi_idle_t_cut_done;
+label "psi_idle_t_cutting" = psi_idle_t_cutting;
+label "psi_idle_t_depos_choice" = psi_idle_t_depos_choice;
+label "psi_idle_t_fine_dep" = psi_idle_t_fine_dep;
+label "psi_idle_t_heavy_pol" = psi_idle_t_heavy_pol;
+label "psi_idle_t_hphs" = psi_idle_t_hphs;
+label "psi_idle_t_light_pol" = psi_idle_t_light_pol;
+label "psi_idle_t_lpls" = psi_idle_t_lpls;
+label "psi_idle_t_paint_choice" = psi_idle_t_paint_choice;
+label "psi_idle_t_parallel_merge" = psi_idle_t_parallel_merge;
+label "psi_idle_t_parallel_split" = psi_idle_t_parallel_split;
+label "psi_idle_t_quality_check" = psi_idle_t_quality_check;
+label "psi_idle_t_rough_dep" = psi_idle_t_rough_dep;
+label "psi_first_but_nature_not_idle_t_cut_done" = psi_first_but_nature_not_idle_t_cut_done;
+label "psi_first_but_nature_not_idle_t_cutting" = psi_first_but_nature_not_idle_t_cutting;
+label "psi_first_but_nature_not_idle_t_depos_choice" = psi_first_but_nature_not_idle_t_depos_choice;
+label "psi_first_but_nature_not_idle_t_fine_dep" = psi_first_but_nature_not_idle_t_fine_dep;
+label "psi_first_but_nature_not_idle_t_heavy_pol" = psi_first_but_nature_not_idle_t_heavy_pol;
+label "psi_first_but_nature_not_idle_t_hphs" = psi_first_but_nature_not_idle_t_hphs;
+label "psi_first_but_nature_not_idle_t_light_pol" = psi_first_but_nature_not_idle_t_light_pol;
+label "psi_first_but_nature_not_idle_t_lpls" = psi_first_but_nature_not_idle_t_lpls;
+label "psi_first_but_nature_not_idle_t_paint_choice" = psi_first_but_nature_not_idle_t_paint_choice;
+label "psi_first_but_nature_not_idle_t_parallel_merge" = psi_first_but_nature_not_idle_t_parallel_merge;
+label "psi_first_but_nature_not_idle_t_parallel_split" = psi_first_but_nature_not_idle_t_parallel_split;
+label "psi_first_but_nature_not_idle_t_rough_dep" = psi_first_but_nature_not_idle_t_rough_dep;
+label "psi_first_nature_not_idle_t_quality_check" = psi_first_nature_not_idle_t_quality_check;
+label "psi_all_idle_but_nature" = psi_all_idle_but_nature;
+label "psi_all_idle_nature" = psi_all_idle_nature;
+label "step_updated_after_cut" = step_updated_after_cut;
+label "step_not_updated_after_cut" = step_not_updated_after_cut;
+label "step_updated_bending" = step_updated_bending;
+label "step_not_updated_bending" = step_not_updated_bending;
+label "step_updated_cutting" = step_updated_cutting;
+label "step_not_updated_cutting" = step_not_updated_cutting;
+label "step_updated_depos_done" = step_updated_depos_done;
+label "step_not_updated_depos_done" = step_not_updated_depos_done;
+label "step_updated_end" = step_updated_end;
+label "step_not_updated_end" = step_not_updated_end;
+label "step_updated_fine_depos" = step_updated_fine_depos;
+label "step_not_updated_fine_depos" = step_not_updated_fine_depos;
+label "step_updated_heavy_polish" = step_updated_heavy_polish;
+label "step_not_updated_heavy_polish" = step_not_updated_heavy_polish;
+label "step_updated_hphs_paint" = step_updated_hphs_paint;
+label "step_not_updated_hphs_paint" = step_not_updated_hphs_paint;
+label "step_updated_light_polish" = step_updated_light_polish;
+label "step_not_updated_light_polish" = step_not_updated_light_polish;
+label "step_updated_lpls_paint" = step_updated_lpls_paint;
+label "step_not_updated_lpls_paint" = step_not_updated_lpls_paint;
+label "step_updated_milling" = step_updated_milling;
+label "step_not_updated_milling" = step_not_updated_milling;
+label "step_updated_polish_done" = step_updated_polish_done;
+label "step_not_updated_polish_done" = step_not_updated_polish_done;
+label "step_updated_ready_paint" = step_updated_ready_paint;
+label "step_not_updated_ready_paint" = step_not_updated_ready_paint;
+label "step_updated_rough_depos" = step_updated_rough_depos;
+label "step_not_updated_rough_depos" = step_not_updated_rough_depos;
+label "step_updated_start" = step_updated_start;
+label "step_not_updated_start" = step_not_updated_start;
+label "is_active_t_cut_done" = is_active_t_cut_done;
+label "is_active_t_cutting" = is_active_t_cutting;
+label "is_active_t_depos_choice" = is_active_t_depos_choice;
+label "is_active_t_fine_dep" = is_active_t_fine_dep;
+label "is_active_t_heavy_pol" = is_active_t_heavy_pol;
+label "is_active_t_hphs" = is_active_t_hphs;
+label "is_active_t_light_pol" = is_active_t_light_pol;
+label "is_active_t_lpls" = is_active_t_lpls;
+label "is_active_t_paint_choice" = is_active_t_paint_choice;
+label "is_active_t_parallel_merge" = is_active_t_parallel_merge;
+label "is_active_t_parallel_split" = is_active_t_parallel_split;
+label "is_active_t_quality_check" = is_active_t_quality_check;
+label "is_active_t_rough_dep" = is_active_t_rough_dep;
+label "stage_0" = STAGE=0;
+label "stage_1" = STAGE=1;
+label "stage_2" = STAGE=2;
+label "stage_3" = STAGE=3;
+label "stage_4" = STAGE=4;
+label "stage_5" = STAGE=5;
+label "state_t_cut_done_ready" = t_cut_done_state=1;
+label "state_t_cut_done_disabled" = t_cut_done_state=-1;
+label "state_t_cut_done_idle" = t_cut_done_state=0;
+label "state_t_cutting_ready" = t_cutting_state=1;
+label "state_t_cutting_disabled" = t_cutting_state=-1;
+label "state_t_cutting_idle" = t_cutting_state=0;
+label "state_t_depos_choice_ready" = t_depos_choice_state=1;
+label "state_t_depos_choice_disabled" = t_depos_choice_state=-1;
+label "state_t_depos_choice_idle" = t_depos_choice_state=0;
+label "state_t_fine_dep_ready" = t_fine_dep_state=1;
+label "state_t_fine_dep_disabled" = t_fine_dep_state=-1;
+label "state_t_fine_dep_idle" = t_fine_dep_state=0;
+label "state_t_heavy_pol_ready" = t_heavy_pol_state=1;
+label "state_t_heavy_pol_disabled" = t_heavy_pol_state=-1;
+label "state_t_heavy_pol_idle" = t_heavy_pol_state=0;
+label "state_t_hphs_ready" = t_hphs_state=1;
+label "state_t_hphs_disabled" = t_hphs_state=-1;
+label "state_t_hphs_idle" = t_hphs_state=0;
+label "state_t_light_pol_ready" = t_light_pol_state=1;
+label "state_t_light_pol_disabled" = t_light_pol_state=-1;
+label "state_t_light_pol_idle" = t_light_pol_state=0;
+label "state_t_lpls_ready" = t_lpls_state=1;
+label "state_t_lpls_disabled" = t_lpls_state=-1;
+label "state_t_lpls_idle" = t_lpls_state=0;
+label "state_t_paint_choice_ready" = t_paint_choice_state=1;
+label "state_t_paint_choice_disabled" = t_paint_choice_state=-1;
+label "state_t_paint_choice_idle" = t_paint_choice_state=0;
+label "state_t_parallel_merge_ready" = t_parallel_merge_state=1;
+label "state_t_parallel_merge_disabled" = t_parallel_merge_state=-1;
+label "state_t_parallel_merge_idle" = t_parallel_merge_state=0;
+label "state_t_parallel_split_ready" = t_parallel_split_state=1;
+label "state_t_parallel_split_disabled" = t_parallel_split_state=-1;
+label "state_t_parallel_split_idle" = t_parallel_split_state=0;
+label "state_t_quality_check_ready" = t_quality_check_state=1;
+label "state_t_quality_check_disabled" = t_quality_check_state=-1;
+label "state_t_quality_check_idle" = t_quality_check_state=0;
+label "state_t_rough_dep_ready" = t_rough_dep_state=1;
+label "state_t_rough_dep_disabled" = t_rough_dep_state=-1;
+label "state_t_rough_dep_idle" = t_rough_dep_state=0;
+label "place_after_cut_empty" = after_cut_value=-1;
+label "place_after_cut_has_token" = after_cut_value>=0;
+label "place_after_cut_duration_met" = after_cut_value>=1;
+label "place_after_cut_can_advance" = after_cut_value>=0 & after_cut_value<1;
+label "place_after_cut_updated" = after_cut_updated=1;
+label "place_bending_empty" = bending_value=-1;
+label "place_bending_has_token" = bending_value>=0;
+label "place_bending_duration_met" = bending_value>=2;
+label "place_bending_can_advance" = bending_value>=0 & bending_value<2;
+label "place_bending_updated" = bending_updated=1;
+label "place_cutting_empty" = cutting_value=-1;
+label "place_cutting_has_token" = cutting_value>=0;
+label "place_cutting_duration_met" = cutting_value>=2;
+label "place_cutting_can_advance" = cutting_value>=0 & cutting_value<2;
+label "place_cutting_updated" = cutting_updated=1;
+label "place_depos_done_empty" = depos_done_value=-1;
+label "place_depos_done_has_token" = depos_done_value>=0;
+label "place_depos_done_duration_met" = depos_done_value>=1;
+label "place_depos_done_can_advance" = depos_done_value>=0 & depos_done_value<1;
+label "place_depos_done_updated" = depos_done_updated=1;
+label "place_end_empty" = end_value=-1;
+label "place_end_has_token" = end_value>=0;
+label "place_end_duration_met" = end_value>=1;
+label "place_end_can_advance" = end_value>=0 & end_value<1;
+label "place_end_updated" = end_updated=1;
+label "place_fine_depos_empty" = fine_depos_value=-1;
+label "place_fine_depos_has_token" = fine_depos_value>=0;
+label "place_fine_depos_duration_met" = fine_depos_value>=1;
+label "place_fine_depos_can_advance" = fine_depos_value>=0 & fine_depos_value<1;
+label "place_fine_depos_updated" = fine_depos_updated=1;
+label "place_heavy_polish_empty" = heavy_polish_value=-1;
+label "place_heavy_polish_has_token" = heavy_polish_value>=0;
+label "place_heavy_polish_duration_met" = heavy_polish_value>=2;
+label "place_heavy_polish_can_advance" = heavy_polish_value>=0 & heavy_polish_value<2;
+label "place_heavy_polish_updated" = heavy_polish_updated=1;
+label "place_hphs_paint_empty" = hphs_paint_value=-1;
+label "place_hphs_paint_has_token" = hphs_paint_value>=0;
+label "place_hphs_paint_duration_met" = hphs_paint_value>=2;
+label "place_hphs_paint_can_advance" = hphs_paint_value>=0 & hphs_paint_value<2;
+label "place_hphs_paint_updated" = hphs_paint_updated=1;
+label "place_light_polish_empty" = light_polish_value=-1;
+label "place_light_polish_has_token" = light_polish_value>=0;
+label "place_light_polish_duration_met" = light_polish_value>=1;
+label "place_light_polish_can_advance" = light_polish_value>=0 & light_polish_value<1;
+label "place_light_polish_updated" = light_polish_updated=1;
+label "place_lpls_paint_empty" = lpls_paint_value=-1;
+label "place_lpls_paint_has_token" = lpls_paint_value>=0;
+label "place_lpls_paint_duration_met" = lpls_paint_value>=3;
+label "place_lpls_paint_can_advance" = lpls_paint_value>=0 & lpls_paint_value<3;
+label "place_lpls_paint_updated" = lpls_paint_updated=1;
+label "place_milling_empty" = milling_value=-1;
+label "place_milling_has_token" = milling_value>=0;
+label "place_milling_duration_met" = milling_value>=3;
+label "place_milling_can_advance" = milling_value>=0 & milling_value<3;
+label "place_milling_updated" = milling_updated=1;
+label "place_polish_done_empty" = polish_done_value=-1;
+label "place_polish_done_has_token" = polish_done_value>=0;
+label "place_polish_done_duration_met" = polish_done_value>=1;
+label "place_polish_done_can_advance" = polish_done_value>=0 & polish_done_value<1;
+label "place_polish_done_updated" = polish_done_updated=1;
+label "place_ready_paint_empty" = ready_paint_value=-1;
+label "place_ready_paint_has_token" = ready_paint_value>=0;
+label "place_ready_paint_duration_met" = ready_paint_value>=1;
+label "place_ready_paint_can_advance" = ready_paint_value>=0 & ready_paint_value<1;
+label "place_ready_paint_updated" = ready_paint_updated=1;
+label "place_rough_depos_empty" = rough_depos_value=-1;
+label "place_rough_depos_has_token" = rough_depos_value>=0;
+label "place_rough_depos_duration_met" = rough_depos_value>=1;
+label "place_rough_depos_can_advance" = rough_depos_value>=0 & rough_depos_value<1;
+label "place_rough_depos_updated" = rough_depos_updated=1;
+label "place_start_empty" = start_value=-1;
+label "place_start_has_token" = start_value>=0;
+label "place_start_duration_met" = start_value>=1;
+label "place_start_can_advance" = start_value>=0 & start_value<1;
+label "place_start_updated" = start_updated=1;
+
+module manager
+  // Stage 0 -> 3: Can do step
+  [] STAGE=0 & psi_step -> (STAGE'=3);
+  // Stage 0 -> 2: Terminated
+  [] STAGE=0 & !psi_step & psi_noone_idle & !psi_atleastone_active -> (STAGE'=2);
+  // Stage 0 -> 4: Fire transitions (FIXED: added psi_noone_idle)
+  [] STAGE=0 & !psi_step & psi_noone_idle & psi_atleastone_active -> (STAGE'=4);
+  // Update after_cut
+  [] STAGE=3 & step_updated_after_cut & after_cut_value=-1 -> (after_cut_updated'=1);
+  [] STAGE=3 & step_updated_after_cut & after_cut_value>=0 & after_cut_value<1 -> (after_cut_value'=after_cut_value+1) & (after_cut_updated'=1);
+  [] STAGE=3 & step_updated_after_cut & after_cut_value=1 -> (after_cut_updated'=1);
+  // Update bending
+  [] STAGE=3 & step_updated_bending & bending_value=-1 -> (bending_updated'=1);
+  [] STAGE=3 & step_updated_bending & bending_value>=0 & bending_value<2 -> (bending_value'=bending_value+1) & (bending_updated'=1);
+  [] STAGE=3 & step_updated_bending & bending_value=2 -> (bending_updated'=1);
+  // Update cutting
+  [] STAGE=3 & step_updated_cutting & cutting_value=-1 -> (cutting_updated'=1);
+  [] STAGE=3 & step_updated_cutting & cutting_value>=0 & cutting_value<2 -> (cutting_value'=cutting_value+1) & (cutting_updated'=1);
+  [] STAGE=3 & step_updated_cutting & cutting_value=2 -> (cutting_updated'=1);
+  // Update depos_done
+  [] STAGE=3 & step_updated_depos_done & depos_done_value=-1 -> (depos_done_updated'=1);
+  [] STAGE=3 & step_updated_depos_done & depos_done_value>=0 & depos_done_value<1 -> (depos_done_value'=depos_done_value+1) & (depos_done_updated'=1);
+  [] STAGE=3 & step_updated_depos_done & depos_done_value=1 -> (depos_done_updated'=1);
+  // Update end
+  [] STAGE=3 & step_updated_end & end_value=-1 -> (end_updated'=1);
+  [] STAGE=3 & step_updated_end & end_value>=0 & end_value<1 -> (end_value'=end_value+1) & (end_updated'=1);
+  [] STAGE=3 & step_updated_end & end_value=1 -> (end_updated'=1);
+  // Update fine_depos
+  [] STAGE=3 & step_updated_fine_depos & fine_depos_value=-1 -> (fine_depos_updated'=1);
+  [] STAGE=3 & step_updated_fine_depos & fine_depos_value>=0 & fine_depos_value<1 -> (fine_depos_value'=fine_depos_value+1) & (fine_depos_updated'=1);
+  [] STAGE=3 & step_updated_fine_depos & fine_depos_value=1 -> (fine_depos_updated'=1);
+  // Update heavy_polish
+  [] STAGE=3 & step_updated_heavy_polish & heavy_polish_value=-1 -> (heavy_polish_updated'=1);
+  [] STAGE=3 & step_updated_heavy_polish & heavy_polish_value>=0 & heavy_polish_value<2 -> (heavy_polish_value'=heavy_polish_value+1) & (heavy_polish_updated'=1);
+  [] STAGE=3 & step_updated_heavy_polish & heavy_polish_value=2 -> (heavy_polish_updated'=1);
+  // Update hphs_paint
+  [] STAGE=3 & step_updated_hphs_paint & hphs_paint_value=-1 -> (hphs_paint_updated'=1);
+  [] STAGE=3 & step_updated_hphs_paint & hphs_paint_value>=0 & hphs_paint_value<2 -> (hphs_paint_value'=hphs_paint_value+1) & (hphs_paint_updated'=1);
+  [] STAGE=3 & step_updated_hphs_paint & hphs_paint_value=2 -> (hphs_paint_updated'=1);
+  // Update light_polish
+  [] STAGE=3 & step_updated_light_polish & light_polish_value=-1 -> (light_polish_updated'=1);
+  [] STAGE=3 & step_updated_light_polish & light_polish_value>=0 & light_polish_value<1 -> (light_polish_value'=light_polish_value+1) & (light_polish_updated'=1);
+  [] STAGE=3 & step_updated_light_polish & light_polish_value=1 -> (light_polish_updated'=1);
+  // Update lpls_paint
+  [] STAGE=3 & step_updated_lpls_paint & lpls_paint_value=-1 -> (lpls_paint_updated'=1);
+  [] STAGE=3 & step_updated_lpls_paint & lpls_paint_value>=0 & lpls_paint_value<3 -> (lpls_paint_value'=lpls_paint_value+1) & (lpls_paint_updated'=1);
+  [] STAGE=3 & step_updated_lpls_paint & lpls_paint_value=3 -> (lpls_paint_updated'=1);
+  // Update milling
+  [] STAGE=3 & step_updated_milling & milling_value=-1 -> (milling_updated'=1);
+  [] STAGE=3 & step_updated_milling & milling_value>=0 & milling_value<3 -> (milling_value'=milling_value+1) & (milling_updated'=1);
+  [] STAGE=3 & step_updated_milling & milling_value=3 -> (milling_updated'=1);
+  // Update polish_done
+  [] STAGE=3 & step_updated_polish_done & polish_done_value=-1 -> (polish_done_updated'=1);
+  [] STAGE=3 & step_updated_polish_done & polish_done_value>=0 & polish_done_value<1 -> (polish_done_value'=polish_done_value+1) & (polish_done_updated'=1);
+  [] STAGE=3 & step_updated_polish_done & polish_done_value=1 -> (polish_done_updated'=1);
+  // Update ready_paint
+  [] STAGE=3 & step_updated_ready_paint & ready_paint_value=-1 -> (ready_paint_updated'=1);
+  [] STAGE=3 & step_updated_ready_paint & ready_paint_value>=0 & ready_paint_value<1 -> (ready_paint_value'=ready_paint_value+1) & (ready_paint_updated'=1);
+  [] STAGE=3 & step_updated_ready_paint & ready_paint_value=1 -> (ready_paint_updated'=1);
+  // Update rough_depos
+  [] STAGE=3 & step_updated_rough_depos & rough_depos_value=-1 -> (rough_depos_updated'=1);
+  [] STAGE=3 & step_updated_rough_depos & rough_depos_value>=0 & rough_depos_value<1 -> (rough_depos_value'=rough_depos_value+1) & (rough_depos_updated'=1);
+  [] STAGE=3 & step_updated_rough_depos & rough_depos_value=1 -> (rough_depos_updated'=1);
+  // Update start
+  [] STAGE=3 & step_updated_start & start_value=-1 -> (start_updated'=1);
+  [] STAGE=3 & step_updated_start & start_value>=0 & start_value<1 -> (start_value'=start_value+1) & (start_updated'=1);
+  [] STAGE=3 & step_updated_start & start_value=1 -> (start_updated'=1);
+  // Stage 3 -> 1: All updated
+  [] STAGE=3 & psi_all_step_updated -> (STAGE'=1);
+  [] STAGE=1 & step_not_updated_after_cut -> (after_cut_updated'=0);
+  [] STAGE=1 & step_not_updated_bending -> (bending_updated'=0);
+  [] STAGE=1 & step_not_updated_cutting -> (cutting_updated'=0);
+  [] STAGE=1 & step_not_updated_depos_done -> (depos_done_updated'=0);
+  [] STAGE=1 & step_not_updated_end -> (end_updated'=0);
+  [] STAGE=1 & step_not_updated_fine_depos -> (fine_depos_updated'=0);
+  [] STAGE=1 & step_not_updated_heavy_polish -> (heavy_polish_updated'=0);
+  [] STAGE=1 & step_not_updated_hphs_paint -> (hphs_paint_updated'=0);
+  [] STAGE=1 & step_not_updated_light_polish -> (light_polish_updated'=0);
+  [] STAGE=1 & step_not_updated_lpls_paint -> (lpls_paint_updated'=0);
+  [] STAGE=1 & step_not_updated_milling -> (milling_updated'=0);
+  [] STAGE=1 & step_not_updated_polish_done -> (polish_done_updated'=0);
+  [] STAGE=1 & step_not_updated_ready_paint -> (ready_paint_updated'=0);
+  [] STAGE=1 & step_not_updated_rough_depos -> (rough_depos_updated'=0);
+  [] STAGE=1 & step_not_updated_start -> (start_updated'=0);
+  // Stage 1 -> 0: All reset
+  [] STAGE=1 & psi_all_step_not_updated -> (STAGE'=0);
+  [] STAGE=4 & psi_all_idle_but_nature -> (STAGE'=5);
+  [] STAGE=5 & psi_all_idle_nature -> (STAGE'=0);
+endmodule
+
+module t_cut_done
+  t_cut_done_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [] STAGE=0 & psi_idle_t_cut_done & (cutting_value >= 2) -> (t_cut_done_state'=1);
+  [] STAGE=0 & psi_idle_t_cut_done & !(cutting_value >= 2) -> (t_cut_done_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_t_cut_done & t_cut_done_state=-1 -> (t_cut_done_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_t_cut_done & t_cut_done_state=1 -> (t_cut_done_state'=0) & (cutting_value'=-1) & (after_cut_value'=0);
+endmodule
+
+module t_cutting
+  t_cutting_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [fire_t_cutting] STAGE=0 & psi_idle_t_cutting & (start_value >= 1) -> (t_cutting_state'=1);
+  [] STAGE=0 & psi_idle_t_cutting & !(start_value >= 1) -> (t_cutting_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_t_cutting & t_cutting_state=-1 -> (t_cutting_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_t_cutting & t_cutting_state=1 -> (t_cutting_state'=0) & (start_value'=-1) & (cutting_value'=0);
+endmodule
+
+module t_depos_choice
+  t_depos_choice_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [] STAGE=0 & psi_idle_t_depos_choice & (milling_value >= 3) -> (t_depos_choice_state'=1);
+  [] STAGE=0 & psi_idle_t_depos_choice & !(milling_value >= 3) -> (t_depos_choice_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_t_depos_choice & t_depos_choice_state=-1 -> (t_depos_choice_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_t_depos_choice & t_depos_choice_state=1 -> (t_depos_choice_state'=0) & (milling_value'=-1) & (fine_depos_value'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_t_depos_choice & t_depos_choice_state=1 -> (t_depos_choice_state'=0) & (milling_value'=-1) & (rough_depos_value'=0);
+endmodule
+
+module t_fine_dep
+  t_fine_dep_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [fire_t_fine_dep] STAGE=0 & psi_idle_t_fine_dep & (fine_depos_value >= 1) -> (t_fine_dep_state'=1);
+  [] STAGE=0 & psi_idle_t_fine_dep & !(fine_depos_value >= 1) -> (t_fine_dep_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_t_fine_dep & t_fine_dep_state=-1 -> (t_fine_dep_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_t_fine_dep & t_fine_dep_state=1 -> (t_fine_dep_state'=0) & (fine_depos_value'=-1) & (depos_done_value'=0);
+endmodule
+
+module t_heavy_pol
+  t_heavy_pol_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [fire_t_heavy_pol] STAGE=0 & psi_idle_t_heavy_pol & (heavy_polish_value >= 2) -> (t_heavy_pol_state'=1);
+  [] STAGE=0 & psi_idle_t_heavy_pol & !(heavy_polish_value >= 2) -> (t_heavy_pol_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_t_heavy_pol & t_heavy_pol_state=-1 -> (t_heavy_pol_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_t_heavy_pol & t_heavy_pol_state=1 -> (t_heavy_pol_state'=0) & (heavy_polish_value'=-1) & (polish_done_value'=0);
+endmodule
+
+module t_hphs
+  t_hphs_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [fire_t_hphs] STAGE=0 & psi_idle_t_hphs & (hphs_paint_value >= 2) -> (t_hphs_state'=1);
+  [] STAGE=0 & psi_idle_t_hphs & !(hphs_paint_value >= 2) -> (t_hphs_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_t_hphs & t_hphs_state=-1 -> (t_hphs_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_t_hphs & t_hphs_state=1 -> (t_hphs_state'=0) & (hphs_paint_value'=-1) & (end_value'=0);
+endmodule
+
+module t_light_pol
+  t_light_pol_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [fire_t_light_pol] STAGE=0 & psi_idle_t_light_pol & (light_polish_value >= 1) -> (t_light_pol_state'=1);
+  [] STAGE=0 & psi_idle_t_light_pol & !(light_polish_value >= 1) -> (t_light_pol_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_t_light_pol & t_light_pol_state=-1 -> (t_light_pol_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_t_light_pol & t_light_pol_state=1 -> (t_light_pol_state'=0) & (light_polish_value'=-1) & (polish_done_value'=0);
+endmodule
+
+module t_lpls
+  t_lpls_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [fire_t_lpls] STAGE=0 & psi_idle_t_lpls & (lpls_paint_value >= 3) -> (t_lpls_state'=1);
+  [] STAGE=0 & psi_idle_t_lpls & !(lpls_paint_value >= 3) -> (t_lpls_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_t_lpls & t_lpls_state=-1 -> (t_lpls_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_t_lpls & t_lpls_state=1 -> (t_lpls_state'=0) & (lpls_paint_value'=-1) & (end_value'=0);
+endmodule
+
+module t_paint_choice
+  t_paint_choice_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [] STAGE=0 & psi_idle_t_paint_choice & (ready_paint_value >= 1) -> (t_paint_choice_state'=1);
+  [] STAGE=0 & psi_idle_t_paint_choice & !(ready_paint_value >= 1) -> (t_paint_choice_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_t_paint_choice & t_paint_choice_state=-1 -> (t_paint_choice_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_t_paint_choice & t_paint_choice_state=1 -> (t_paint_choice_state'=0) & (ready_paint_value'=-1) & (hphs_paint_value'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_t_paint_choice & t_paint_choice_state=1 -> (t_paint_choice_state'=0) & (ready_paint_value'=-1) & (lpls_paint_value'=0);
+endmodule
+
+module t_parallel_merge
+  t_parallel_merge_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [] STAGE=0 & psi_idle_t_parallel_merge & (polish_done_value >= 1 & depos_done_value >= 1) -> (t_parallel_merge_state'=1);
+  [] STAGE=0 & psi_idle_t_parallel_merge & !(polish_done_value >= 1 & depos_done_value >= 1) -> (t_parallel_merge_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_t_parallel_merge & t_parallel_merge_state=-1 -> (t_parallel_merge_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_t_parallel_merge & t_parallel_merge_state=1 -> (t_parallel_merge_state'=0) & (polish_done_value'=-1) & (depos_done_value'=-1) & (ready_paint_value'=0);
+endmodule
+
+module t_parallel_split
+  t_parallel_split_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [] STAGE=0 & psi_idle_t_parallel_split & (after_cut_value >= 1) -> (t_parallel_split_state'=1);
+  [] STAGE=0 & psi_idle_t_parallel_split & !(after_cut_value >= 1) -> (t_parallel_split_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_t_parallel_split & t_parallel_split_state=-1 -> (t_parallel_split_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_t_parallel_split & t_parallel_split_state=1 -> (t_parallel_split_state'=0) & (after_cut_value'=-1) & (bending_value'=0) & (milling_value'=0);
+endmodule
+
+module t_quality_check
+  t_quality_check_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [] STAGE=0 & psi_idle_t_quality_check & (bending_value >= 2) -> (t_quality_check_state'=1);
+  [] STAGE=0 & psi_idle_t_quality_check & !(bending_value >= 2) -> (t_quality_check_state'=-1);
+  // Stage 5: Nature transition firing
+  [] STAGE=5 & psi_first_nature_not_idle_t_quality_check & t_quality_check_state=-1 -> (t_quality_check_state'=0);
+  [] STAGE=5 & psi_first_nature_not_idle_t_quality_check & t_quality_check_state=1 -> 0.2: (t_quality_check_state'=0) & (heavy_polish_value'=0) & (bending_value'=-1) + 0.8: (t_quality_check_state'=0) & (light_polish_value'=0) & (bending_value'=-1);
+endmodule
+
+module t_rough_dep
+  t_rough_dep_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [fire_t_rough_dep] STAGE=0 & psi_idle_t_rough_dep & (rough_depos_value >= 1) -> (t_rough_dep_state'=1);
+  [] STAGE=0 & psi_idle_t_rough_dep & !(rough_depos_value >= 1) -> (t_rough_dep_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_t_rough_dep & t_rough_dep_state=-1 -> (t_rough_dep_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_t_rough_dep & t_rough_dep_state=1 -> (t_rough_dep_state'=0) & (rough_depos_value'=-1) & (depos_done_value'=0);
+endmodule
+
+
+rewards "impact_0"
+  [fire_t_cutting] true : 10;
+  [fire_t_heavy_pol] true : 5;
+  [fire_t_light_pol] true : 8;
+  [fire_t_fine_dep] true : 30;
+  [fire_t_rough_dep] true : 10;
+  [fire_t_hphs] true : 40;
+  [fire_t_lpls] true : 20;
+endrewards
+
+rewards "impact_1"
+  [fire_t_cutting] true : 1;
+  [fire_t_heavy_pol] true : 4;
+  [fire_t_light_pol] true : 1;
+  [fire_t_fine_dep] true : 1;
+  [fire_t_rough_dep] true : 1;
+  [fire_t_hphs] true : 1;
+  [fire_t_lpls] true : 3;
+endrewards

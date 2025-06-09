@@ -1,0 +1,876 @@
+// Global variables for places
+global STAGE : [0..5] init 0;
+
+// Place value variables
+global bending_done_p4_value : [-1..0] init -1;
+global bending_p2_value : [-1..1] init -1;
+global choice1_end_p17_value : [-1..0] init -1;
+global choice1_p7_value : [-1..0] init -1;
+global choice2_end_p23_value : [-1..0] init -1;
+global choice2_p18_value : [-1..0] init -1;
+global cutting_done_p1_value : [-1..0] init -1;
+global cutting_p0_value : [-1..1] init 0;
+global fine_depos_p10_value : [-1..1] init -1;
+global fine_depos_p14_value : [-1..0] init -1;
+global heavy_polish_p12_value : [-1..0] init -1;
+global heavy_polish_p8_value : [-1..2] init -1;
+global hphs_p19_value : [-1..1] init -1;
+global hphs_p21_value : [-1..0] init -1;
+global light_polish_p13_value : [-1..0] init -1;
+global light_polish_p9_value : [-1..1] init -1;
+global lpls_p20_value : [-1..2] init -1;
+global lpls_p22_value : [-1..0] init -1;
+global milling_done_p5_value : [-1..0] init -1;
+global milling_p3_value : [-1..1] init -1;
+global nature1_end_p16_value : [-1..0] init -1;
+global nature1_p6_value : [-1..0] init -1;
+global rough_depos_p11_value : [-1..1] init -1;
+global rough_depos_p15_value : [-1..0] init -1;
+
+// Place updated variables
+global bending_done_p4_updated : [0..1] init 0;
+global bending_p2_updated : [0..1] init 0;
+global choice1_end_p17_updated : [0..1] init 0;
+global choice1_p7_updated : [0..1] init 0;
+global choice2_end_p23_updated : [0..1] init 0;
+global choice2_p18_updated : [0..1] init 0;
+global cutting_done_p1_updated : [0..1] init 0;
+global cutting_p0_updated : [0..1] init 0;
+global fine_depos_p10_updated : [0..1] init 0;
+global fine_depos_p14_updated : [0..1] init 0;
+global heavy_polish_p12_updated : [0..1] init 0;
+global heavy_polish_p8_updated : [0..1] init 0;
+global hphs_p19_updated : [0..1] init 0;
+global hphs_p21_updated : [0..1] init 0;
+global light_polish_p13_updated : [0..1] init 0;
+global light_polish_p9_updated : [0..1] init 0;
+global lpls_p20_updated : [0..1] init 0;
+global lpls_p22_updated : [0..1] init 0;
+global milling_done_p5_updated : [0..1] init 0;
+global milling_p3_updated : [0..1] init 0;
+global nature1_end_p16_updated : [0..1] init 0;
+global nature1_p6_updated : [0..1] init 0;
+global rough_depos_p11_updated : [0..1] init 0;
+global rough_depos_p15_updated : [0..1] init 0;
+
+// Formulas
+formula is_active_bending_t2 = (bending_p2_value >= 1);
+formula is_active_choice1_decision_0_t16 = (fine_depos_p14_value >= 0);
+formula is_active_choice1_decision_0_t23 = (hphs_p21_value >= 0);
+formula is_active_choice1_decision_1_t17 = (rough_depos_p15_value >= 0);
+formula is_active_choice1_decision_1_t24 = (lpls_p22_value >= 0);
+formula is_active_choice1_t8_9 = (choice1_p7_value >= 0);
+formula is_active_choice2_t19_20 = (choice2_p18_value >= 0);
+formula is_active_cutting_t0 = (cutting_p0_value >= 1);
+formula is_active_fine_depos_t12 = (fine_depos_p10_value >= 1);
+formula is_active_heavy_polish_t10 = (heavy_polish_p8_value >= 2);
+formula is_active_hphs_t21 = (hphs_p19_value >= 1);
+formula is_active_light_polish_t11 = (light_polish_p9_value >= 1);
+formula is_active_lpls_t22 = (lpls_p20_value >= 2);
+formula is_active_milling_t3 = (milling_p3_value >= 1);
+formula is_active_nature1_decision_0_t14 = (heavy_polish_p12_value >= 0);
+formula is_active_nature1_decision_1_t15 = (light_polish_p13_value >= 0);
+formula is_active_nature1_t6_7 = (nature1_p6_value >= 0);
+formula is_active_parallel_merge_t18 = (nature1_end_p16_value >= 0) & (choice1_end_p17_value >= 0);
+formula is_active_parallel_t1 = (cutting_done_p1_value >= 0);
+formula is_active_rough_depos_t13 = (rough_depos_p11_value >= 1);
+formula is_active_sequential_t4 = (bending_done_p4_value >= 0);
+formula is_active_sequential_t5 = (milling_done_p5_value >= 0);
+formula psi_at_least_one_remaining_duration = (bending_done_p4_value >= 0 & bending_done_p4_value < 0) | (bending_p2_value >= 0 & bending_p2_value < 1) | (choice1_end_p17_value >= 0 & choice1_end_p17_value < 0) | (choice1_p7_value >= 0 & choice1_p7_value < 0) | (choice2_end_p23_value >= 0 & choice2_end_p23_value < 0) | (choice2_p18_value >= 0 & choice2_p18_value < 0) | (cutting_done_p1_value >= 0 & cutting_done_p1_value < 0) | (cutting_p0_value >= 0 & cutting_p0_value < 1) | (fine_depos_p10_value >= 0 & fine_depos_p10_value < 1) | (fine_depos_p14_value >= 0 & fine_depos_p14_value < 0) | (heavy_polish_p12_value >= 0 & heavy_polish_p12_value < 0) | (heavy_polish_p8_value >= 0 & heavy_polish_p8_value < 2) | (hphs_p19_value >= 0 & hphs_p19_value < 1) | (hphs_p21_value >= 0 & hphs_p21_value < 0) | (light_polish_p13_value >= 0 & light_polish_p13_value < 0) | (light_polish_p9_value >= 0 & light_polish_p9_value < 1) | (lpls_p20_value >= 0 & lpls_p20_value < 2) | (lpls_p22_value >= 0 & lpls_p22_value < 0) | (milling_done_p5_value >= 0 & milling_done_p5_value < 0) | (milling_p3_value >= 0 & milling_p3_value < 1) | (nature1_end_p16_value >= 0 & nature1_end_p16_value < 0) | (nature1_p6_value >= 0 & nature1_p6_value < 0) | (rough_depos_p11_value >= 0 & rough_depos_p11_value < 1) | (rough_depos_p15_value >= 0 & rough_depos_p15_value < 0);
+formula psi_step = (!is_active_bending_t2 & !is_active_choice1_decision_0_t16 & !is_active_choice1_decision_0_t23 & !is_active_choice1_decision_1_t17 & !is_active_choice1_decision_1_t24 & !is_active_choice1_t8_9 & !is_active_choice2_t19_20 & !is_active_cutting_t0 & !is_active_fine_depos_t12 & !is_active_heavy_polish_t10 & !is_active_hphs_t21 & !is_active_light_polish_t11 & !is_active_lpls_t22 & !is_active_milling_t3 & !is_active_nature1_decision_0_t14 & !is_active_nature1_decision_1_t15 & !is_active_nature1_t6_7 & !is_active_parallel_merge_t18 & !is_active_parallel_t1 & !is_active_rough_depos_t13 & !is_active_sequential_t4 & !is_active_sequential_t5) & psi_at_least_one_remaining_duration;
+formula step_updated_bending_done_p4 = bending_done_p4_updated=0;
+formula step_updated_bending_p2 = bending_p2_updated=0 & bending_done_p4_updated=1;
+formula step_updated_choice1_end_p17 = choice1_end_p17_updated=0 & bending_done_p4_updated=1 & bending_p2_updated=1;
+formula step_updated_choice1_p7 = choice1_p7_updated=0 & bending_done_p4_updated=1 & bending_p2_updated=1 & choice1_end_p17_updated=1;
+formula step_updated_choice2_end_p23 = choice2_end_p23_updated=0 & bending_done_p4_updated=1 & bending_p2_updated=1 & choice1_end_p17_updated=1 & choice1_p7_updated=1;
+formula step_updated_choice2_p18 = choice2_p18_updated=0 & bending_done_p4_updated=1 & bending_p2_updated=1 & choice1_end_p17_updated=1 & choice1_p7_updated=1 & choice2_end_p23_updated=1;
+formula step_updated_cutting_done_p1 = cutting_done_p1_updated=0 & bending_done_p4_updated=1 & bending_p2_updated=1 & choice1_end_p17_updated=1 & choice1_p7_updated=1 & choice2_end_p23_updated=1 & choice2_p18_updated=1;
+formula step_updated_cutting_p0 = cutting_p0_updated=0 & bending_done_p4_updated=1 & bending_p2_updated=1 & choice1_end_p17_updated=1 & choice1_p7_updated=1 & choice2_end_p23_updated=1 & choice2_p18_updated=1 & cutting_done_p1_updated=1;
+formula step_updated_fine_depos_p10 = fine_depos_p10_updated=0 & bending_done_p4_updated=1 & bending_p2_updated=1 & choice1_end_p17_updated=1 & choice1_p7_updated=1 & choice2_end_p23_updated=1 & choice2_p18_updated=1 & cutting_done_p1_updated=1 & cutting_p0_updated=1;
+formula step_updated_fine_depos_p14 = fine_depos_p14_updated=0 & bending_done_p4_updated=1 & bending_p2_updated=1 & choice1_end_p17_updated=1 & choice1_p7_updated=1 & choice2_end_p23_updated=1 & choice2_p18_updated=1 & cutting_done_p1_updated=1 & cutting_p0_updated=1 & fine_depos_p10_updated=1;
+formula step_updated_heavy_polish_p12 = heavy_polish_p12_updated=0 & bending_done_p4_updated=1 & bending_p2_updated=1 & choice1_end_p17_updated=1 & choice1_p7_updated=1 & choice2_end_p23_updated=1 & choice2_p18_updated=1 & cutting_done_p1_updated=1 & cutting_p0_updated=1 & fine_depos_p10_updated=1 & fine_depos_p14_updated=1;
+formula step_updated_heavy_polish_p8 = heavy_polish_p8_updated=0 & bending_done_p4_updated=1 & bending_p2_updated=1 & choice1_end_p17_updated=1 & choice1_p7_updated=1 & choice2_end_p23_updated=1 & choice2_p18_updated=1 & cutting_done_p1_updated=1 & cutting_p0_updated=1 & fine_depos_p10_updated=1 & fine_depos_p14_updated=1 & heavy_polish_p12_updated=1;
+formula step_updated_hphs_p19 = hphs_p19_updated=0 & bending_done_p4_updated=1 & bending_p2_updated=1 & choice1_end_p17_updated=1 & choice1_p7_updated=1 & choice2_end_p23_updated=1 & choice2_p18_updated=1 & cutting_done_p1_updated=1 & cutting_p0_updated=1 & fine_depos_p10_updated=1 & fine_depos_p14_updated=1 & heavy_polish_p12_updated=1 & heavy_polish_p8_updated=1;
+formula step_updated_hphs_p21 = hphs_p21_updated=0 & bending_done_p4_updated=1 & bending_p2_updated=1 & choice1_end_p17_updated=1 & choice1_p7_updated=1 & choice2_end_p23_updated=1 & choice2_p18_updated=1 & cutting_done_p1_updated=1 & cutting_p0_updated=1 & fine_depos_p10_updated=1 & fine_depos_p14_updated=1 & heavy_polish_p12_updated=1 & heavy_polish_p8_updated=1 & hphs_p19_updated=1;
+formula step_updated_light_polish_p13 = light_polish_p13_updated=0 & bending_done_p4_updated=1 & bending_p2_updated=1 & choice1_end_p17_updated=1 & choice1_p7_updated=1 & choice2_end_p23_updated=1 & choice2_p18_updated=1 & cutting_done_p1_updated=1 & cutting_p0_updated=1 & fine_depos_p10_updated=1 & fine_depos_p14_updated=1 & heavy_polish_p12_updated=1 & heavy_polish_p8_updated=1 & hphs_p19_updated=1 & hphs_p21_updated=1;
+formula step_updated_light_polish_p9 = light_polish_p9_updated=0 & bending_done_p4_updated=1 & bending_p2_updated=1 & choice1_end_p17_updated=1 & choice1_p7_updated=1 & choice2_end_p23_updated=1 & choice2_p18_updated=1 & cutting_done_p1_updated=1 & cutting_p0_updated=1 & fine_depos_p10_updated=1 & fine_depos_p14_updated=1 & heavy_polish_p12_updated=1 & heavy_polish_p8_updated=1 & hphs_p19_updated=1 & hphs_p21_updated=1 & light_polish_p13_updated=1;
+formula step_updated_lpls_p20 = lpls_p20_updated=0 & bending_done_p4_updated=1 & bending_p2_updated=1 & choice1_end_p17_updated=1 & choice1_p7_updated=1 & choice2_end_p23_updated=1 & choice2_p18_updated=1 & cutting_done_p1_updated=1 & cutting_p0_updated=1 & fine_depos_p10_updated=1 & fine_depos_p14_updated=1 & heavy_polish_p12_updated=1 & heavy_polish_p8_updated=1 & hphs_p19_updated=1 & hphs_p21_updated=1 & light_polish_p13_updated=1 & light_polish_p9_updated=1;
+formula step_updated_lpls_p22 = lpls_p22_updated=0 & bending_done_p4_updated=1 & bending_p2_updated=1 & choice1_end_p17_updated=1 & choice1_p7_updated=1 & choice2_end_p23_updated=1 & choice2_p18_updated=1 & cutting_done_p1_updated=1 & cutting_p0_updated=1 & fine_depos_p10_updated=1 & fine_depos_p14_updated=1 & heavy_polish_p12_updated=1 & heavy_polish_p8_updated=1 & hphs_p19_updated=1 & hphs_p21_updated=1 & light_polish_p13_updated=1 & light_polish_p9_updated=1 & lpls_p20_updated=1;
+formula step_updated_milling_done_p5 = milling_done_p5_updated=0 & bending_done_p4_updated=1 & bending_p2_updated=1 & choice1_end_p17_updated=1 & choice1_p7_updated=1 & choice2_end_p23_updated=1 & choice2_p18_updated=1 & cutting_done_p1_updated=1 & cutting_p0_updated=1 & fine_depos_p10_updated=1 & fine_depos_p14_updated=1 & heavy_polish_p12_updated=1 & heavy_polish_p8_updated=1 & hphs_p19_updated=1 & hphs_p21_updated=1 & light_polish_p13_updated=1 & light_polish_p9_updated=1 & lpls_p20_updated=1 & lpls_p22_updated=1;
+formula step_updated_milling_p3 = milling_p3_updated=0 & bending_done_p4_updated=1 & bending_p2_updated=1 & choice1_end_p17_updated=1 & choice1_p7_updated=1 & choice2_end_p23_updated=1 & choice2_p18_updated=1 & cutting_done_p1_updated=1 & cutting_p0_updated=1 & fine_depos_p10_updated=1 & fine_depos_p14_updated=1 & heavy_polish_p12_updated=1 & heavy_polish_p8_updated=1 & hphs_p19_updated=1 & hphs_p21_updated=1 & light_polish_p13_updated=1 & light_polish_p9_updated=1 & lpls_p20_updated=1 & lpls_p22_updated=1 & milling_done_p5_updated=1;
+formula step_updated_nature1_end_p16 = nature1_end_p16_updated=0 & bending_done_p4_updated=1 & bending_p2_updated=1 & choice1_end_p17_updated=1 & choice1_p7_updated=1 & choice2_end_p23_updated=1 & choice2_p18_updated=1 & cutting_done_p1_updated=1 & cutting_p0_updated=1 & fine_depos_p10_updated=1 & fine_depos_p14_updated=1 & heavy_polish_p12_updated=1 & heavy_polish_p8_updated=1 & hphs_p19_updated=1 & hphs_p21_updated=1 & light_polish_p13_updated=1 & light_polish_p9_updated=1 & lpls_p20_updated=1 & lpls_p22_updated=1 & milling_done_p5_updated=1 & milling_p3_updated=1;
+formula step_updated_nature1_p6 = nature1_p6_updated=0 & bending_done_p4_updated=1 & bending_p2_updated=1 & choice1_end_p17_updated=1 & choice1_p7_updated=1 & choice2_end_p23_updated=1 & choice2_p18_updated=1 & cutting_done_p1_updated=1 & cutting_p0_updated=1 & fine_depos_p10_updated=1 & fine_depos_p14_updated=1 & heavy_polish_p12_updated=1 & heavy_polish_p8_updated=1 & hphs_p19_updated=1 & hphs_p21_updated=1 & light_polish_p13_updated=1 & light_polish_p9_updated=1 & lpls_p20_updated=1 & lpls_p22_updated=1 & milling_done_p5_updated=1 & milling_p3_updated=1 & nature1_end_p16_updated=1;
+formula step_updated_rough_depos_p11 = rough_depos_p11_updated=0 & bending_done_p4_updated=1 & bending_p2_updated=1 & choice1_end_p17_updated=1 & choice1_p7_updated=1 & choice2_end_p23_updated=1 & choice2_p18_updated=1 & cutting_done_p1_updated=1 & cutting_p0_updated=1 & fine_depos_p10_updated=1 & fine_depos_p14_updated=1 & heavy_polish_p12_updated=1 & heavy_polish_p8_updated=1 & hphs_p19_updated=1 & hphs_p21_updated=1 & light_polish_p13_updated=1 & light_polish_p9_updated=1 & lpls_p20_updated=1 & lpls_p22_updated=1 & milling_done_p5_updated=1 & milling_p3_updated=1 & nature1_end_p16_updated=1 & nature1_p6_updated=1;
+formula step_updated_rough_depos_p15 = rough_depos_p15_updated=0 & bending_done_p4_updated=1 & bending_p2_updated=1 & choice1_end_p17_updated=1 & choice1_p7_updated=1 & choice2_end_p23_updated=1 & choice2_p18_updated=1 & cutting_done_p1_updated=1 & cutting_p0_updated=1 & fine_depos_p10_updated=1 & fine_depos_p14_updated=1 & heavy_polish_p12_updated=1 & heavy_polish_p8_updated=1 & hphs_p19_updated=1 & hphs_p21_updated=1 & light_polish_p13_updated=1 & light_polish_p9_updated=1 & lpls_p20_updated=1 & lpls_p22_updated=1 & milling_done_p5_updated=1 & milling_p3_updated=1 & nature1_end_p16_updated=1 & nature1_p6_updated=1 & rough_depos_p11_updated=1;
+formula psi_all_step_updated = bending_done_p4_updated=1 & bending_p2_updated=1 & choice1_end_p17_updated=1 & choice1_p7_updated=1 & choice2_end_p23_updated=1 & choice2_p18_updated=1 & cutting_done_p1_updated=1 & cutting_p0_updated=1 & fine_depos_p10_updated=1 & fine_depos_p14_updated=1 & heavy_polish_p12_updated=1 & heavy_polish_p8_updated=1 & hphs_p19_updated=1 & hphs_p21_updated=1 & light_polish_p13_updated=1 & light_polish_p9_updated=1 & lpls_p20_updated=1 & lpls_p22_updated=1 & milling_done_p5_updated=1 & milling_p3_updated=1 & nature1_end_p16_updated=1 & nature1_p6_updated=1 & rough_depos_p11_updated=1 & rough_depos_p15_updated=1;
+formula step_not_updated_bending_done_p4 = bending_done_p4_updated=1;
+formula step_not_updated_bending_p2 = bending_p2_updated=1 & bending_done_p4_updated=0;
+formula step_not_updated_choice1_end_p17 = choice1_end_p17_updated=1 & bending_done_p4_updated=0 & bending_p2_updated=0;
+formula step_not_updated_choice1_p7 = choice1_p7_updated=1 & bending_done_p4_updated=0 & bending_p2_updated=0 & choice1_end_p17_updated=0;
+formula step_not_updated_choice2_end_p23 = choice2_end_p23_updated=1 & bending_done_p4_updated=0 & bending_p2_updated=0 & choice1_end_p17_updated=0 & choice1_p7_updated=0;
+formula step_not_updated_choice2_p18 = choice2_p18_updated=1 & bending_done_p4_updated=0 & bending_p2_updated=0 & choice1_end_p17_updated=0 & choice1_p7_updated=0 & choice2_end_p23_updated=0;
+formula step_not_updated_cutting_done_p1 = cutting_done_p1_updated=1 & bending_done_p4_updated=0 & bending_p2_updated=0 & choice1_end_p17_updated=0 & choice1_p7_updated=0 & choice2_end_p23_updated=0 & choice2_p18_updated=0;
+formula step_not_updated_cutting_p0 = cutting_p0_updated=1 & bending_done_p4_updated=0 & bending_p2_updated=0 & choice1_end_p17_updated=0 & choice1_p7_updated=0 & choice2_end_p23_updated=0 & choice2_p18_updated=0 & cutting_done_p1_updated=0;
+formula step_not_updated_fine_depos_p10 = fine_depos_p10_updated=1 & bending_done_p4_updated=0 & bending_p2_updated=0 & choice1_end_p17_updated=0 & choice1_p7_updated=0 & choice2_end_p23_updated=0 & choice2_p18_updated=0 & cutting_done_p1_updated=0 & cutting_p0_updated=0;
+formula step_not_updated_fine_depos_p14 = fine_depos_p14_updated=1 & bending_done_p4_updated=0 & bending_p2_updated=0 & choice1_end_p17_updated=0 & choice1_p7_updated=0 & choice2_end_p23_updated=0 & choice2_p18_updated=0 & cutting_done_p1_updated=0 & cutting_p0_updated=0 & fine_depos_p10_updated=0;
+formula step_not_updated_heavy_polish_p12 = heavy_polish_p12_updated=1 & bending_done_p4_updated=0 & bending_p2_updated=0 & choice1_end_p17_updated=0 & choice1_p7_updated=0 & choice2_end_p23_updated=0 & choice2_p18_updated=0 & cutting_done_p1_updated=0 & cutting_p0_updated=0 & fine_depos_p10_updated=0 & fine_depos_p14_updated=0;
+formula step_not_updated_heavy_polish_p8 = heavy_polish_p8_updated=1 & bending_done_p4_updated=0 & bending_p2_updated=0 & choice1_end_p17_updated=0 & choice1_p7_updated=0 & choice2_end_p23_updated=0 & choice2_p18_updated=0 & cutting_done_p1_updated=0 & cutting_p0_updated=0 & fine_depos_p10_updated=0 & fine_depos_p14_updated=0 & heavy_polish_p12_updated=0;
+formula step_not_updated_hphs_p19 = hphs_p19_updated=1 & bending_done_p4_updated=0 & bending_p2_updated=0 & choice1_end_p17_updated=0 & choice1_p7_updated=0 & choice2_end_p23_updated=0 & choice2_p18_updated=0 & cutting_done_p1_updated=0 & cutting_p0_updated=0 & fine_depos_p10_updated=0 & fine_depos_p14_updated=0 & heavy_polish_p12_updated=0 & heavy_polish_p8_updated=0;
+formula step_not_updated_hphs_p21 = hphs_p21_updated=1 & bending_done_p4_updated=0 & bending_p2_updated=0 & choice1_end_p17_updated=0 & choice1_p7_updated=0 & choice2_end_p23_updated=0 & choice2_p18_updated=0 & cutting_done_p1_updated=0 & cutting_p0_updated=0 & fine_depos_p10_updated=0 & fine_depos_p14_updated=0 & heavy_polish_p12_updated=0 & heavy_polish_p8_updated=0 & hphs_p19_updated=0;
+formula step_not_updated_light_polish_p13 = light_polish_p13_updated=1 & bending_done_p4_updated=0 & bending_p2_updated=0 & choice1_end_p17_updated=0 & choice1_p7_updated=0 & choice2_end_p23_updated=0 & choice2_p18_updated=0 & cutting_done_p1_updated=0 & cutting_p0_updated=0 & fine_depos_p10_updated=0 & fine_depos_p14_updated=0 & heavy_polish_p12_updated=0 & heavy_polish_p8_updated=0 & hphs_p19_updated=0 & hphs_p21_updated=0;
+formula step_not_updated_light_polish_p9 = light_polish_p9_updated=1 & bending_done_p4_updated=0 & bending_p2_updated=0 & choice1_end_p17_updated=0 & choice1_p7_updated=0 & choice2_end_p23_updated=0 & choice2_p18_updated=0 & cutting_done_p1_updated=0 & cutting_p0_updated=0 & fine_depos_p10_updated=0 & fine_depos_p14_updated=0 & heavy_polish_p12_updated=0 & heavy_polish_p8_updated=0 & hphs_p19_updated=0 & hphs_p21_updated=0 & light_polish_p13_updated=0;
+formula step_not_updated_lpls_p20 = lpls_p20_updated=1 & bending_done_p4_updated=0 & bending_p2_updated=0 & choice1_end_p17_updated=0 & choice1_p7_updated=0 & choice2_end_p23_updated=0 & choice2_p18_updated=0 & cutting_done_p1_updated=0 & cutting_p0_updated=0 & fine_depos_p10_updated=0 & fine_depos_p14_updated=0 & heavy_polish_p12_updated=0 & heavy_polish_p8_updated=0 & hphs_p19_updated=0 & hphs_p21_updated=0 & light_polish_p13_updated=0 & light_polish_p9_updated=0;
+formula step_not_updated_lpls_p22 = lpls_p22_updated=1 & bending_done_p4_updated=0 & bending_p2_updated=0 & choice1_end_p17_updated=0 & choice1_p7_updated=0 & choice2_end_p23_updated=0 & choice2_p18_updated=0 & cutting_done_p1_updated=0 & cutting_p0_updated=0 & fine_depos_p10_updated=0 & fine_depos_p14_updated=0 & heavy_polish_p12_updated=0 & heavy_polish_p8_updated=0 & hphs_p19_updated=0 & hphs_p21_updated=0 & light_polish_p13_updated=0 & light_polish_p9_updated=0 & lpls_p20_updated=0;
+formula step_not_updated_milling_done_p5 = milling_done_p5_updated=1 & bending_done_p4_updated=0 & bending_p2_updated=0 & choice1_end_p17_updated=0 & choice1_p7_updated=0 & choice2_end_p23_updated=0 & choice2_p18_updated=0 & cutting_done_p1_updated=0 & cutting_p0_updated=0 & fine_depos_p10_updated=0 & fine_depos_p14_updated=0 & heavy_polish_p12_updated=0 & heavy_polish_p8_updated=0 & hphs_p19_updated=0 & hphs_p21_updated=0 & light_polish_p13_updated=0 & light_polish_p9_updated=0 & lpls_p20_updated=0 & lpls_p22_updated=0;
+formula step_not_updated_milling_p3 = milling_p3_updated=1 & bending_done_p4_updated=0 & bending_p2_updated=0 & choice1_end_p17_updated=0 & choice1_p7_updated=0 & choice2_end_p23_updated=0 & choice2_p18_updated=0 & cutting_done_p1_updated=0 & cutting_p0_updated=0 & fine_depos_p10_updated=0 & fine_depos_p14_updated=0 & heavy_polish_p12_updated=0 & heavy_polish_p8_updated=0 & hphs_p19_updated=0 & hphs_p21_updated=0 & light_polish_p13_updated=0 & light_polish_p9_updated=0 & lpls_p20_updated=0 & lpls_p22_updated=0 & milling_done_p5_updated=0;
+formula step_not_updated_nature1_end_p16 = nature1_end_p16_updated=1 & bending_done_p4_updated=0 & bending_p2_updated=0 & choice1_end_p17_updated=0 & choice1_p7_updated=0 & choice2_end_p23_updated=0 & choice2_p18_updated=0 & cutting_done_p1_updated=0 & cutting_p0_updated=0 & fine_depos_p10_updated=0 & fine_depos_p14_updated=0 & heavy_polish_p12_updated=0 & heavy_polish_p8_updated=0 & hphs_p19_updated=0 & hphs_p21_updated=0 & light_polish_p13_updated=0 & light_polish_p9_updated=0 & lpls_p20_updated=0 & lpls_p22_updated=0 & milling_done_p5_updated=0 & milling_p3_updated=0;
+formula step_not_updated_nature1_p6 = nature1_p6_updated=1 & bending_done_p4_updated=0 & bending_p2_updated=0 & choice1_end_p17_updated=0 & choice1_p7_updated=0 & choice2_end_p23_updated=0 & choice2_p18_updated=0 & cutting_done_p1_updated=0 & cutting_p0_updated=0 & fine_depos_p10_updated=0 & fine_depos_p14_updated=0 & heavy_polish_p12_updated=0 & heavy_polish_p8_updated=0 & hphs_p19_updated=0 & hphs_p21_updated=0 & light_polish_p13_updated=0 & light_polish_p9_updated=0 & lpls_p20_updated=0 & lpls_p22_updated=0 & milling_done_p5_updated=0 & milling_p3_updated=0 & nature1_end_p16_updated=0;
+formula step_not_updated_rough_depos_p11 = rough_depos_p11_updated=1 & bending_done_p4_updated=0 & bending_p2_updated=0 & choice1_end_p17_updated=0 & choice1_p7_updated=0 & choice2_end_p23_updated=0 & choice2_p18_updated=0 & cutting_done_p1_updated=0 & cutting_p0_updated=0 & fine_depos_p10_updated=0 & fine_depos_p14_updated=0 & heavy_polish_p12_updated=0 & heavy_polish_p8_updated=0 & hphs_p19_updated=0 & hphs_p21_updated=0 & light_polish_p13_updated=0 & light_polish_p9_updated=0 & lpls_p20_updated=0 & lpls_p22_updated=0 & milling_done_p5_updated=0 & milling_p3_updated=0 & nature1_end_p16_updated=0 & nature1_p6_updated=0;
+formula step_not_updated_rough_depos_p15 = rough_depos_p15_updated=1 & bending_done_p4_updated=0 & bending_p2_updated=0 & choice1_end_p17_updated=0 & choice1_p7_updated=0 & choice2_end_p23_updated=0 & choice2_p18_updated=0 & cutting_done_p1_updated=0 & cutting_p0_updated=0 & fine_depos_p10_updated=0 & fine_depos_p14_updated=0 & heavy_polish_p12_updated=0 & heavy_polish_p8_updated=0 & hphs_p19_updated=0 & hphs_p21_updated=0 & light_polish_p13_updated=0 & light_polish_p9_updated=0 & lpls_p20_updated=0 & lpls_p22_updated=0 & milling_done_p5_updated=0 & milling_p3_updated=0 & nature1_end_p16_updated=0 & nature1_p6_updated=0 & rough_depos_p11_updated=0;
+formula psi_all_step_not_updated = bending_done_p4_updated=0 & bending_p2_updated=0 & choice1_end_p17_updated=0 & choice1_p7_updated=0 & choice2_end_p23_updated=0 & choice2_p18_updated=0 & cutting_done_p1_updated=0 & cutting_p0_updated=0 & fine_depos_p10_updated=0 & fine_depos_p14_updated=0 & heavy_polish_p12_updated=0 & heavy_polish_p8_updated=0 & hphs_p19_updated=0 & hphs_p21_updated=0 & light_polish_p13_updated=0 & light_polish_p9_updated=0 & lpls_p20_updated=0 & lpls_p22_updated=0 & milling_done_p5_updated=0 & milling_p3_updated=0 & nature1_end_p16_updated=0 & nature1_p6_updated=0 & rough_depos_p11_updated=0 & rough_depos_p15_updated=0;
+formula psi_idle_bending_t2 = !psi_step & bending_t2_state=0;
+formula psi_idle_choice1_decision_0_t16 = !psi_step & choice1_decision_0_t16_state=0 & bending_t2_state!=0;
+formula psi_idle_choice1_decision_0_t23 = !psi_step & choice1_decision_0_t23_state=0 & bending_t2_state!=0 & choice1_decision_0_t16_state!=0;
+formula psi_idle_choice1_decision_1_t17 = !psi_step & choice1_decision_1_t17_state=0 & bending_t2_state!=0 & choice1_decision_0_t16_state!=0 & choice1_decision_0_t23_state!=0;
+formula psi_idle_choice1_decision_1_t24 = !psi_step & choice1_decision_1_t24_state=0 & bending_t2_state!=0 & choice1_decision_0_t16_state!=0 & choice1_decision_0_t23_state!=0 & choice1_decision_1_t17_state!=0;
+formula psi_idle_choice1_t8_9 = !psi_step & choice1_t8_9_state=0 & bending_t2_state!=0 & choice1_decision_0_t16_state!=0 & choice1_decision_0_t23_state!=0 & choice1_decision_1_t17_state!=0 & choice1_decision_1_t24_state!=0;
+formula psi_idle_choice2_t19_20 = !psi_step & choice2_t19_20_state=0 & bending_t2_state!=0 & choice1_decision_0_t16_state!=0 & choice1_decision_0_t23_state!=0 & choice1_decision_1_t17_state!=0 & choice1_decision_1_t24_state!=0 & choice1_t8_9_state!=0;
+formula psi_idle_cutting_t0 = !psi_step & cutting_t0_state=0 & bending_t2_state!=0 & choice1_decision_0_t16_state!=0 & choice1_decision_0_t23_state!=0 & choice1_decision_1_t17_state!=0 & choice1_decision_1_t24_state!=0 & choice1_t8_9_state!=0 & choice2_t19_20_state!=0;
+formula psi_idle_fine_depos_t12 = !psi_step & fine_depos_t12_state=0 & bending_t2_state!=0 & choice1_decision_0_t16_state!=0 & choice1_decision_0_t23_state!=0 & choice1_decision_1_t17_state!=0 & choice1_decision_1_t24_state!=0 & choice1_t8_9_state!=0 & choice2_t19_20_state!=0 & cutting_t0_state!=0;
+formula psi_idle_heavy_polish_t10 = !psi_step & heavy_polish_t10_state=0 & bending_t2_state!=0 & choice1_decision_0_t16_state!=0 & choice1_decision_0_t23_state!=0 & choice1_decision_1_t17_state!=0 & choice1_decision_1_t24_state!=0 & choice1_t8_9_state!=0 & choice2_t19_20_state!=0 & cutting_t0_state!=0 & fine_depos_t12_state!=0;
+formula psi_idle_hphs_t21 = !psi_step & hphs_t21_state=0 & bending_t2_state!=0 & choice1_decision_0_t16_state!=0 & choice1_decision_0_t23_state!=0 & choice1_decision_1_t17_state!=0 & choice1_decision_1_t24_state!=0 & choice1_t8_9_state!=0 & choice2_t19_20_state!=0 & cutting_t0_state!=0 & fine_depos_t12_state!=0 & heavy_polish_t10_state!=0;
+formula psi_idle_light_polish_t11 = !psi_step & light_polish_t11_state=0 & bending_t2_state!=0 & choice1_decision_0_t16_state!=0 & choice1_decision_0_t23_state!=0 & choice1_decision_1_t17_state!=0 & choice1_decision_1_t24_state!=0 & choice1_t8_9_state!=0 & choice2_t19_20_state!=0 & cutting_t0_state!=0 & fine_depos_t12_state!=0 & heavy_polish_t10_state!=0 & hphs_t21_state!=0;
+formula psi_idle_lpls_t22 = !psi_step & lpls_t22_state=0 & bending_t2_state!=0 & choice1_decision_0_t16_state!=0 & choice1_decision_0_t23_state!=0 & choice1_decision_1_t17_state!=0 & choice1_decision_1_t24_state!=0 & choice1_t8_9_state!=0 & choice2_t19_20_state!=0 & cutting_t0_state!=0 & fine_depos_t12_state!=0 & heavy_polish_t10_state!=0 & hphs_t21_state!=0 & light_polish_t11_state!=0;
+formula psi_idle_milling_t3 = !psi_step & milling_t3_state=0 & bending_t2_state!=0 & choice1_decision_0_t16_state!=0 & choice1_decision_0_t23_state!=0 & choice1_decision_1_t17_state!=0 & choice1_decision_1_t24_state!=0 & choice1_t8_9_state!=0 & choice2_t19_20_state!=0 & cutting_t0_state!=0 & fine_depos_t12_state!=0 & heavy_polish_t10_state!=0 & hphs_t21_state!=0 & light_polish_t11_state!=0 & lpls_t22_state!=0;
+formula psi_idle_nature1_decision_0_t14 = !psi_step & nature1_decision_0_t14_state=0 & bending_t2_state!=0 & choice1_decision_0_t16_state!=0 & choice1_decision_0_t23_state!=0 & choice1_decision_1_t17_state!=0 & choice1_decision_1_t24_state!=0 & choice1_t8_9_state!=0 & choice2_t19_20_state!=0 & cutting_t0_state!=0 & fine_depos_t12_state!=0 & heavy_polish_t10_state!=0 & hphs_t21_state!=0 & light_polish_t11_state!=0 & lpls_t22_state!=0 & milling_t3_state!=0;
+formula psi_idle_nature1_decision_1_t15 = !psi_step & nature1_decision_1_t15_state=0 & bending_t2_state!=0 & choice1_decision_0_t16_state!=0 & choice1_decision_0_t23_state!=0 & choice1_decision_1_t17_state!=0 & choice1_decision_1_t24_state!=0 & choice1_t8_9_state!=0 & choice2_t19_20_state!=0 & cutting_t0_state!=0 & fine_depos_t12_state!=0 & heavy_polish_t10_state!=0 & hphs_t21_state!=0 & light_polish_t11_state!=0 & lpls_t22_state!=0 & milling_t3_state!=0 & nature1_decision_0_t14_state!=0;
+formula psi_idle_nature1_t6_7 = !psi_step & nature1_t6_7_state=0 & bending_t2_state!=0 & choice1_decision_0_t16_state!=0 & choice1_decision_0_t23_state!=0 & choice1_decision_1_t17_state!=0 & choice1_decision_1_t24_state!=0 & choice1_t8_9_state!=0 & choice2_t19_20_state!=0 & cutting_t0_state!=0 & fine_depos_t12_state!=0 & heavy_polish_t10_state!=0 & hphs_t21_state!=0 & light_polish_t11_state!=0 & lpls_t22_state!=0 & milling_t3_state!=0 & nature1_decision_0_t14_state!=0 & nature1_decision_1_t15_state!=0;
+formula psi_idle_parallel_merge_t18 = !psi_step & parallel_merge_t18_state=0 & bending_t2_state!=0 & choice1_decision_0_t16_state!=0 & choice1_decision_0_t23_state!=0 & choice1_decision_1_t17_state!=0 & choice1_decision_1_t24_state!=0 & choice1_t8_9_state!=0 & choice2_t19_20_state!=0 & cutting_t0_state!=0 & fine_depos_t12_state!=0 & heavy_polish_t10_state!=0 & hphs_t21_state!=0 & light_polish_t11_state!=0 & lpls_t22_state!=0 & milling_t3_state!=0 & nature1_decision_0_t14_state!=0 & nature1_decision_1_t15_state!=0 & nature1_t6_7_state!=0;
+formula psi_idle_parallel_t1 = !psi_step & parallel_t1_state=0 & bending_t2_state!=0 & choice1_decision_0_t16_state!=0 & choice1_decision_0_t23_state!=0 & choice1_decision_1_t17_state!=0 & choice1_decision_1_t24_state!=0 & choice1_t8_9_state!=0 & choice2_t19_20_state!=0 & cutting_t0_state!=0 & fine_depos_t12_state!=0 & heavy_polish_t10_state!=0 & hphs_t21_state!=0 & light_polish_t11_state!=0 & lpls_t22_state!=0 & milling_t3_state!=0 & nature1_decision_0_t14_state!=0 & nature1_decision_1_t15_state!=0 & nature1_t6_7_state!=0 & parallel_merge_t18_state!=0;
+formula psi_idle_rough_depos_t13 = !psi_step & rough_depos_t13_state=0 & bending_t2_state!=0 & choice1_decision_0_t16_state!=0 & choice1_decision_0_t23_state!=0 & choice1_decision_1_t17_state!=0 & choice1_decision_1_t24_state!=0 & choice1_t8_9_state!=0 & choice2_t19_20_state!=0 & cutting_t0_state!=0 & fine_depos_t12_state!=0 & heavy_polish_t10_state!=0 & hphs_t21_state!=0 & light_polish_t11_state!=0 & lpls_t22_state!=0 & milling_t3_state!=0 & nature1_decision_0_t14_state!=0 & nature1_decision_1_t15_state!=0 & nature1_t6_7_state!=0 & parallel_merge_t18_state!=0 & parallel_t1_state!=0;
+formula psi_idle_sequential_t4 = !psi_step & sequential_t4_state=0 & bending_t2_state!=0 & choice1_decision_0_t16_state!=0 & choice1_decision_0_t23_state!=0 & choice1_decision_1_t17_state!=0 & choice1_decision_1_t24_state!=0 & choice1_t8_9_state!=0 & choice2_t19_20_state!=0 & cutting_t0_state!=0 & fine_depos_t12_state!=0 & heavy_polish_t10_state!=0 & hphs_t21_state!=0 & light_polish_t11_state!=0 & lpls_t22_state!=0 & milling_t3_state!=0 & nature1_decision_0_t14_state!=0 & nature1_decision_1_t15_state!=0 & nature1_t6_7_state!=0 & parallel_merge_t18_state!=0 & parallel_t1_state!=0 & rough_depos_t13_state!=0;
+formula psi_idle_sequential_t5 = !psi_step & sequential_t5_state=0 & bending_t2_state!=0 & choice1_decision_0_t16_state!=0 & choice1_decision_0_t23_state!=0 & choice1_decision_1_t17_state!=0 & choice1_decision_1_t24_state!=0 & choice1_t8_9_state!=0 & choice2_t19_20_state!=0 & cutting_t0_state!=0 & fine_depos_t12_state!=0 & heavy_polish_t10_state!=0 & hphs_t21_state!=0 & light_polish_t11_state!=0 & lpls_t22_state!=0 & milling_t3_state!=0 & nature1_decision_0_t14_state!=0 & nature1_decision_1_t15_state!=0 & nature1_t6_7_state!=0 & parallel_merge_t18_state!=0 & parallel_t1_state!=0 & rough_depos_t13_state!=0 & sequential_t4_state!=0;
+formula psi_first_but_nature_not_idle_bending_t2 = bending_t2_state!=0;
+formula psi_first_but_nature_not_idle_choice1_decision_0_t16 = choice1_decision_0_t16_state!=0 & bending_t2_state=0;
+formula psi_first_but_nature_not_idle_choice1_decision_0_t23 = choice1_decision_0_t23_state!=0 & bending_t2_state=0 & choice1_decision_0_t16_state=0;
+formula psi_first_but_nature_not_idle_choice1_decision_1_t17 = choice1_decision_1_t17_state!=0 & bending_t2_state=0 & choice1_decision_0_t16_state=0 & choice1_decision_0_t23_state=0;
+formula psi_first_but_nature_not_idle_choice1_decision_1_t24 = choice1_decision_1_t24_state!=0 & bending_t2_state=0 & choice1_decision_0_t16_state=0 & choice1_decision_0_t23_state=0 & choice1_decision_1_t17_state=0;
+formula psi_first_but_nature_not_idle_choice1_t8_9 = choice1_t8_9_state!=0 & bending_t2_state=0 & choice1_decision_0_t16_state=0 & choice1_decision_0_t23_state=0 & choice1_decision_1_t17_state=0 & choice1_decision_1_t24_state=0;
+formula psi_first_but_nature_not_idle_choice2_t19_20 = choice2_t19_20_state!=0 & bending_t2_state=0 & choice1_decision_0_t16_state=0 & choice1_decision_0_t23_state=0 & choice1_decision_1_t17_state=0 & choice1_decision_1_t24_state=0 & choice1_t8_9_state=0;
+formula psi_first_but_nature_not_idle_cutting_t0 = cutting_t0_state!=0 & bending_t2_state=0 & choice1_decision_0_t16_state=0 & choice1_decision_0_t23_state=0 & choice1_decision_1_t17_state=0 & choice1_decision_1_t24_state=0 & choice1_t8_9_state=0 & choice2_t19_20_state=0;
+formula psi_first_but_nature_not_idle_fine_depos_t12 = fine_depos_t12_state!=0 & bending_t2_state=0 & choice1_decision_0_t16_state=0 & choice1_decision_0_t23_state=0 & choice1_decision_1_t17_state=0 & choice1_decision_1_t24_state=0 & choice1_t8_9_state=0 & choice2_t19_20_state=0 & cutting_t0_state=0;
+formula psi_first_but_nature_not_idle_heavy_polish_t10 = heavy_polish_t10_state!=0 & bending_t2_state=0 & choice1_decision_0_t16_state=0 & choice1_decision_0_t23_state=0 & choice1_decision_1_t17_state=0 & choice1_decision_1_t24_state=0 & choice1_t8_9_state=0 & choice2_t19_20_state=0 & cutting_t0_state=0 & fine_depos_t12_state=0;
+formula psi_first_but_nature_not_idle_hphs_t21 = hphs_t21_state!=0 & bending_t2_state=0 & choice1_decision_0_t16_state=0 & choice1_decision_0_t23_state=0 & choice1_decision_1_t17_state=0 & choice1_decision_1_t24_state=0 & choice1_t8_9_state=0 & choice2_t19_20_state=0 & cutting_t0_state=0 & fine_depos_t12_state=0 & heavy_polish_t10_state=0;
+formula psi_first_but_nature_not_idle_light_polish_t11 = light_polish_t11_state!=0 & bending_t2_state=0 & choice1_decision_0_t16_state=0 & choice1_decision_0_t23_state=0 & choice1_decision_1_t17_state=0 & choice1_decision_1_t24_state=0 & choice1_t8_9_state=0 & choice2_t19_20_state=0 & cutting_t0_state=0 & fine_depos_t12_state=0 & heavy_polish_t10_state=0 & hphs_t21_state=0;
+formula psi_first_but_nature_not_idle_lpls_t22 = lpls_t22_state!=0 & bending_t2_state=0 & choice1_decision_0_t16_state=0 & choice1_decision_0_t23_state=0 & choice1_decision_1_t17_state=0 & choice1_decision_1_t24_state=0 & choice1_t8_9_state=0 & choice2_t19_20_state=0 & cutting_t0_state=0 & fine_depos_t12_state=0 & heavy_polish_t10_state=0 & hphs_t21_state=0 & light_polish_t11_state=0;
+formula psi_first_but_nature_not_idle_milling_t3 = milling_t3_state!=0 & bending_t2_state=0 & choice1_decision_0_t16_state=0 & choice1_decision_0_t23_state=0 & choice1_decision_1_t17_state=0 & choice1_decision_1_t24_state=0 & choice1_t8_9_state=0 & choice2_t19_20_state=0 & cutting_t0_state=0 & fine_depos_t12_state=0 & heavy_polish_t10_state=0 & hphs_t21_state=0 & light_polish_t11_state=0 & lpls_t22_state=0;
+formula psi_first_but_nature_not_idle_nature1_decision_0_t14 = nature1_decision_0_t14_state!=0 & bending_t2_state=0 & choice1_decision_0_t16_state=0 & choice1_decision_0_t23_state=0 & choice1_decision_1_t17_state=0 & choice1_decision_1_t24_state=0 & choice1_t8_9_state=0 & choice2_t19_20_state=0 & cutting_t0_state=0 & fine_depos_t12_state=0 & heavy_polish_t10_state=0 & hphs_t21_state=0 & light_polish_t11_state=0 & lpls_t22_state=0 & milling_t3_state=0;
+formula psi_first_but_nature_not_idle_nature1_decision_1_t15 = nature1_decision_1_t15_state!=0 & bending_t2_state=0 & choice1_decision_0_t16_state=0 & choice1_decision_0_t23_state=0 & choice1_decision_1_t17_state=0 & choice1_decision_1_t24_state=0 & choice1_t8_9_state=0 & choice2_t19_20_state=0 & cutting_t0_state=0 & fine_depos_t12_state=0 & heavy_polish_t10_state=0 & hphs_t21_state=0 & light_polish_t11_state=0 & lpls_t22_state=0 & milling_t3_state=0 & nature1_decision_0_t14_state=0;
+formula psi_first_but_nature_not_idle_parallel_merge_t18 = parallel_merge_t18_state!=0 & bending_t2_state=0 & choice1_decision_0_t16_state=0 & choice1_decision_0_t23_state=0 & choice1_decision_1_t17_state=0 & choice1_decision_1_t24_state=0 & choice1_t8_9_state=0 & choice2_t19_20_state=0 & cutting_t0_state=0 & fine_depos_t12_state=0 & heavy_polish_t10_state=0 & hphs_t21_state=0 & light_polish_t11_state=0 & lpls_t22_state=0 & milling_t3_state=0 & nature1_decision_0_t14_state=0 & nature1_decision_1_t15_state=0;
+formula psi_first_but_nature_not_idle_parallel_t1 = parallel_t1_state!=0 & bending_t2_state=0 & choice1_decision_0_t16_state=0 & choice1_decision_0_t23_state=0 & choice1_decision_1_t17_state=0 & choice1_decision_1_t24_state=0 & choice1_t8_9_state=0 & choice2_t19_20_state=0 & cutting_t0_state=0 & fine_depos_t12_state=0 & heavy_polish_t10_state=0 & hphs_t21_state=0 & light_polish_t11_state=0 & lpls_t22_state=0 & milling_t3_state=0 & nature1_decision_0_t14_state=0 & nature1_decision_1_t15_state=0 & parallel_merge_t18_state=0;
+formula psi_first_but_nature_not_idle_rough_depos_t13 = rough_depos_t13_state!=0 & bending_t2_state=0 & choice1_decision_0_t16_state=0 & choice1_decision_0_t23_state=0 & choice1_decision_1_t17_state=0 & choice1_decision_1_t24_state=0 & choice1_t8_9_state=0 & choice2_t19_20_state=0 & cutting_t0_state=0 & fine_depos_t12_state=0 & heavy_polish_t10_state=0 & hphs_t21_state=0 & light_polish_t11_state=0 & lpls_t22_state=0 & milling_t3_state=0 & nature1_decision_0_t14_state=0 & nature1_decision_1_t15_state=0 & parallel_merge_t18_state=0 & parallel_t1_state=0;
+formula psi_first_but_nature_not_idle_sequential_t4 = sequential_t4_state!=0 & bending_t2_state=0 & choice1_decision_0_t16_state=0 & choice1_decision_0_t23_state=0 & choice1_decision_1_t17_state=0 & choice1_decision_1_t24_state=0 & choice1_t8_9_state=0 & choice2_t19_20_state=0 & cutting_t0_state=0 & fine_depos_t12_state=0 & heavy_polish_t10_state=0 & hphs_t21_state=0 & light_polish_t11_state=0 & lpls_t22_state=0 & milling_t3_state=0 & nature1_decision_0_t14_state=0 & nature1_decision_1_t15_state=0 & parallel_merge_t18_state=0 & parallel_t1_state=0 & rough_depos_t13_state=0;
+formula psi_first_but_nature_not_idle_sequential_t5 = sequential_t5_state!=0 & bending_t2_state=0 & choice1_decision_0_t16_state=0 & choice1_decision_0_t23_state=0 & choice1_decision_1_t17_state=0 & choice1_decision_1_t24_state=0 & choice1_t8_9_state=0 & choice2_t19_20_state=0 & cutting_t0_state=0 & fine_depos_t12_state=0 & heavy_polish_t10_state=0 & hphs_t21_state=0 & light_polish_t11_state=0 & lpls_t22_state=0 & milling_t3_state=0 & nature1_decision_0_t14_state=0 & nature1_decision_1_t15_state=0 & parallel_merge_t18_state=0 & parallel_t1_state=0 & rough_depos_t13_state=0 & sequential_t4_state=0;
+formula psi_first_nature_not_idle_nature1_t6_7 = nature1_t6_7_state!=0;
+formula psi_all_idle_but_nature = bending_t2_state=0 & choice1_decision_0_t16_state=0 & choice1_decision_0_t23_state=0 & choice1_decision_1_t17_state=0 & choice1_decision_1_t24_state=0 & choice1_t8_9_state=0 & choice2_t19_20_state=0 & cutting_t0_state=0 & fine_depos_t12_state=0 & heavy_polish_t10_state=0 & hphs_t21_state=0 & light_polish_t11_state=0 & lpls_t22_state=0 & milling_t3_state=0 & nature1_decision_0_t14_state=0 & nature1_decision_1_t15_state=0 & parallel_merge_t18_state=0 & parallel_t1_state=0 & rough_depos_t13_state=0 & sequential_t4_state=0 & sequential_t5_state=0;
+formula psi_all_idle_nature = nature1_t6_7_state=0;
+formula psi_noone_idle = bending_t2_state!=0 & choice1_decision_0_t16_state!=0 & choice1_decision_0_t23_state!=0 & choice1_decision_1_t17_state!=0 & choice1_decision_1_t24_state!=0 & choice1_t8_9_state!=0 & choice2_t19_20_state!=0 & cutting_t0_state!=0 & fine_depos_t12_state!=0 & heavy_polish_t10_state!=0 & hphs_t21_state!=0 & light_polish_t11_state!=0 & lpls_t22_state!=0 & milling_t3_state!=0 & nature1_decision_0_t14_state!=0 & nature1_decision_1_t15_state!=0 & nature1_t6_7_state!=0 & parallel_merge_t18_state!=0 & parallel_t1_state!=0 & rough_depos_t13_state!=0 & sequential_t4_state!=0 & sequential_t5_state!=0;
+formula psi_atleastone_active = is_active_bending_t2 | is_active_choice1_decision_0_t16 | is_active_choice1_decision_0_t23 | is_active_choice1_decision_1_t17 | is_active_choice1_decision_1_t24 | is_active_choice1_t8_9 | is_active_choice2_t19_20 | is_active_cutting_t0 | is_active_fine_depos_t12 | is_active_heavy_polish_t10 | is_active_hphs_t21 | is_active_light_polish_t11 | is_active_lpls_t22 | is_active_milling_t3 | is_active_nature1_decision_0_t14 | is_active_nature1_decision_1_t15 | is_active_nature1_t6_7 | is_active_parallel_merge_t18 | is_active_parallel_t1 | is_active_rough_depos_t13 | is_active_sequential_t4 | is_active_sequential_t5;
+
+// State Labels for Simulator
+label "psi_step" = psi_step;
+label "psi_at_least_one_remaining_duration" = psi_at_least_one_remaining_duration;
+label "psi_all_step_updated" = psi_all_step_updated;
+label "psi_all_step_not_updated" = psi_all_step_not_updated;
+label "psi_noone_idle" = psi_noone_idle;
+label "psi_atleastone_active" = psi_atleastone_active;
+label "psi_idle_bending_t2" = psi_idle_bending_t2;
+label "psi_idle_choice1_decision_0_t16" = psi_idle_choice1_decision_0_t16;
+label "psi_idle_choice1_decision_0_t23" = psi_idle_choice1_decision_0_t23;
+label "psi_idle_choice1_decision_1_t17" = psi_idle_choice1_decision_1_t17;
+label "psi_idle_choice1_decision_1_t24" = psi_idle_choice1_decision_1_t24;
+label "psi_idle_choice1_t8_9" = psi_idle_choice1_t8_9;
+label "psi_idle_choice2_t19_20" = psi_idle_choice2_t19_20;
+label "psi_idle_cutting_t0" = psi_idle_cutting_t0;
+label "psi_idle_fine_depos_t12" = psi_idle_fine_depos_t12;
+label "psi_idle_heavy_polish_t10" = psi_idle_heavy_polish_t10;
+label "psi_idle_hphs_t21" = psi_idle_hphs_t21;
+label "psi_idle_light_polish_t11" = psi_idle_light_polish_t11;
+label "psi_idle_lpls_t22" = psi_idle_lpls_t22;
+label "psi_idle_milling_t3" = psi_idle_milling_t3;
+label "psi_idle_nature1_decision_0_t14" = psi_idle_nature1_decision_0_t14;
+label "psi_idle_nature1_decision_1_t15" = psi_idle_nature1_decision_1_t15;
+label "psi_idle_nature1_t6_7" = psi_idle_nature1_t6_7;
+label "psi_idle_parallel_merge_t18" = psi_idle_parallel_merge_t18;
+label "psi_idle_parallel_t1" = psi_idle_parallel_t1;
+label "psi_idle_rough_depos_t13" = psi_idle_rough_depos_t13;
+label "psi_idle_sequential_t4" = psi_idle_sequential_t4;
+label "psi_idle_sequential_t5" = psi_idle_sequential_t5;
+label "psi_first_but_nature_not_idle_bending_t2" = psi_first_but_nature_not_idle_bending_t2;
+label "psi_first_but_nature_not_idle_choice1_decision_0_t16" = psi_first_but_nature_not_idle_choice1_decision_0_t16;
+label "psi_first_but_nature_not_idle_choice1_decision_0_t23" = psi_first_but_nature_not_idle_choice1_decision_0_t23;
+label "psi_first_but_nature_not_idle_choice1_decision_1_t17" = psi_first_but_nature_not_idle_choice1_decision_1_t17;
+label "psi_first_but_nature_not_idle_choice1_decision_1_t24" = psi_first_but_nature_not_idle_choice1_decision_1_t24;
+label "psi_first_but_nature_not_idle_choice1_t8_9" = psi_first_but_nature_not_idle_choice1_t8_9;
+label "psi_first_but_nature_not_idle_choice2_t19_20" = psi_first_but_nature_not_idle_choice2_t19_20;
+label "psi_first_but_nature_not_idle_cutting_t0" = psi_first_but_nature_not_idle_cutting_t0;
+label "psi_first_but_nature_not_idle_fine_depos_t12" = psi_first_but_nature_not_idle_fine_depos_t12;
+label "psi_first_but_nature_not_idle_heavy_polish_t10" = psi_first_but_nature_not_idle_heavy_polish_t10;
+label "psi_first_but_nature_not_idle_hphs_t21" = psi_first_but_nature_not_idle_hphs_t21;
+label "psi_first_but_nature_not_idle_light_polish_t11" = psi_first_but_nature_not_idle_light_polish_t11;
+label "psi_first_but_nature_not_idle_lpls_t22" = psi_first_but_nature_not_idle_lpls_t22;
+label "psi_first_but_nature_not_idle_milling_t3" = psi_first_but_nature_not_idle_milling_t3;
+label "psi_first_but_nature_not_idle_nature1_decision_0_t14" = psi_first_but_nature_not_idle_nature1_decision_0_t14;
+label "psi_first_but_nature_not_idle_nature1_decision_1_t15" = psi_first_but_nature_not_idle_nature1_decision_1_t15;
+label "psi_first_but_nature_not_idle_parallel_merge_t18" = psi_first_but_nature_not_idle_parallel_merge_t18;
+label "psi_first_but_nature_not_idle_parallel_t1" = psi_first_but_nature_not_idle_parallel_t1;
+label "psi_first_but_nature_not_idle_rough_depos_t13" = psi_first_but_nature_not_idle_rough_depos_t13;
+label "psi_first_but_nature_not_idle_sequential_t4" = psi_first_but_nature_not_idle_sequential_t4;
+label "psi_first_but_nature_not_idle_sequential_t5" = psi_first_but_nature_not_idle_sequential_t5;
+label "psi_first_nature_not_idle_nature1_t6_7" = psi_first_nature_not_idle_nature1_t6_7;
+label "psi_all_idle_but_nature" = psi_all_idle_but_nature;
+label "psi_all_idle_nature" = psi_all_idle_nature;
+label "step_updated_bending_done_p4" = step_updated_bending_done_p4;
+label "step_not_updated_bending_done_p4" = step_not_updated_bending_done_p4;
+label "step_updated_bending_p2" = step_updated_bending_p2;
+label "step_not_updated_bending_p2" = step_not_updated_bending_p2;
+label "step_updated_choice1_end_p17" = step_updated_choice1_end_p17;
+label "step_not_updated_choice1_end_p17" = step_not_updated_choice1_end_p17;
+label "step_updated_choice1_p7" = step_updated_choice1_p7;
+label "step_not_updated_choice1_p7" = step_not_updated_choice1_p7;
+label "step_updated_choice2_end_p23" = step_updated_choice2_end_p23;
+label "step_not_updated_choice2_end_p23" = step_not_updated_choice2_end_p23;
+label "step_updated_choice2_p18" = step_updated_choice2_p18;
+label "step_not_updated_choice2_p18" = step_not_updated_choice2_p18;
+label "step_updated_cutting_done_p1" = step_updated_cutting_done_p1;
+label "step_not_updated_cutting_done_p1" = step_not_updated_cutting_done_p1;
+label "step_updated_cutting_p0" = step_updated_cutting_p0;
+label "step_not_updated_cutting_p0" = step_not_updated_cutting_p0;
+label "step_updated_fine_depos_p10" = step_updated_fine_depos_p10;
+label "step_not_updated_fine_depos_p10" = step_not_updated_fine_depos_p10;
+label "step_updated_fine_depos_p14" = step_updated_fine_depos_p14;
+label "step_not_updated_fine_depos_p14" = step_not_updated_fine_depos_p14;
+label "step_updated_heavy_polish_p12" = step_updated_heavy_polish_p12;
+label "step_not_updated_heavy_polish_p12" = step_not_updated_heavy_polish_p12;
+label "step_updated_heavy_polish_p8" = step_updated_heavy_polish_p8;
+label "step_not_updated_heavy_polish_p8" = step_not_updated_heavy_polish_p8;
+label "step_updated_hphs_p19" = step_updated_hphs_p19;
+label "step_not_updated_hphs_p19" = step_not_updated_hphs_p19;
+label "step_updated_hphs_p21" = step_updated_hphs_p21;
+label "step_not_updated_hphs_p21" = step_not_updated_hphs_p21;
+label "step_updated_light_polish_p13" = step_updated_light_polish_p13;
+label "step_not_updated_light_polish_p13" = step_not_updated_light_polish_p13;
+label "step_updated_light_polish_p9" = step_updated_light_polish_p9;
+label "step_not_updated_light_polish_p9" = step_not_updated_light_polish_p9;
+label "step_updated_lpls_p20" = step_updated_lpls_p20;
+label "step_not_updated_lpls_p20" = step_not_updated_lpls_p20;
+label "step_updated_lpls_p22" = step_updated_lpls_p22;
+label "step_not_updated_lpls_p22" = step_not_updated_lpls_p22;
+label "step_updated_milling_done_p5" = step_updated_milling_done_p5;
+label "step_not_updated_milling_done_p5" = step_not_updated_milling_done_p5;
+label "step_updated_milling_p3" = step_updated_milling_p3;
+label "step_not_updated_milling_p3" = step_not_updated_milling_p3;
+label "step_updated_nature1_end_p16" = step_updated_nature1_end_p16;
+label "step_not_updated_nature1_end_p16" = step_not_updated_nature1_end_p16;
+label "step_updated_nature1_p6" = step_updated_nature1_p6;
+label "step_not_updated_nature1_p6" = step_not_updated_nature1_p6;
+label "step_updated_rough_depos_p11" = step_updated_rough_depos_p11;
+label "step_not_updated_rough_depos_p11" = step_not_updated_rough_depos_p11;
+label "step_updated_rough_depos_p15" = step_updated_rough_depos_p15;
+label "step_not_updated_rough_depos_p15" = step_not_updated_rough_depos_p15;
+label "is_active_bending_t2" = is_active_bending_t2;
+label "is_active_choice1_decision_0_t16" = is_active_choice1_decision_0_t16;
+label "is_active_choice1_decision_0_t23" = is_active_choice1_decision_0_t23;
+label "is_active_choice1_decision_1_t17" = is_active_choice1_decision_1_t17;
+label "is_active_choice1_decision_1_t24" = is_active_choice1_decision_1_t24;
+label "is_active_choice1_t8_9" = is_active_choice1_t8_9;
+label "is_active_choice2_t19_20" = is_active_choice2_t19_20;
+label "is_active_cutting_t0" = is_active_cutting_t0;
+label "is_active_fine_depos_t12" = is_active_fine_depos_t12;
+label "is_active_heavy_polish_t10" = is_active_heavy_polish_t10;
+label "is_active_hphs_t21" = is_active_hphs_t21;
+label "is_active_light_polish_t11" = is_active_light_polish_t11;
+label "is_active_lpls_t22" = is_active_lpls_t22;
+label "is_active_milling_t3" = is_active_milling_t3;
+label "is_active_nature1_decision_0_t14" = is_active_nature1_decision_0_t14;
+label "is_active_nature1_decision_1_t15" = is_active_nature1_decision_1_t15;
+label "is_active_nature1_t6_7" = is_active_nature1_t6_7;
+label "is_active_parallel_merge_t18" = is_active_parallel_merge_t18;
+label "is_active_parallel_t1" = is_active_parallel_t1;
+label "is_active_rough_depos_t13" = is_active_rough_depos_t13;
+label "is_active_sequential_t4" = is_active_sequential_t4;
+label "is_active_sequential_t5" = is_active_sequential_t5;
+label "stage_0" = STAGE=0;
+label "stage_1" = STAGE=1;
+label "stage_2" = STAGE=2;
+label "stage_3" = STAGE=3;
+label "stage_4" = STAGE=4;
+label "stage_5" = STAGE=5;
+label "state_bending_t2_ready" = bending_t2_state=1;
+label "state_bending_t2_disabled" = bending_t2_state=-1;
+label "state_bending_t2_idle" = bending_t2_state=0;
+label "state_choice1_decision_0_t16_ready" = choice1_decision_0_t16_state=1;
+label "state_choice1_decision_0_t16_disabled" = choice1_decision_0_t16_state=-1;
+label "state_choice1_decision_0_t16_idle" = choice1_decision_0_t16_state=0;
+label "state_choice1_decision_0_t23_ready" = choice1_decision_0_t23_state=1;
+label "state_choice1_decision_0_t23_disabled" = choice1_decision_0_t23_state=-1;
+label "state_choice1_decision_0_t23_idle" = choice1_decision_0_t23_state=0;
+label "state_choice1_decision_1_t17_ready" = choice1_decision_1_t17_state=1;
+label "state_choice1_decision_1_t17_disabled" = choice1_decision_1_t17_state=-1;
+label "state_choice1_decision_1_t17_idle" = choice1_decision_1_t17_state=0;
+label "state_choice1_decision_1_t24_ready" = choice1_decision_1_t24_state=1;
+label "state_choice1_decision_1_t24_disabled" = choice1_decision_1_t24_state=-1;
+label "state_choice1_decision_1_t24_idle" = choice1_decision_1_t24_state=0;
+label "state_choice1_t8_9_ready" = choice1_t8_9_state=1;
+label "state_choice1_t8_9_disabled" = choice1_t8_9_state=-1;
+label "state_choice1_t8_9_idle" = choice1_t8_9_state=0;
+label "state_choice2_t19_20_ready" = choice2_t19_20_state=1;
+label "state_choice2_t19_20_disabled" = choice2_t19_20_state=-1;
+label "state_choice2_t19_20_idle" = choice2_t19_20_state=0;
+label "state_cutting_t0_ready" = cutting_t0_state=1;
+label "state_cutting_t0_disabled" = cutting_t0_state=-1;
+label "state_cutting_t0_idle" = cutting_t0_state=0;
+label "state_fine_depos_t12_ready" = fine_depos_t12_state=1;
+label "state_fine_depos_t12_disabled" = fine_depos_t12_state=-1;
+label "state_fine_depos_t12_idle" = fine_depos_t12_state=0;
+label "state_heavy_polish_t10_ready" = heavy_polish_t10_state=1;
+label "state_heavy_polish_t10_disabled" = heavy_polish_t10_state=-1;
+label "state_heavy_polish_t10_idle" = heavy_polish_t10_state=0;
+label "state_hphs_t21_ready" = hphs_t21_state=1;
+label "state_hphs_t21_disabled" = hphs_t21_state=-1;
+label "state_hphs_t21_idle" = hphs_t21_state=0;
+label "state_light_polish_t11_ready" = light_polish_t11_state=1;
+label "state_light_polish_t11_disabled" = light_polish_t11_state=-1;
+label "state_light_polish_t11_idle" = light_polish_t11_state=0;
+label "state_lpls_t22_ready" = lpls_t22_state=1;
+label "state_lpls_t22_disabled" = lpls_t22_state=-1;
+label "state_lpls_t22_idle" = lpls_t22_state=0;
+label "state_milling_t3_ready" = milling_t3_state=1;
+label "state_milling_t3_disabled" = milling_t3_state=-1;
+label "state_milling_t3_idle" = milling_t3_state=0;
+label "state_nature1_decision_0_t14_ready" = nature1_decision_0_t14_state=1;
+label "state_nature1_decision_0_t14_disabled" = nature1_decision_0_t14_state=-1;
+label "state_nature1_decision_0_t14_idle" = nature1_decision_0_t14_state=0;
+label "state_nature1_decision_1_t15_ready" = nature1_decision_1_t15_state=1;
+label "state_nature1_decision_1_t15_disabled" = nature1_decision_1_t15_state=-1;
+label "state_nature1_decision_1_t15_idle" = nature1_decision_1_t15_state=0;
+label "state_nature1_t6_7_ready" = nature1_t6_7_state=1;
+label "state_nature1_t6_7_disabled" = nature1_t6_7_state=-1;
+label "state_nature1_t6_7_idle" = nature1_t6_7_state=0;
+label "state_parallel_merge_t18_ready" = parallel_merge_t18_state=1;
+label "state_parallel_merge_t18_disabled" = parallel_merge_t18_state=-1;
+label "state_parallel_merge_t18_idle" = parallel_merge_t18_state=0;
+label "state_parallel_t1_ready" = parallel_t1_state=1;
+label "state_parallel_t1_disabled" = parallel_t1_state=-1;
+label "state_parallel_t1_idle" = parallel_t1_state=0;
+label "state_rough_depos_t13_ready" = rough_depos_t13_state=1;
+label "state_rough_depos_t13_disabled" = rough_depos_t13_state=-1;
+label "state_rough_depos_t13_idle" = rough_depos_t13_state=0;
+label "state_sequential_t4_ready" = sequential_t4_state=1;
+label "state_sequential_t4_disabled" = sequential_t4_state=-1;
+label "state_sequential_t4_idle" = sequential_t4_state=0;
+label "state_sequential_t5_ready" = sequential_t5_state=1;
+label "state_sequential_t5_disabled" = sequential_t5_state=-1;
+label "state_sequential_t5_idle" = sequential_t5_state=0;
+label "place_bending_done_p4_empty" = bending_done_p4_value=-1;
+label "place_bending_done_p4_has_token" = bending_done_p4_value>=0;
+label "place_bending_done_p4_duration_met" = bending_done_p4_value>=0;
+label "place_bending_done_p4_can_advance" = bending_done_p4_value>=0 & bending_done_p4_value<0;
+label "place_bending_done_p4_updated" = bending_done_p4_updated=1;
+label "place_bending_p2_empty" = bending_p2_value=-1;
+label "place_bending_p2_has_token" = bending_p2_value>=0;
+label "place_bending_p2_duration_met" = bending_p2_value>=1;
+label "place_bending_p2_can_advance" = bending_p2_value>=0 & bending_p2_value<1;
+label "place_bending_p2_updated" = bending_p2_updated=1;
+label "place_choice1_end_p17_empty" = choice1_end_p17_value=-1;
+label "place_choice1_end_p17_has_token" = choice1_end_p17_value>=0;
+label "place_choice1_end_p17_duration_met" = choice1_end_p17_value>=0;
+label "place_choice1_end_p17_can_advance" = choice1_end_p17_value>=0 & choice1_end_p17_value<0;
+label "place_choice1_end_p17_updated" = choice1_end_p17_updated=1;
+label "place_choice1_p7_empty" = choice1_p7_value=-1;
+label "place_choice1_p7_has_token" = choice1_p7_value>=0;
+label "place_choice1_p7_duration_met" = choice1_p7_value>=0;
+label "place_choice1_p7_can_advance" = choice1_p7_value>=0 & choice1_p7_value<0;
+label "place_choice1_p7_updated" = choice1_p7_updated=1;
+label "place_choice2_end_p23_empty" = choice2_end_p23_value=-1;
+label "place_choice2_end_p23_has_token" = choice2_end_p23_value>=0;
+label "place_choice2_end_p23_duration_met" = choice2_end_p23_value>=0;
+label "place_choice2_end_p23_can_advance" = choice2_end_p23_value>=0 & choice2_end_p23_value<0;
+label "place_choice2_end_p23_updated" = choice2_end_p23_updated=1;
+label "place_choice2_p18_empty" = choice2_p18_value=-1;
+label "place_choice2_p18_has_token" = choice2_p18_value>=0;
+label "place_choice2_p18_duration_met" = choice2_p18_value>=0;
+label "place_choice2_p18_can_advance" = choice2_p18_value>=0 & choice2_p18_value<0;
+label "place_choice2_p18_updated" = choice2_p18_updated=1;
+label "place_cutting_done_p1_empty" = cutting_done_p1_value=-1;
+label "place_cutting_done_p1_has_token" = cutting_done_p1_value>=0;
+label "place_cutting_done_p1_duration_met" = cutting_done_p1_value>=0;
+label "place_cutting_done_p1_can_advance" = cutting_done_p1_value>=0 & cutting_done_p1_value<0;
+label "place_cutting_done_p1_updated" = cutting_done_p1_updated=1;
+label "place_cutting_p0_empty" = cutting_p0_value=-1;
+label "place_cutting_p0_has_token" = cutting_p0_value>=0;
+label "place_cutting_p0_duration_met" = cutting_p0_value>=1;
+label "place_cutting_p0_can_advance" = cutting_p0_value>=0 & cutting_p0_value<1;
+label "place_cutting_p0_updated" = cutting_p0_updated=1;
+label "place_fine_depos_p10_empty" = fine_depos_p10_value=-1;
+label "place_fine_depos_p10_has_token" = fine_depos_p10_value>=0;
+label "place_fine_depos_p10_duration_met" = fine_depos_p10_value>=1;
+label "place_fine_depos_p10_can_advance" = fine_depos_p10_value>=0 & fine_depos_p10_value<1;
+label "place_fine_depos_p10_updated" = fine_depos_p10_updated=1;
+label "place_fine_depos_p14_empty" = fine_depos_p14_value=-1;
+label "place_fine_depos_p14_has_token" = fine_depos_p14_value>=0;
+label "place_fine_depos_p14_duration_met" = fine_depos_p14_value>=0;
+label "place_fine_depos_p14_can_advance" = fine_depos_p14_value>=0 & fine_depos_p14_value<0;
+label "place_fine_depos_p14_updated" = fine_depos_p14_updated=1;
+label "place_heavy_polish_p12_empty" = heavy_polish_p12_value=-1;
+label "place_heavy_polish_p12_has_token" = heavy_polish_p12_value>=0;
+label "place_heavy_polish_p12_duration_met" = heavy_polish_p12_value>=0;
+label "place_heavy_polish_p12_can_advance" = heavy_polish_p12_value>=0 & heavy_polish_p12_value<0;
+label "place_heavy_polish_p12_updated" = heavy_polish_p12_updated=1;
+label "place_heavy_polish_p8_empty" = heavy_polish_p8_value=-1;
+label "place_heavy_polish_p8_has_token" = heavy_polish_p8_value>=0;
+label "place_heavy_polish_p8_duration_met" = heavy_polish_p8_value>=2;
+label "place_heavy_polish_p8_can_advance" = heavy_polish_p8_value>=0 & heavy_polish_p8_value<2;
+label "place_heavy_polish_p8_updated" = heavy_polish_p8_updated=1;
+label "place_hphs_p19_empty" = hphs_p19_value=-1;
+label "place_hphs_p19_has_token" = hphs_p19_value>=0;
+label "place_hphs_p19_duration_met" = hphs_p19_value>=1;
+label "place_hphs_p19_can_advance" = hphs_p19_value>=0 & hphs_p19_value<1;
+label "place_hphs_p19_updated" = hphs_p19_updated=1;
+label "place_hphs_p21_empty" = hphs_p21_value=-1;
+label "place_hphs_p21_has_token" = hphs_p21_value>=0;
+label "place_hphs_p21_duration_met" = hphs_p21_value>=0;
+label "place_hphs_p21_can_advance" = hphs_p21_value>=0 & hphs_p21_value<0;
+label "place_hphs_p21_updated" = hphs_p21_updated=1;
+label "place_light_polish_p13_empty" = light_polish_p13_value=-1;
+label "place_light_polish_p13_has_token" = light_polish_p13_value>=0;
+label "place_light_polish_p13_duration_met" = light_polish_p13_value>=0;
+label "place_light_polish_p13_can_advance" = light_polish_p13_value>=0 & light_polish_p13_value<0;
+label "place_light_polish_p13_updated" = light_polish_p13_updated=1;
+label "place_light_polish_p9_empty" = light_polish_p9_value=-1;
+label "place_light_polish_p9_has_token" = light_polish_p9_value>=0;
+label "place_light_polish_p9_duration_met" = light_polish_p9_value>=1;
+label "place_light_polish_p9_can_advance" = light_polish_p9_value>=0 & light_polish_p9_value<1;
+label "place_light_polish_p9_updated" = light_polish_p9_updated=1;
+label "place_lpls_p20_empty" = lpls_p20_value=-1;
+label "place_lpls_p20_has_token" = lpls_p20_value>=0;
+label "place_lpls_p20_duration_met" = lpls_p20_value>=2;
+label "place_lpls_p20_can_advance" = lpls_p20_value>=0 & lpls_p20_value<2;
+label "place_lpls_p20_updated" = lpls_p20_updated=1;
+label "place_lpls_p22_empty" = lpls_p22_value=-1;
+label "place_lpls_p22_has_token" = lpls_p22_value>=0;
+label "place_lpls_p22_duration_met" = lpls_p22_value>=0;
+label "place_lpls_p22_can_advance" = lpls_p22_value>=0 & lpls_p22_value<0;
+label "place_lpls_p22_updated" = lpls_p22_updated=1;
+label "place_milling_done_p5_empty" = milling_done_p5_value=-1;
+label "place_milling_done_p5_has_token" = milling_done_p5_value>=0;
+label "place_milling_done_p5_duration_met" = milling_done_p5_value>=0;
+label "place_milling_done_p5_can_advance" = milling_done_p5_value>=0 & milling_done_p5_value<0;
+label "place_milling_done_p5_updated" = milling_done_p5_updated=1;
+label "place_milling_p3_empty" = milling_p3_value=-1;
+label "place_milling_p3_has_token" = milling_p3_value>=0;
+label "place_milling_p3_duration_met" = milling_p3_value>=1;
+label "place_milling_p3_can_advance" = milling_p3_value>=0 & milling_p3_value<1;
+label "place_milling_p3_updated" = milling_p3_updated=1;
+label "place_nature1_end_p16_empty" = nature1_end_p16_value=-1;
+label "place_nature1_end_p16_has_token" = nature1_end_p16_value>=0;
+label "place_nature1_end_p16_duration_met" = nature1_end_p16_value>=0;
+label "place_nature1_end_p16_can_advance" = nature1_end_p16_value>=0 & nature1_end_p16_value<0;
+label "place_nature1_end_p16_updated" = nature1_end_p16_updated=1;
+label "place_nature1_p6_empty" = nature1_p6_value=-1;
+label "place_nature1_p6_has_token" = nature1_p6_value>=0;
+label "place_nature1_p6_duration_met" = nature1_p6_value>=0;
+label "place_nature1_p6_can_advance" = nature1_p6_value>=0 & nature1_p6_value<0;
+label "place_nature1_p6_updated" = nature1_p6_updated=1;
+label "place_rough_depos_p11_empty" = rough_depos_p11_value=-1;
+label "place_rough_depos_p11_has_token" = rough_depos_p11_value>=0;
+label "place_rough_depos_p11_duration_met" = rough_depos_p11_value>=1;
+label "place_rough_depos_p11_can_advance" = rough_depos_p11_value>=0 & rough_depos_p11_value<1;
+label "place_rough_depos_p11_updated" = rough_depos_p11_updated=1;
+label "place_rough_depos_p15_empty" = rough_depos_p15_value=-1;
+label "place_rough_depos_p15_has_token" = rough_depos_p15_value>=0;
+label "place_rough_depos_p15_duration_met" = rough_depos_p15_value>=0;
+label "place_rough_depos_p15_can_advance" = rough_depos_p15_value>=0 & rough_depos_p15_value<0;
+label "place_rough_depos_p15_updated" = rough_depos_p15_updated=1;
+
+module manager
+  // Stage 0 -> 3: Can do step
+  [] STAGE=0 & psi_step -> (STAGE'=3);
+  // Stage 0 -> 2: Terminated
+  [] STAGE=0 & !psi_step & psi_noone_idle & !psi_atleastone_active -> (STAGE'=2);
+  // Stage 0 -> 4: Fire transitions (FIXED: added psi_noone_idle)
+  [] STAGE=0 & !psi_step & psi_noone_idle & psi_atleastone_active -> (STAGE'=4);
+  // Update bending_done_p4
+  [] STAGE=3 & step_updated_bending_done_p4 & bending_done_p4_value=-1 -> (bending_done_p4_updated'=1);
+  [] STAGE=3 & step_updated_bending_done_p4 & bending_done_p4_value>=0 & bending_done_p4_value<0 -> (bending_done_p4_value'=bending_done_p4_value+1) & (bending_done_p4_updated'=1);
+  [] STAGE=3 & step_updated_bending_done_p4 & bending_done_p4_value=0 -> (bending_done_p4_updated'=1);
+  // Update bending_p2
+  [] STAGE=3 & step_updated_bending_p2 & bending_p2_value=-1 -> (bending_p2_updated'=1);
+  [] STAGE=3 & step_updated_bending_p2 & bending_p2_value>=0 & bending_p2_value<1 -> (bending_p2_value'=bending_p2_value+1) & (bending_p2_updated'=1);
+  [] STAGE=3 & step_updated_bending_p2 & bending_p2_value=1 -> (bending_p2_updated'=1);
+  // Update choice1_end_p17
+  [] STAGE=3 & step_updated_choice1_end_p17 & choice1_end_p17_value=-1 -> (choice1_end_p17_updated'=1);
+  [] STAGE=3 & step_updated_choice1_end_p17 & choice1_end_p17_value>=0 & choice1_end_p17_value<0 -> (choice1_end_p17_value'=choice1_end_p17_value+1) & (choice1_end_p17_updated'=1);
+  [] STAGE=3 & step_updated_choice1_end_p17 & choice1_end_p17_value=0 -> (choice1_end_p17_updated'=1);
+  // Update choice1_p7
+  [] STAGE=3 & step_updated_choice1_p7 & choice1_p7_value=-1 -> (choice1_p7_updated'=1);
+  [] STAGE=3 & step_updated_choice1_p7 & choice1_p7_value>=0 & choice1_p7_value<0 -> (choice1_p7_value'=choice1_p7_value+1) & (choice1_p7_updated'=1);
+  [] STAGE=3 & step_updated_choice1_p7 & choice1_p7_value=0 -> (choice1_p7_updated'=1);
+  // Update choice2_end_p23
+  [] STAGE=3 & step_updated_choice2_end_p23 & choice2_end_p23_value=-1 -> (choice2_end_p23_updated'=1);
+  [] STAGE=3 & step_updated_choice2_end_p23 & choice2_end_p23_value>=0 & choice2_end_p23_value<0 -> (choice2_end_p23_value'=choice2_end_p23_value+1) & (choice2_end_p23_updated'=1);
+  [] STAGE=3 & step_updated_choice2_end_p23 & choice2_end_p23_value=0 -> (choice2_end_p23_updated'=1);
+  // Update choice2_p18
+  [] STAGE=3 & step_updated_choice2_p18 & choice2_p18_value=-1 -> (choice2_p18_updated'=1);
+  [] STAGE=3 & step_updated_choice2_p18 & choice2_p18_value>=0 & choice2_p18_value<0 -> (choice2_p18_value'=choice2_p18_value+1) & (choice2_p18_updated'=1);
+  [] STAGE=3 & step_updated_choice2_p18 & choice2_p18_value=0 -> (choice2_p18_updated'=1);
+  // Update cutting_done_p1
+  [] STAGE=3 & step_updated_cutting_done_p1 & cutting_done_p1_value=-1 -> (cutting_done_p1_updated'=1);
+  [] STAGE=3 & step_updated_cutting_done_p1 & cutting_done_p1_value>=0 & cutting_done_p1_value<0 -> (cutting_done_p1_value'=cutting_done_p1_value+1) & (cutting_done_p1_updated'=1);
+  [] STAGE=3 & step_updated_cutting_done_p1 & cutting_done_p1_value=0 -> (cutting_done_p1_updated'=1);
+  // Update cutting_p0
+  [] STAGE=3 & step_updated_cutting_p0 & cutting_p0_value=-1 -> (cutting_p0_updated'=1);
+  [] STAGE=3 & step_updated_cutting_p0 & cutting_p0_value>=0 & cutting_p0_value<1 -> (cutting_p0_value'=cutting_p0_value+1) & (cutting_p0_updated'=1);
+  [] STAGE=3 & step_updated_cutting_p0 & cutting_p0_value=1 -> (cutting_p0_updated'=1);
+  // Update fine_depos_p10
+  [] STAGE=3 & step_updated_fine_depos_p10 & fine_depos_p10_value=-1 -> (fine_depos_p10_updated'=1);
+  [] STAGE=3 & step_updated_fine_depos_p10 & fine_depos_p10_value>=0 & fine_depos_p10_value<1 -> (fine_depos_p10_value'=fine_depos_p10_value+1) & (fine_depos_p10_updated'=1);
+  [] STAGE=3 & step_updated_fine_depos_p10 & fine_depos_p10_value=1 -> (fine_depos_p10_updated'=1);
+  // Update fine_depos_p14
+  [] STAGE=3 & step_updated_fine_depos_p14 & fine_depos_p14_value=-1 -> (fine_depos_p14_updated'=1);
+  [] STAGE=3 & step_updated_fine_depos_p14 & fine_depos_p14_value>=0 & fine_depos_p14_value<0 -> (fine_depos_p14_value'=fine_depos_p14_value+1) & (fine_depos_p14_updated'=1);
+  [] STAGE=3 & step_updated_fine_depos_p14 & fine_depos_p14_value=0 -> (fine_depos_p14_updated'=1);
+  // Update heavy_polish_p12
+  [] STAGE=3 & step_updated_heavy_polish_p12 & heavy_polish_p12_value=-1 -> (heavy_polish_p12_updated'=1);
+  [] STAGE=3 & step_updated_heavy_polish_p12 & heavy_polish_p12_value>=0 & heavy_polish_p12_value<0 -> (heavy_polish_p12_value'=heavy_polish_p12_value+1) & (heavy_polish_p12_updated'=1);
+  [] STAGE=3 & step_updated_heavy_polish_p12 & heavy_polish_p12_value=0 -> (heavy_polish_p12_updated'=1);
+  // Update heavy_polish_p8
+  [] STAGE=3 & step_updated_heavy_polish_p8 & heavy_polish_p8_value=-1 -> (heavy_polish_p8_updated'=1);
+  [] STAGE=3 & step_updated_heavy_polish_p8 & heavy_polish_p8_value>=0 & heavy_polish_p8_value<2 -> (heavy_polish_p8_value'=heavy_polish_p8_value+1) & (heavy_polish_p8_updated'=1);
+  [] STAGE=3 & step_updated_heavy_polish_p8 & heavy_polish_p8_value=2 -> (heavy_polish_p8_updated'=1);
+  // Update hphs_p19
+  [] STAGE=3 & step_updated_hphs_p19 & hphs_p19_value=-1 -> (hphs_p19_updated'=1);
+  [] STAGE=3 & step_updated_hphs_p19 & hphs_p19_value>=0 & hphs_p19_value<1 -> (hphs_p19_value'=hphs_p19_value+1) & (hphs_p19_updated'=1);
+  [] STAGE=3 & step_updated_hphs_p19 & hphs_p19_value=1 -> (hphs_p19_updated'=1);
+  // Update hphs_p21
+  [] STAGE=3 & step_updated_hphs_p21 & hphs_p21_value=-1 -> (hphs_p21_updated'=1);
+  [] STAGE=3 & step_updated_hphs_p21 & hphs_p21_value>=0 & hphs_p21_value<0 -> (hphs_p21_value'=hphs_p21_value+1) & (hphs_p21_updated'=1);
+  [] STAGE=3 & step_updated_hphs_p21 & hphs_p21_value=0 -> (hphs_p21_updated'=1);
+  // Update light_polish_p13
+  [] STAGE=3 & step_updated_light_polish_p13 & light_polish_p13_value=-1 -> (light_polish_p13_updated'=1);
+  [] STAGE=3 & step_updated_light_polish_p13 & light_polish_p13_value>=0 & light_polish_p13_value<0 -> (light_polish_p13_value'=light_polish_p13_value+1) & (light_polish_p13_updated'=1);
+  [] STAGE=3 & step_updated_light_polish_p13 & light_polish_p13_value=0 -> (light_polish_p13_updated'=1);
+  // Update light_polish_p9
+  [] STAGE=3 & step_updated_light_polish_p9 & light_polish_p9_value=-1 -> (light_polish_p9_updated'=1);
+  [] STAGE=3 & step_updated_light_polish_p9 & light_polish_p9_value>=0 & light_polish_p9_value<1 -> (light_polish_p9_value'=light_polish_p9_value+1) & (light_polish_p9_updated'=1);
+  [] STAGE=3 & step_updated_light_polish_p9 & light_polish_p9_value=1 -> (light_polish_p9_updated'=1);
+  // Update lpls_p20
+  [] STAGE=3 & step_updated_lpls_p20 & lpls_p20_value=-1 -> (lpls_p20_updated'=1);
+  [] STAGE=3 & step_updated_lpls_p20 & lpls_p20_value>=0 & lpls_p20_value<2 -> (lpls_p20_value'=lpls_p20_value+1) & (lpls_p20_updated'=1);
+  [] STAGE=3 & step_updated_lpls_p20 & lpls_p20_value=2 -> (lpls_p20_updated'=1);
+  // Update lpls_p22
+  [] STAGE=3 & step_updated_lpls_p22 & lpls_p22_value=-1 -> (lpls_p22_updated'=1);
+  [] STAGE=3 & step_updated_lpls_p22 & lpls_p22_value>=0 & lpls_p22_value<0 -> (lpls_p22_value'=lpls_p22_value+1) & (lpls_p22_updated'=1);
+  [] STAGE=3 & step_updated_lpls_p22 & lpls_p22_value=0 -> (lpls_p22_updated'=1);
+  // Update milling_done_p5
+  [] STAGE=3 & step_updated_milling_done_p5 & milling_done_p5_value=-1 -> (milling_done_p5_updated'=1);
+  [] STAGE=3 & step_updated_milling_done_p5 & milling_done_p5_value>=0 & milling_done_p5_value<0 -> (milling_done_p5_value'=milling_done_p5_value+1) & (milling_done_p5_updated'=1);
+  [] STAGE=3 & step_updated_milling_done_p5 & milling_done_p5_value=0 -> (milling_done_p5_updated'=1);
+  // Update milling_p3
+  [] STAGE=3 & step_updated_milling_p3 & milling_p3_value=-1 -> (milling_p3_updated'=1);
+  [] STAGE=3 & step_updated_milling_p3 & milling_p3_value>=0 & milling_p3_value<1 -> (milling_p3_value'=milling_p3_value+1) & (milling_p3_updated'=1);
+  [] STAGE=3 & step_updated_milling_p3 & milling_p3_value=1 -> (milling_p3_updated'=1);
+  // Update nature1_end_p16
+  [] STAGE=3 & step_updated_nature1_end_p16 & nature1_end_p16_value=-1 -> (nature1_end_p16_updated'=1);
+  [] STAGE=3 & step_updated_nature1_end_p16 & nature1_end_p16_value>=0 & nature1_end_p16_value<0 -> (nature1_end_p16_value'=nature1_end_p16_value+1) & (nature1_end_p16_updated'=1);
+  [] STAGE=3 & step_updated_nature1_end_p16 & nature1_end_p16_value=0 -> (nature1_end_p16_updated'=1);
+  // Update nature1_p6
+  [] STAGE=3 & step_updated_nature1_p6 & nature1_p6_value=-1 -> (nature1_p6_updated'=1);
+  [] STAGE=3 & step_updated_nature1_p6 & nature1_p6_value>=0 & nature1_p6_value<0 -> (nature1_p6_value'=nature1_p6_value+1) & (nature1_p6_updated'=1);
+  [] STAGE=3 & step_updated_nature1_p6 & nature1_p6_value=0 -> (nature1_p6_updated'=1);
+  // Update rough_depos_p11
+  [] STAGE=3 & step_updated_rough_depos_p11 & rough_depos_p11_value=-1 -> (rough_depos_p11_updated'=1);
+  [] STAGE=3 & step_updated_rough_depos_p11 & rough_depos_p11_value>=0 & rough_depos_p11_value<1 -> (rough_depos_p11_value'=rough_depos_p11_value+1) & (rough_depos_p11_updated'=1);
+  [] STAGE=3 & step_updated_rough_depos_p11 & rough_depos_p11_value=1 -> (rough_depos_p11_updated'=1);
+  // Update rough_depos_p15
+  [] STAGE=3 & step_updated_rough_depos_p15 & rough_depos_p15_value=-1 -> (rough_depos_p15_updated'=1);
+  [] STAGE=3 & step_updated_rough_depos_p15 & rough_depos_p15_value>=0 & rough_depos_p15_value<0 -> (rough_depos_p15_value'=rough_depos_p15_value+1) & (rough_depos_p15_updated'=1);
+  [] STAGE=3 & step_updated_rough_depos_p15 & rough_depos_p15_value=0 -> (rough_depos_p15_updated'=1);
+  // Stage 3 -> 1: All updated
+  [] STAGE=3 & psi_all_step_updated -> (STAGE'=1);
+  [] STAGE=1 & step_not_updated_bending_done_p4 -> (bending_done_p4_updated'=0);
+  [] STAGE=1 & step_not_updated_bending_p2 -> (bending_p2_updated'=0);
+  [] STAGE=1 & step_not_updated_choice1_end_p17 -> (choice1_end_p17_updated'=0);
+  [] STAGE=1 & step_not_updated_choice1_p7 -> (choice1_p7_updated'=0);
+  [] STAGE=1 & step_not_updated_choice2_end_p23 -> (choice2_end_p23_updated'=0);
+  [] STAGE=1 & step_not_updated_choice2_p18 -> (choice2_p18_updated'=0);
+  [] STAGE=1 & step_not_updated_cutting_done_p1 -> (cutting_done_p1_updated'=0);
+  [] STAGE=1 & step_not_updated_cutting_p0 -> (cutting_p0_updated'=0);
+  [] STAGE=1 & step_not_updated_fine_depos_p10 -> (fine_depos_p10_updated'=0);
+  [] STAGE=1 & step_not_updated_fine_depos_p14 -> (fine_depos_p14_updated'=0);
+  [] STAGE=1 & step_not_updated_heavy_polish_p12 -> (heavy_polish_p12_updated'=0);
+  [] STAGE=1 & step_not_updated_heavy_polish_p8 -> (heavy_polish_p8_updated'=0);
+  [] STAGE=1 & step_not_updated_hphs_p19 -> (hphs_p19_updated'=0);
+  [] STAGE=1 & step_not_updated_hphs_p21 -> (hphs_p21_updated'=0);
+  [] STAGE=1 & step_not_updated_light_polish_p13 -> (light_polish_p13_updated'=0);
+  [] STAGE=1 & step_not_updated_light_polish_p9 -> (light_polish_p9_updated'=0);
+  [] STAGE=1 & step_not_updated_lpls_p20 -> (lpls_p20_updated'=0);
+  [] STAGE=1 & step_not_updated_lpls_p22 -> (lpls_p22_updated'=0);
+  [] STAGE=1 & step_not_updated_milling_done_p5 -> (milling_done_p5_updated'=0);
+  [] STAGE=1 & step_not_updated_milling_p3 -> (milling_p3_updated'=0);
+  [] STAGE=1 & step_not_updated_nature1_end_p16 -> (nature1_end_p16_updated'=0);
+  [] STAGE=1 & step_not_updated_nature1_p6 -> (nature1_p6_updated'=0);
+  [] STAGE=1 & step_not_updated_rough_depos_p11 -> (rough_depos_p11_updated'=0);
+  [] STAGE=1 & step_not_updated_rough_depos_p15 -> (rough_depos_p15_updated'=0);
+  // Stage 1 -> 0: All reset
+  [] STAGE=1 & psi_all_step_not_updated -> (STAGE'=0);
+  [] STAGE=4 & psi_all_idle_but_nature -> (STAGE'=5);
+  [] STAGE=5 & psi_all_idle_nature -> (STAGE'=0);
+endmodule
+
+module bending_t2
+  bending_t2_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [fire_bending_t2] STAGE=0 & psi_idle_bending_t2 & (bending_p2_value >= 1) -> (bending_t2_state'=1);
+  [] STAGE=0 & psi_idle_bending_t2 & !(bending_p2_value >= 1) -> (bending_t2_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_bending_t2 & bending_t2_state=-1 -> (bending_t2_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_bending_t2 & bending_t2_state=1 -> (bending_t2_state'=0) & (bending_p2_value'=-1) & (bending_done_p4_value'=0);
+endmodule
+
+module choice1_decision_0_t16
+  choice1_decision_0_t16_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [] STAGE=0 & psi_idle_choice1_decision_0_t16 & (fine_depos_p14_value >= 0) -> (choice1_decision_0_t16_state'=1);
+  [] STAGE=0 & psi_idle_choice1_decision_0_t16 & !(fine_depos_p14_value >= 0) -> (choice1_decision_0_t16_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_choice1_decision_0_t16 & choice1_decision_0_t16_state=-1 -> (choice1_decision_0_t16_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_choice1_decision_0_t16 & choice1_decision_0_t16_state=1 -> (choice1_decision_0_t16_state'=0) & (fine_depos_p14_value'=-1) & (choice1_end_p17_value'=0);
+endmodule
+
+module choice1_decision_0_t23
+  choice1_decision_0_t23_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [] STAGE=0 & psi_idle_choice1_decision_0_t23 & (hphs_p21_value >= 0) -> (choice1_decision_0_t23_state'=1);
+  [] STAGE=0 & psi_idle_choice1_decision_0_t23 & !(hphs_p21_value >= 0) -> (choice1_decision_0_t23_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_choice1_decision_0_t23 & choice1_decision_0_t23_state=-1 -> (choice1_decision_0_t23_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_choice1_decision_0_t23 & choice1_decision_0_t23_state=1 -> (choice1_decision_0_t23_state'=0) & (hphs_p21_value'=-1) & (choice2_end_p23_value'=0);
+endmodule
+
+module choice1_decision_1_t17
+  choice1_decision_1_t17_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [] STAGE=0 & psi_idle_choice1_decision_1_t17 & (rough_depos_p15_value >= 0) -> (choice1_decision_1_t17_state'=1);
+  [] STAGE=0 & psi_idle_choice1_decision_1_t17 & !(rough_depos_p15_value >= 0) -> (choice1_decision_1_t17_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_choice1_decision_1_t17 & choice1_decision_1_t17_state=-1 -> (choice1_decision_1_t17_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_choice1_decision_1_t17 & choice1_decision_1_t17_state=1 -> (choice1_decision_1_t17_state'=0) & (rough_depos_p15_value'=-1) & (choice1_end_p17_value'=0);
+endmodule
+
+module choice1_decision_1_t24
+  choice1_decision_1_t24_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [] STAGE=0 & psi_idle_choice1_decision_1_t24 & (lpls_p22_value >= 0) -> (choice1_decision_1_t24_state'=1);
+  [] STAGE=0 & psi_idle_choice1_decision_1_t24 & !(lpls_p22_value >= 0) -> (choice1_decision_1_t24_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_choice1_decision_1_t24 & choice1_decision_1_t24_state=-1 -> (choice1_decision_1_t24_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_choice1_decision_1_t24 & choice1_decision_1_t24_state=1 -> (choice1_decision_1_t24_state'=0) & (lpls_p22_value'=-1) & (choice2_end_p23_value'=0);
+endmodule
+
+module choice1_t8_9
+  choice1_t8_9_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [] STAGE=0 & psi_idle_choice1_t8_9 & (choice1_p7_value >= 0) -> (choice1_t8_9_state'=1);
+  [] STAGE=0 & psi_idle_choice1_t8_9 & !(choice1_p7_value >= 0) -> (choice1_t8_9_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_choice1_t8_9 & choice1_t8_9_state=-1 -> (choice1_t8_9_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_choice1_t8_9 & choice1_t8_9_state=1 -> (choice1_t8_9_state'=0) & (choice1_p7_value'=-1) & (fine_depos_p10_value'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_choice1_t8_9 & choice1_t8_9_state=1 -> (choice1_t8_9_state'=0) & (choice1_p7_value'=-1) & (rough_depos_p11_value'=0);
+endmodule
+
+module choice2_t19_20
+  choice2_t19_20_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [] STAGE=0 & psi_idle_choice2_t19_20 & (choice2_p18_value >= 0) -> (choice2_t19_20_state'=1);
+  [] STAGE=0 & psi_idle_choice2_t19_20 & !(choice2_p18_value >= 0) -> (choice2_t19_20_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_choice2_t19_20 & choice2_t19_20_state=-1 -> (choice2_t19_20_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_choice2_t19_20 & choice2_t19_20_state=1 -> (choice2_t19_20_state'=0) & (choice2_p18_value'=-1) & (hphs_p19_value'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_choice2_t19_20 & choice2_t19_20_state=1 -> (choice2_t19_20_state'=0) & (choice2_p18_value'=-1) & (lpls_p20_value'=0);
+endmodule
+
+module cutting_t0
+  cutting_t0_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [fire_cutting_t0] STAGE=0 & psi_idle_cutting_t0 & (cutting_p0_value >= 1) -> (cutting_t0_state'=1);
+  [] STAGE=0 & psi_idle_cutting_t0 & !(cutting_p0_value >= 1) -> (cutting_t0_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_cutting_t0 & cutting_t0_state=-1 -> (cutting_t0_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_cutting_t0 & cutting_t0_state=1 -> (cutting_t0_state'=0) & (cutting_p0_value'=-1) & (cutting_done_p1_value'=0);
+endmodule
+
+module fine_depos_t12
+  fine_depos_t12_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [fire_fine_depos_t12] STAGE=0 & psi_idle_fine_depos_t12 & (fine_depos_p10_value >= 1) -> (fine_depos_t12_state'=1);
+  [] STAGE=0 & psi_idle_fine_depos_t12 & !(fine_depos_p10_value >= 1) -> (fine_depos_t12_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_fine_depos_t12 & fine_depos_t12_state=-1 -> (fine_depos_t12_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_fine_depos_t12 & fine_depos_t12_state=1 -> (fine_depos_t12_state'=0) & (fine_depos_p10_value'=-1) & (fine_depos_p14_value'=0);
+endmodule
+
+module heavy_polish_t10
+  heavy_polish_t10_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [fire_heavy_polish_t10] STAGE=0 & psi_idle_heavy_polish_t10 & (heavy_polish_p8_value >= 2) -> (heavy_polish_t10_state'=1);
+  [] STAGE=0 & psi_idle_heavy_polish_t10 & !(heavy_polish_p8_value >= 2) -> (heavy_polish_t10_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_heavy_polish_t10 & heavy_polish_t10_state=-1 -> (heavy_polish_t10_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_heavy_polish_t10 & heavy_polish_t10_state=1 -> (heavy_polish_t10_state'=0) & (heavy_polish_p8_value'=-1) & (heavy_polish_p12_value'=0);
+endmodule
+
+module hphs_t21
+  hphs_t21_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [fire_hphs_t21] STAGE=0 & psi_idle_hphs_t21 & (hphs_p19_value >= 1) -> (hphs_t21_state'=1);
+  [] STAGE=0 & psi_idle_hphs_t21 & !(hphs_p19_value >= 1) -> (hphs_t21_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_hphs_t21 & hphs_t21_state=-1 -> (hphs_t21_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_hphs_t21 & hphs_t21_state=1 -> (hphs_t21_state'=0) & (hphs_p19_value'=-1) & (hphs_p21_value'=0);
+endmodule
+
+module light_polish_t11
+  light_polish_t11_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [fire_light_polish_t11] STAGE=0 & psi_idle_light_polish_t11 & (light_polish_p9_value >= 1) -> (light_polish_t11_state'=1);
+  [] STAGE=0 & psi_idle_light_polish_t11 & !(light_polish_p9_value >= 1) -> (light_polish_t11_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_light_polish_t11 & light_polish_t11_state=-1 -> (light_polish_t11_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_light_polish_t11 & light_polish_t11_state=1 -> (light_polish_t11_state'=0) & (light_polish_p9_value'=-1) & (light_polish_p13_value'=0);
+endmodule
+
+module lpls_t22
+  lpls_t22_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [fire_lpls_t22] STAGE=0 & psi_idle_lpls_t22 & (lpls_p20_value >= 2) -> (lpls_t22_state'=1);
+  [] STAGE=0 & psi_idle_lpls_t22 & !(lpls_p20_value >= 2) -> (lpls_t22_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_lpls_t22 & lpls_t22_state=-1 -> (lpls_t22_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_lpls_t22 & lpls_t22_state=1 -> (lpls_t22_state'=0) & (lpls_p20_value'=-1) & (lpls_p22_value'=0);
+endmodule
+
+module milling_t3
+  milling_t3_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [fire_milling_t3] STAGE=0 & psi_idle_milling_t3 & (milling_p3_value >= 1) -> (milling_t3_state'=1);
+  [] STAGE=0 & psi_idle_milling_t3 & !(milling_p3_value >= 1) -> (milling_t3_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_milling_t3 & milling_t3_state=-1 -> (milling_t3_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_milling_t3 & milling_t3_state=1 -> (milling_t3_state'=0) & (milling_p3_value'=-1) & (milling_done_p5_value'=0);
+endmodule
+
+module nature1_decision_0_t14
+  nature1_decision_0_t14_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [] STAGE=0 & psi_idle_nature1_decision_0_t14 & (heavy_polish_p12_value >= 0) -> (nature1_decision_0_t14_state'=1);
+  [] STAGE=0 & psi_idle_nature1_decision_0_t14 & !(heavy_polish_p12_value >= 0) -> (nature1_decision_0_t14_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_nature1_decision_0_t14 & nature1_decision_0_t14_state=-1 -> (nature1_decision_0_t14_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_nature1_decision_0_t14 & nature1_decision_0_t14_state=1 -> (nature1_decision_0_t14_state'=0) & (heavy_polish_p12_value'=-1) & (nature1_end_p16_value'=0);
+endmodule
+
+module nature1_decision_1_t15
+  nature1_decision_1_t15_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [] STAGE=0 & psi_idle_nature1_decision_1_t15 & (light_polish_p13_value >= 0) -> (nature1_decision_1_t15_state'=1);
+  [] STAGE=0 & psi_idle_nature1_decision_1_t15 & !(light_polish_p13_value >= 0) -> (nature1_decision_1_t15_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_nature1_decision_1_t15 & nature1_decision_1_t15_state=-1 -> (nature1_decision_1_t15_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_nature1_decision_1_t15 & nature1_decision_1_t15_state=1 -> (nature1_decision_1_t15_state'=0) & (light_polish_p13_value'=-1) & (nature1_end_p16_value'=0);
+endmodule
+
+module nature1_t6_7
+  nature1_t6_7_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [] STAGE=0 & psi_idle_nature1_t6_7 & (nature1_p6_value >= 0) -> (nature1_t6_7_state'=1);
+  [] STAGE=0 & psi_idle_nature1_t6_7 & !(nature1_p6_value >= 0) -> (nature1_t6_7_state'=-1);
+  // Stage 5: Nature transition firing
+  [] STAGE=5 & psi_first_nature_not_idle_nature1_t6_7 & nature1_t6_7_state=-1 -> (nature1_t6_7_state'=0);
+  [] STAGE=5 & psi_first_nature_not_idle_nature1_t6_7 & nature1_t6_7_state=1 -> 0.2: (nature1_t6_7_state'=0) & (heavy_polish_p8_value'=0) & (nature1_p6_value'=-1) + 0.8: (nature1_t6_7_state'=0) & (light_polish_p9_value'=0) & (nature1_p6_value'=-1);
+endmodule
+
+module parallel_merge_t18
+  parallel_merge_t18_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [] STAGE=0 & psi_idle_parallel_merge_t18 & (nature1_end_p16_value >= 0 & choice1_end_p17_value >= 0) -> (parallel_merge_t18_state'=1);
+  [] STAGE=0 & psi_idle_parallel_merge_t18 & !(nature1_end_p16_value >= 0 & choice1_end_p17_value >= 0) -> (parallel_merge_t18_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_parallel_merge_t18 & parallel_merge_t18_state=-1 -> (parallel_merge_t18_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_parallel_merge_t18 & parallel_merge_t18_state=1 -> (parallel_merge_t18_state'=0) & (nature1_end_p16_value'=-1) & (choice1_end_p17_value'=-1) & (choice2_p18_value'=0);
+endmodule
+
+module parallel_t1
+  parallel_t1_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [] STAGE=0 & psi_idle_parallel_t1 & (cutting_done_p1_value >= 0) -> (parallel_t1_state'=1);
+  [] STAGE=0 & psi_idle_parallel_t1 & !(cutting_done_p1_value >= 0) -> (parallel_t1_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_parallel_t1 & parallel_t1_state=-1 -> (parallel_t1_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_parallel_t1 & parallel_t1_state=1 -> (parallel_t1_state'=0) & (cutting_done_p1_value'=-1) & (bending_p2_value'=0) & (milling_p3_value'=0);
+endmodule
+
+module rough_depos_t13
+  rough_depos_t13_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [fire_rough_depos_t13] STAGE=0 & psi_idle_rough_depos_t13 & (rough_depos_p11_value >= 1) -> (rough_depos_t13_state'=1);
+  [] STAGE=0 & psi_idle_rough_depos_t13 & !(rough_depos_p11_value >= 1) -> (rough_depos_t13_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_rough_depos_t13 & rough_depos_t13_state=-1 -> (rough_depos_t13_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_rough_depos_t13 & rough_depos_t13_state=1 -> (rough_depos_t13_state'=0) & (rough_depos_p11_value'=-1) & (rough_depos_p15_value'=0);
+endmodule
+
+module sequential_t4
+  sequential_t4_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [] STAGE=0 & psi_idle_sequential_t4 & (bending_done_p4_value >= 0) -> (sequential_t4_state'=1);
+  [] STAGE=0 & psi_idle_sequential_t4 & !(bending_done_p4_value >= 0) -> (sequential_t4_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_sequential_t4 & sequential_t4_state=-1 -> (sequential_t4_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_sequential_t4 & sequential_t4_state=1 -> (sequential_t4_state'=0) & (bending_done_p4_value'=-1) & (nature1_p6_value'=0);
+endmodule
+
+module sequential_t5
+  sequential_t5_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [] STAGE=0 & psi_idle_sequential_t5 & (milling_done_p5_value >= 0) -> (sequential_t5_state'=1);
+  [] STAGE=0 & psi_idle_sequential_t5 & !(milling_done_p5_value >= 0) -> (sequential_t5_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_sequential_t5 & sequential_t5_state=-1 -> (sequential_t5_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_sequential_t5 & sequential_t5_state=1 -> (sequential_t5_state'=0) & (milling_done_p5_value'=-1) & (choice1_p7_value'=0);
+endmodule
+
+
+rewards "impact_0"
+  [fire_cutting_t0] true : 10;
+  [fire_bending_t2] true : 20;
+  [fire_heavy_polish_t10] true : 5;
+  [fire_light_polish_t11] true : 8;
+  [fire_milling_t3] true : 50;
+  [fire_fine_depos_t12] true : 30;
+  [fire_rough_depos_t13] true : 10;
+  [fire_hphs_t21] true : 40;
+  [fire_lpls_t22] true : 20;
+endrewards
+
+rewards "impact_1"
+  [fire_cutting_t0] true : 1;
+  [fire_bending_t2] true : 1;
+  [fire_heavy_polish_t10] true : 4;
+  [fire_light_polish_t11] true : 1;
+  [fire_milling_t3] true : 1;
+  [fire_fine_depos_t12] true : 1;
+  [fire_rough_depos_t13] true : 1;
+  [fire_hphs_t21] true : 1;
+  [fire_lpls_t22] true : 3;
+endrewards
