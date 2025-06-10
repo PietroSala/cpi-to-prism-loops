@@ -7,7 +7,7 @@ import subprocess
 # https://www.prismmodelchecker.org/manual/RunningPRISM/ExportingTheModel#formats
 
 
-def run_prism_analysis(process_name, PRISM_PATH = ''):
+def run_prism_analysis(process_name):
     """
     Runs PRISM analysis on a model file and saves results.
 
@@ -58,7 +58,6 @@ def run_prism_analysis(process_name, PRISM_PATH = ''):
         os.path.abspath(trans_path),
         "-verbose"
     ]
-    print(f"Running PRISM command: {' '.join(cmd)}")
     try:
         result = subprocess.run(cmd,
                                 capture_output=True,
