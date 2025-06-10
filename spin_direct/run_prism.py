@@ -47,7 +47,8 @@ def run_prism_analysis(process_name, PRISM_PATH = ''):
 
     # Run PRISM command
     cmd = [
-        os.path.abspath(PRISM_PATH),
+        # os.path.abspath(PRISM_PATH),
+        'prism',
         os.path.abspath(model_path),
         "-exporttransdotstates",
         os.path.abspath(dot_path),
