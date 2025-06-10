@@ -18,14 +18,15 @@ def run_prism_analysis(process_name, PRISM_PATH = ''):
         dict: Analysis information including modules, variables, and timing
     """
     # Define paths
-    model_path = os.path.join("../models", f"{process_name}.nm")
-    dot_path = os.path.join("../models", f"{process_name}.dot")
-    info_path = os.path.join("../models", f"{process_name}.info")
-    cpi_path = os.path.join("../CPIs", f"{process_name}.cpi")
     os.makedirs(os.path.join("../results/"), exist_ok=True)
+    os.makedirs(os.path.join("../results/", f"{process_name}"), exist_ok=True)
+    model_path = os.path.join("../models", f"{process_name}.nm")
+    dot_path = os.path.join("../results", f"{process_name}/{process_name}.dot")
+    info_path = os.path.join("../results", f"{process_name}/{process_name}.info")
+    cpi_path = os.path.join("../CPIs", f"{process_name}.cpi")    
     states_path = os.path.join("../results", f"{process_name}/{process_name}_states.csv")
     trans_path = os.path.join("../results", f"{process_name}/{process_name}_trans.tra")    
-    os.makedirs(os.path.join("../results/", f"{process_name}"), exist_ok=True)
+    
     # Read CPI file to get task impacts
     with open(cpi_path, 'r') as f:
         cpi_data = json.load(f)
