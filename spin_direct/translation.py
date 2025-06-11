@@ -151,11 +151,19 @@ class SPINtoPRISM:
         lines.append("  [] STAGE=1 & psi_all_step_not_updated -> (STAGE'=0);")
         
         # Stage 4 -> 5: All non-nature transitions processed
-        lines.append("  [] STAGE=4 & psi_all_idle_but_nature -> (STAGE'=5);")
-        
-        # Stage 5 -> 0: All nature transitions processed
-        lines.append("  [] STAGE=5 & psi_all_idle_nature -> (STAGE'=0);")
-        
+        # Check if nature is present
+        natures_exists = False
+        for transition in self.transitions:
+            if transition.type == TransitionType.NATURE:
+                natures_exists = True
+                break
+
+        if natures_exists:
+            lines.append("  [] STAGE=4 & psi_all_idle_but_nature -> (STAGE'=5);")
+            lines.append("  [] STAGE=5 & psi_all_idle_nature -> (STAGE'=0);")
+        else:
+            lines.append("  [] STAGE=4 & psi_all_idle_but_nature -> (STAGE'=0);")
+
         lines.append("endmodule")
         return "\n".join(lines)
     

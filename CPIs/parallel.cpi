@@ -1,0 +1,16 @@
+ {
+    "type": "parallel",
+    "id": 0,
+    "first_split": {
+        "type": "task",
+        "id": 1,
+        "duration": 3,
+        "impacts": {"impact_1": 1.0}
+    },
+    "second_split": {
+        "type": "task",
+        "id": 2,
+        "duration": 4,
+        "impacts": {"impact_1": 1.0}
+    }
+}
