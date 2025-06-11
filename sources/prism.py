@@ -5,6 +5,9 @@ import json
 import re
 from datetime import datetime
 
+from env import PRISM_PATH
+
+
 def get_task_impacts(region):
     """
 	Recursively collect task impacts from CPI data.
@@ -19,7 +22,7 @@ def get_task_impacts(region):
             impacts.update(get_task_impacts(region[key]))
     return impacts
 
-def run_prism_analysis(process_name, prism_path=None, create_mdp=False):
+def run_prism_analysis(process_name, create_mdp=False):
     """
     Runs PRISM analysis on a model file and saves results.
     
@@ -47,7 +50,7 @@ def run_prism_analysis(process_name, prism_path=None, create_mdp=False):
 
 
     # Run PRISM command
-    cmd = [os.path.abspath(prism_path) if prism_path else "prism",
+    cmd = [os.path.abspath(PRISM_PATH) if PRISM_PATH else "prism",
            os.path.abspath(model_path),
            "-exporttransdotstates", os.path.abspath(dot_path)]
 
