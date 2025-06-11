@@ -1,11 +1,7 @@
-import sys
-import os
-import json
-import traceback
-from typing import Dict, List, Tuple
 import graphviz
-from IPython.display import display, Image
-from translation import SPINtoPRISM, TransitionType
+from cpi_to_mdp.translation import SPINtoPRISM, TransitionType
+
+
 class CPIToSPINConverter:
     """
     Converts CPI (Control Process Interface) format to SPIN model format.
@@ -116,9 +112,9 @@ class CPIToSPINConverter:
     
     def _convert_parallel(self, par_region, input_place, output_place):
         """Convert a parallel region (concurrent execution)
-        
+
         Pattern: input --[split]--> branch1 --[merge]--> output
-                               \--> branch2 ----/
+                                 \\--> branch2 ----/
         Adds 2 places (one for each branch end)
         """
         split_name = self.get_next_transition_name(f"split{par_region['id']}")
@@ -160,11 +156,12 @@ class CPIToSPINConverter:
     
     def _convert_choice(self, choice_region, input_place, output_place):
         """Convert a choice region (non-deterministic choice)
-        
+
         Pattern: input --[choice]--> branch1 --[single]--> output
-                               \--> branch2 --[single]---/
+                                 \\--> branch2 --[single]---/
         Adds 2 places (entry for each branch)
         """
+
         choice_name = self.get_next_transition_name(f"choice{choice_region['id']}")
         
         # Create entry places for each branch
@@ -188,11 +185,12 @@ class CPIToSPINConverter:
     
     def _convert_nature(self, nature_region, input_place, output_place):
         """Convert a nature region (probabilistic choice)
-        
+
         Pattern: input --[nature_prob]--> branch1 --[single]--> output
-                                     \--> branch2 --[single]---/
+                                     \\--> branch2 --[single]---/
         Adds 2 places (entry for each branch)
         """
+
         nature_name = self.get_next_transition_name(f"nature{nature_region['id']}")
         
         # Create entry places for each branch

@@ -6,7 +6,7 @@ from telegram.telegram_bot import send_telegram_message
 
 
 def single_execution(cursor, conn, x, y, w, bundle):
-    # Check if experiment already exists
+    # Check if the experiment already exists
     cursor.execute(
         "SELECT COUNT(*) FROM experiments WHERE x=? AND y=? AND w=?",
         (x, y, w)
