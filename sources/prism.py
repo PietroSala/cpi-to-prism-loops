@@ -5,10 +5,21 @@ import json
 import re
 from datetime import datetime
 
-from sources.env import PRISM_PATH
+def get_task_impacts(region):
+    """
+	Recursively collect task impacts from CPI data.
+	Returns the complete impacts dictionary for each task.
+	"""
+    impacts = {}
+    if region["type"] == "task" and "impacts" in region:
+        task_id = f"task{region['id']}"
+        impacts[task_id] = region["impacts"]  # Store the complete impacts dictionary
+    for key in ["head", "tail", "first_split", "second_split", "true", "false"]:
+        if key in region and region[key] is not None:
+            impacts.update(get_task_impacts(region[key]))
+    return impacts
 
-
-def run_prism_analysis(process_name):
+def run_prism_analysis(process_name, prism_path=None, create_mdp=False):
     """
     Runs PRISM analysis on a model file and saves results.
     
@@ -19,39 +30,35 @@ def run_prism_analysis(process_name):
         dict: Analysis information including modules, variables, and timing
     """
     # Define paths
-
+    os.makedirs(os.path.join("models"), exist_ok=True)
+    #os.makedirs(os.path.join("models/", f"{process_name}"), exist_ok=True)
     model_path = os.path.join("models", f"{process_name}.nm")
     dot_path = os.path.join("models", f"{process_name}.dot")
     info_path = os.path.join("models", f"{process_name}.info")
     cpi_path = os.path.join("CPIs", f"{process_name}.cpi")
-    
+    states_path = os.path.join("models", f"{process_name}_states.csv")
+    trans_path = os.path.join("models", f"{process_name}_trans.tra")
+    # https://www.prismmodelchecker.org/manual/Appendices/ExplicitModelFiles#tra
+    # https://www.prismmodelchecker.org/manual/RunningPRISM/ExportingTheModel#formats
+
+
     # Read CPI file to get task impacts
     with open(cpi_path, 'r') as f:
         cpi_data = json.load(f)
-    
-    def get_task_impacts(region):
-        """
-        Recursively collect task impacts from CPI data.
-        Returns the complete impacts dictionary for each task.
-        """
-        impacts = {}
-        if region["type"] == "task" and "impacts" in region:
-            task_id = f"task{region['id']}"
-            impacts[task_id] = region["impacts"]  # Store the complete impacts dictionary
-        for key in ["head", "tail", "first_split", "second_split", "true", "false"]:
-            if key in region and region[key] is not None:
-                impacts.update(get_task_impacts(region[key]))
-        return impacts
+
 
     # Run PRISM command
-    cmd = [
-        os.path.abspath(PRISM_PATH),
-        os.path.abspath(model_path),
-        "-exporttransdotstates",
-        os.path.abspath(dot_path),
-        "-verbose"
-    ]
-    
+    cmd = [os.path.abspath(prism_path) if prism_path else "prism",
+           os.path.abspath(model_path),
+           "-exporttransdotstates", os.path.abspath(dot_path)]
+
+    if create_mdp:
+        cmd += ["-exportstates", os.path.abspath(states_path),
+                "-exporttrans", os.path.abspath(trans_path)]
+
+    cmd.append("-verbose")
+
+
     try:
         result = subprocess.run(cmd, 
                               capture_output=True, 
