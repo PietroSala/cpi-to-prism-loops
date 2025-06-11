@@ -31,7 +31,6 @@ def run_prism_analysis(process_name, prism_path=None, create_mdp=False):
     """
     # Define paths
     os.makedirs(os.path.join("models"), exist_ok=True)
-    #os.makedirs(os.path.join("models/", f"{process_name}"), exist_ok=True)
     model_path = os.path.join("models", f"{process_name}.nm")
     dot_path = os.path.join("models", f"{process_name}.dot")
     info_path = os.path.join("models", f"{process_name}.info")

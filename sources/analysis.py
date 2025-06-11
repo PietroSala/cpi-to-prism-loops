@@ -62,7 +62,7 @@ def parse_states_line(line: str) -> tuple[Optional[int], Optional[int]]:
         pass
     return None, None
 
-def analyze_bounds(model_name: str, thresholds: Dict[str, float]) -> Dict[str, Any]:
+def analyze_bounds(model_name: str, thresholds: Dict[str, float], prism_path=None) -> Dict[str, Any]:
     """
     Analyze a model against multi-reward bounds.
     
@@ -102,7 +102,7 @@ def analyze_bounds(model_name: str, thresholds: Dict[str, float]) -> Dict[str, A
     
     # Run PRISM with the model and property files
     cmd = [
-        os.path.abspath(PRISM_PATH),
+        os.path.abspath(prism_path) if prism_path else "prism",
         "-cuddmaxmem",
         "10g",
         "-javamaxmem",

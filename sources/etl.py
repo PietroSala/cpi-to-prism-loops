@@ -1,6 +1,6 @@
 import json
 import os
-from process_to_mdp import cpi_to_mdp
+from cpi_to_mdp.cpitospin import CPIToSPINConverter
 
 def cpi_to_model(filename):
     """
@@ -29,11 +29,11 @@ def cpi_to_model(filename):
         # Read CPI file
         with open(input_path, 'r') as f:
             cpi_dict = json.load(f)
-        
-        # Convert to PRISM model with optional rewards
-        prism_model = cpi_to_mdp(cpi_dict)
-        
-        # Write to output file
+
+        spin_model = CPIToSPINConverter().convert_cpi_to_spin(cpi_dict)
+
+        prism_model = spin_model.generate_prism_model()
+
         with open(output_path, 'w') as f:
             f.write(prism_model)
             
