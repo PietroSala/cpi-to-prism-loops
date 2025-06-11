@@ -1,11 +1,7 @@
-import sys
-import os
-import json
-import traceback
-from typing import Dict, List, Tuple
 import graphviz
-from IPython.display import display, Image
-from translation import SPINtoPRISM, TransitionType
+from cpi_to_mdp.translation import SPINtoPRISM, TransitionType
+
+
 class CPIToSPINConverter:
     """
     Converts CPI (Control Process Interface) format to SPIN model format.
