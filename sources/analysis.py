@@ -18,8 +18,8 @@ def generate_multi_rewards_requirement(thresholds: Dict[str, float]) -> str:
     """
     # Generate individual reward bound expressions
     reward_bounds = [
-        f'R{{"{impact_name}"}}<={threshold:0.6f} [C]'
-        for impact_name, threshold in sorted(thresholds.items())
+        f'R{{"impact_{i}"}}<={threshold:0.6f} [C]'
+        for i, threshold in enumerate(sorted(thresholds.values()))
     ]
     
     # Combine into multi() property
