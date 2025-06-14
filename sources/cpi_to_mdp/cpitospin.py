@@ -258,9 +258,9 @@ class CPIToSPINConverter:
 
 
 
-def create_cpi_visualization(cpi_dict, title="CPI Process"):
+def create_cpi_visualization(cpi_dict):
     """Create a Graphviz visualization of the CPI structure"""
-    dot = graphviz.Digraph(comment=title, format='png')
+    dot = graphviz.Digraph(comment="CPI Process", format='png')
     dot.attr(rankdir='LR')
     dot.attr('node', fontsize='10', fontname='Arial')
     dot.attr('edge', fontsize='8', fontname='Arial')
@@ -320,9 +320,9 @@ def create_cpi_visualization(cpi_dict, title="CPI Process"):
     add_cpi_node(cpi_dict)
     return dot
 
-def create_spin_visualization(spin_model: SPINtoPRISM, title="SPIN Model"):
+def create_spin_visualization(spin_model: SPINtoPRISM):
     """Create a Graphviz visualization of the SPIN model"""
-    dot = graphviz.Digraph(comment=title, format='png')
+    dot = graphviz.Digraph(comment="SPIN Model", format='png')
     dot.attr(rankdir='LR')
     dot.attr('node', fontsize='10', fontname='Arial')
     dot.attr('edge', fontsize='8', fontname='Arial')
