@@ -139,8 +139,7 @@ def find_exclusive_gateways(places:dict):
 			choices[type_split].append(t_f)
 		elif "nature" in type_split:
 			natures[type_split].append(t_f)
-		else:
-			# case loop
+		elif "loop" in type_split:
 			loops[type_split].append(t_f)
 
 	return dict(choices), dict(natures), dict(loops)

@@ -45,31 +45,47 @@ def add_empty_transition(idx, idx_next):
 		f'"{idx_transition}" -> "{idx_next}";'
 	]
 
-def add_choice(combo, idx, idx_next):
-	combo_str = '\n'.join(f'{k}{v}' for k, v in combo.items())
-	idx_choice = f'{idx}c'
+def add_choice(decision_combination, idx, idx_next):
+	idx_choice = f'{idx}'
+	label_lines = []
+	for k, v in decision_combination.items():
+		label_lines.append(f'{k}: {v}')
+		idx_choice += f' {k}{v}'
+
+	label = '\n'.join(label_lines)
+
 	return [
-		f'"{idx_choice}" [label="{{{combo_str}}}" , style="filled", fillcolor="lightcoral", shape="ellipse" ];',
+		f'"{idx_choice}" [label="{{{label}}}" , style="filled", fillcolor="lightcoral", shape="ellipse"];',
 		f'"{idx}" -> "{idx_choice}";',
-		f'"{idx_choice}" -> "{idx_next}"; '
+		f'"{idx_choice}" -> "{idx_next}";'
 	]
 
-def add_nature(combo, idx, idx_next, probability):
-	combo_str = '\n'.join(f'{k}{v}' for k, v in combo.items())
-	idx_nature = f'{idx}n'
-	prob_label = f'[label = "{probability}"]'
+def add_nature(decision_combination, idx, idx_next, probability):
+	idx_nature = f'{idx}'
+	label_lines = []
+	for k, v in decision_combination.items():
+		label_lines.append(f'{k}: {v}')
+		idx_nature += f' {k}{v}'
+
+	label = '\n'.join(label_lines)
+
 	return [
-		f'"{idx_nature}" [label="{{{combo_str}}}" , style="filled", fillcolor="lightgreen", shape="ellipse" ];',
-		f'"{idx}" -> "{idx_nature}"  {prob_label};',
-		f'"{idx_nature}" -> "{idx_next}"; '
+		f'"{idx_nature}" [label="{{{label}}}" , style="filled", fillcolor="lightgreen", shape="ellipse"];',
+		f'"{idx}" -> "{idx_nature}" [label = "{probability}"];',
+		f'"{idx_nature}" -> "{idx_next}";'
 	]
 
-def add_loop(combo, idx, idx_next, probability):
-	combo_str = '\n'.join(f'{k}{v}' for k, v in combo.items())
-	idx_loop = f'{idx}l'
-	prob_label = f'[label = "{probability}"]'
+def add_loop(decision_combination, idx, idx_next, probability):
+	idx_loop = f'{idx}'
+	label_lines = []
+	for k, v in decision_combination.items():
+		label_lines.append(f'{k}: {v}')
+		idx_loop += f' {k}{v}'
+
+	label = '\n'.join(label_lines)
+
 	return [
-		f'{idx_loop} [label="{{{combo_str}}}" , style="filled", fillcolor="lightgreen", shape="ellipse" ];',
+		f'{idx_loop} [label="{{{label}}}" , style="filled", fillcolor="lightgreen", shape="ellipse"];',
 		f'{idx} -> {idx_loop};',
-		f'{idx_loop} -> {idx_next}  {prob_label}; '
+		f'{idx_loop} -> {idx_next} [label = "{probability}"];'
 	]
