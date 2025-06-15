@@ -83,9 +83,9 @@ def add_loop(decision_combination, idx, idx_next, probability):
 		idx_loop += f' {k}{v}'
 
 	label = '\n'.join(label_lines)
-
+	print("uscita loop: ", f'"{idx_loop}" -> "{idx_next}";')
 	return [
-		f'{idx_loop} [label="{{{label}}}" , style="filled", fillcolor="lightgreen", shape="ellipse"];',
-		f'{idx} -> {idx_loop};',
-		f'{idx_loop} -> {idx_next} [label = "{probability}"];'
+		f'"{idx_loop}" [label="{{{label}}}" , style="filled", fillcolor="lightgreen", shape="ellipse"];',
+		f'"{idx}" -> "{idx_loop}"  [label = "{probability}"];',
+		f'"{idx_loop}" -> "{idx_next}";'
 	]

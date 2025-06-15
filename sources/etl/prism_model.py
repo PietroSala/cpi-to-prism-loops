@@ -129,11 +129,11 @@ def find_next_state(src:int, transition:dict, states: set):
 			res.append((r[0], round(r[1] * transition[src][i][1], 3), l))
 	return res
 
-def find_exclusive_gateways(places:dict):
+def find_exclusive_gateways(places:dict, next_places:dict):
 	choices = defaultdict(list)
 	natures = defaultdict(list)
 	loops = defaultdict(list)
-	for k in places.keys():
+	for k in next_places.keys():
 		if '_' not in k:
 			continue
 		type_split, t_f = k.split('_', 1)
@@ -143,6 +143,13 @@ def find_exclusive_gateways(places:dict):
 			natures[type_split].append(t_f)
 		elif "loop" in type_split:
 			loops[type_split].append(t_f)
+
+	for k in places.keys():#TODO
+		if '_' not in k:
+			continue
+		type_split, t_f = k.split('_', 1)
+		#loops[type_split].append(t_f)
+		print(t_f)
 
 	return dict(choices), dict(natures), dict(loops)
 
