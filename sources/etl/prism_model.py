@@ -134,6 +134,8 @@ def find_exclusive_gateways(places:dict):
 	natures = defaultdict(list)
 	loops = defaultdict(list)
 	for k in places.keys():
+		if '_' not in k:
+			continue
 		type_split, t_f = k.split('_', 1)
 		if "choice" in type_split:
 			choices[type_split].append(t_f)
