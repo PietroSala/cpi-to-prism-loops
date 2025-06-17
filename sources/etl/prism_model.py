@@ -142,14 +142,15 @@ def find_exclusive_gateways(places:dict, next_places:dict):
 		elif "nature" in type_split:
 			natures[type_split].append(t_f)
 		elif "loop" in type_split:
-			loops[type_split].append(t_f)
+			loops[type_split].append("repeat")
 
 	for k in places.keys():#TODO
 		if '_' not in k:
 			continue
 		type_split, t_f = k.split('_', 1)
-		#loops[type_split].append(t_f)
-		print(t_f)
+		if "loop" in type_split and "decision" in t_f and type_split not in loops:
+			loops[type_split].append("exit")
+
 
 	return dict(choices), dict(natures), dict(loops)
 
@@ -159,4 +160,3 @@ def decisions_combinations(exclusive_gateways):
 		dict(zip(exclusive_gateways.keys(), combination))
 		for combination in all_combinations
 	]
-
