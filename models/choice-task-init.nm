@@ -1,0 +1,214 @@
+// Global variables for places
+global STAGE : [0..5] init 0;
+
+// Place value variables
+global choice3_false4_value : [-1..3] init -1;
+global choice3_true3_value : [-1..2] init -1;
+global end1_value : [-1..0] init -1;
+global seq1_mid2_value : [-1..0] init -1;
+global start0_value : [-1..3] init 0;
+
+// Place updated variables
+global choice3_false4_updated : [0..1] init 0;
+global choice3_true3_updated : [0..1] init 0;
+global end1_updated : [0..1] init 0;
+global seq1_mid2_updated : [0..1] init 0;
+global start0_updated : [0..1] init 0;
+
+// Formulas
+formula is_active_choice31 = (seq1_mid2_value >= 0);
+formula is_active_task20 = (start0_value >= 3);
+formula is_active_task42 = (choice3_true3_value >= 2);
+formula is_active_task53 = (choice3_false4_value >= 3);
+formula psi_at_least_one_remaining_duration = (choice3_false4_value >= 0 & choice3_false4_value < 3) | (choice3_true3_value >= 0 & choice3_true3_value < 2) | (end1_value >= 0 & end1_value < 0) | (seq1_mid2_value >= 0 & seq1_mid2_value < 0) | (start0_value >= 0 & start0_value < 3);
+formula psi_step = (!is_active_choice31 & !is_active_task20 & !is_active_task42 & !is_active_task53) & psi_at_least_one_remaining_duration;
+formula step_updated_choice3_false4 = choice3_false4_updated=0;
+formula step_updated_choice3_true3 = choice3_true3_updated=0 & choice3_false4_updated=1;
+formula step_updated_end1 = end1_updated=0 & choice3_false4_updated=1 & choice3_true3_updated=1;
+formula step_updated_seq1_mid2 = seq1_mid2_updated=0 & choice3_false4_updated=1 & choice3_true3_updated=1 & end1_updated=1;
+formula step_updated_start0 = start0_updated=0 & choice3_false4_updated=1 & choice3_true3_updated=1 & end1_updated=1 & seq1_mid2_updated=1;
+formula psi_all_step_updated = choice3_false4_updated=1 & choice3_true3_updated=1 & end1_updated=1 & seq1_mid2_updated=1 & start0_updated=1;
+formula step_not_updated_choice3_false4 = choice3_false4_updated=1;
+formula step_not_updated_choice3_true3 = choice3_true3_updated=1 & choice3_false4_updated=0;
+formula step_not_updated_end1 = end1_updated=1 & choice3_false4_updated=0 & choice3_true3_updated=0;
+formula step_not_updated_seq1_mid2 = seq1_mid2_updated=1 & choice3_false4_updated=0 & choice3_true3_updated=0 & end1_updated=0;
+formula step_not_updated_start0 = start0_updated=1 & choice3_false4_updated=0 & choice3_true3_updated=0 & end1_updated=0 & seq1_mid2_updated=0;
+formula psi_all_step_not_updated = choice3_false4_updated=0 & choice3_true3_updated=0 & end1_updated=0 & seq1_mid2_updated=0 & start0_updated=0;
+formula psi_idle_choice31 = !psi_step & choice31_state=0;
+formula psi_idle_task20 = !psi_step & task20_state=0 & choice31_state!=0;
+formula psi_idle_task42 = !psi_step & task42_state=0 & choice31_state!=0 & task20_state!=0;
+formula psi_idle_task53 = !psi_step & task53_state=0 & choice31_state!=0 & task20_state!=0 & task42_state!=0;
+formula psi_first_but_nature_not_idle_choice31 = choice31_state!=0;
+formula psi_first_but_nature_not_idle_task20 = task20_state!=0 & choice31_state=0;
+formula psi_first_but_nature_not_idle_task42 = task42_state!=0 & choice31_state=0 & task20_state=0;
+formula psi_first_but_nature_not_idle_task53 = task53_state!=0 & choice31_state=0 & task20_state=0 & task42_state=0;
+formula psi_all_idle_but_nature = choice31_state=0 & task20_state=0 & task42_state=0 & task53_state=0;
+formula psi_noone_idle = choice31_state!=0 & task20_state!=0 & task42_state!=0 & task53_state!=0;
+formula psi_atleastone_active = is_active_choice31 | is_active_task20 | is_active_task42 | is_active_task53;
+
+// State Labels for Simulator
+label "psi_step" = psi_step;
+label "psi_at_least_one_remaining_duration" = psi_at_least_one_remaining_duration;
+label "psi_all_step_updated" = psi_all_step_updated;
+label "psi_all_step_not_updated" = psi_all_step_not_updated;
+label "psi_noone_idle" = psi_noone_idle;
+label "psi_atleastone_active" = psi_atleastone_active;
+label "psi_idle_choice31" = psi_idle_choice31;
+label "psi_idle_task20" = psi_idle_task20;
+label "psi_idle_task42" = psi_idle_task42;
+label "psi_idle_task53" = psi_idle_task53;
+label "psi_first_but_nature_not_idle_choice31" = psi_first_but_nature_not_idle_choice31;
+label "psi_first_but_nature_not_idle_task20" = psi_first_but_nature_not_idle_task20;
+label "psi_first_but_nature_not_idle_task42" = psi_first_but_nature_not_idle_task42;
+label "psi_first_but_nature_not_idle_task53" = psi_first_but_nature_not_idle_task53;
+label "psi_all_idle_but_nature" = psi_all_idle_but_nature;
+label "step_updated_choice3_false4" = step_updated_choice3_false4;
+label "step_not_updated_choice3_false4" = step_not_updated_choice3_false4;
+label "step_updated_choice3_true3" = step_updated_choice3_true3;
+label "step_not_updated_choice3_true3" = step_not_updated_choice3_true3;
+label "step_updated_end1" = step_updated_end1;
+label "step_not_updated_end1" = step_not_updated_end1;
+label "step_updated_seq1_mid2" = step_updated_seq1_mid2;
+label "step_not_updated_seq1_mid2" = step_not_updated_seq1_mid2;
+label "step_updated_start0" = step_updated_start0;
+label "step_not_updated_start0" = step_not_updated_start0;
+label "is_active_choice31" = is_active_choice31;
+label "is_active_task20" = is_active_task20;
+label "is_active_task42" = is_active_task42;
+label "is_active_task53" = is_active_task53;
+label "stage_0" = STAGE=0;
+label "stage_1" = STAGE=1;
+label "stage_2" = STAGE=2;
+label "stage_3" = STAGE=3;
+label "stage_4" = STAGE=4;
+label "stage_5" = STAGE=5;
+label "state_choice31_ready" = choice31_state=1;
+label "state_choice31_disabled" = choice31_state=-1;
+label "state_choice31_idle" = choice31_state=0;
+label "state_task20_ready" = task20_state=1;
+label "state_task20_disabled" = task20_state=-1;
+label "state_task20_idle" = task20_state=0;
+label "state_task42_ready" = task42_state=1;
+label "state_task42_disabled" = task42_state=-1;
+label "state_task42_idle" = task42_state=0;
+label "state_task53_ready" = task53_state=1;
+label "state_task53_disabled" = task53_state=-1;
+label "state_task53_idle" = task53_state=0;
+label "place_choice3_false4_empty" = choice3_false4_value=-1;
+label "place_choice3_false4_has_token" = choice3_false4_value>=0;
+label "place_choice3_false4_duration_met" = choice3_false4_value>=3;
+label "place_choice3_false4_can_advance" = choice3_false4_value>=0 & choice3_false4_value<3;
+label "place_choice3_false4_updated" = choice3_false4_updated=1;
+label "place_choice3_true3_empty" = choice3_true3_value=-1;
+label "place_choice3_true3_has_token" = choice3_true3_value>=0;
+label "place_choice3_true3_duration_met" = choice3_true3_value>=2;
+label "place_choice3_true3_can_advance" = choice3_true3_value>=0 & choice3_true3_value<2;
+label "place_choice3_true3_updated" = choice3_true3_updated=1;
+label "place_end1_empty" = end1_value=-1;
+label "place_end1_has_token" = end1_value>=0;
+label "place_end1_duration_met" = end1_value>=0;
+label "place_end1_can_advance" = end1_value>=0 & end1_value<0;
+label "place_end1_updated" = end1_updated=1;
+label "place_seq1_mid2_empty" = seq1_mid2_value=-1;
+label "place_seq1_mid2_has_token" = seq1_mid2_value>=0;
+label "place_seq1_mid2_duration_met" = seq1_mid2_value>=0;
+label "place_seq1_mid2_can_advance" = seq1_mid2_value>=0 & seq1_mid2_value<0;
+label "place_seq1_mid2_updated" = seq1_mid2_updated=1;
+label "place_start0_empty" = start0_value=-1;
+label "place_start0_has_token" = start0_value>=0;
+label "place_start0_duration_met" = start0_value>=3;
+label "place_start0_can_advance" = start0_value>=0 & start0_value<3;
+label "place_start0_updated" = start0_updated=1;
+
+module manager
+  // Stage 0 -> 3: Can do step
+  [] STAGE=0 & psi_step -> (STAGE'=3);
+  // Stage 0 -> 2: Terminated
+  [] STAGE=0 & !psi_step & psi_noone_idle & !psi_atleastone_active -> (STAGE'=2);
+  // Stage 0 -> 4: Fire transitions (FIXED: added psi_noone_idle)
+  [] STAGE=0 & !psi_step & psi_noone_idle & psi_atleastone_active -> (STAGE'=4);
+  // Update choice3_false4
+  [] STAGE=3 & step_updated_choice3_false4 & choice3_false4_value=-1 -> (choice3_false4_updated'=1);
+  [] STAGE=3 & step_updated_choice3_false4 & choice3_false4_value>=0 & choice3_false4_value<3 -> (choice3_false4_value'=choice3_false4_value+1) & (choice3_false4_updated'=1);
+  [] STAGE=3 & step_updated_choice3_false4 & choice3_false4_value=3 -> (choice3_false4_updated'=1);
+  // Update choice3_true3
+  [] STAGE=3 & step_updated_choice3_true3 & choice3_true3_value=-1 -> (choice3_true3_updated'=1);
+  [] STAGE=3 & step_updated_choice3_true3 & choice3_true3_value>=0 & choice3_true3_value<2 -> (choice3_true3_value'=choice3_true3_value+1) & (choice3_true3_updated'=1);
+  [] STAGE=3 & step_updated_choice3_true3 & choice3_true3_value=2 -> (choice3_true3_updated'=1);
+  // Update end1
+  [] STAGE=3 & step_updated_end1 & end1_value=-1 -> (end1_updated'=1);
+  [] STAGE=3 & step_updated_end1 & end1_value>=0 & end1_value<0 -> (end1_value'=end1_value+1) & (end1_updated'=1);
+  [] STAGE=3 & step_updated_end1 & end1_value=0 -> (end1_updated'=1);
+  // Update seq1_mid2
+  [] STAGE=3 & step_updated_seq1_mid2 & seq1_mid2_value=-1 -> (seq1_mid2_updated'=1);
+  [] STAGE=3 & step_updated_seq1_mid2 & seq1_mid2_value>=0 & seq1_mid2_value<0 -> (seq1_mid2_value'=seq1_mid2_value+1) & (seq1_mid2_updated'=1);
+  [] STAGE=3 & step_updated_seq1_mid2 & seq1_mid2_value=0 -> (seq1_mid2_updated'=1);
+  // Update start0
+  [] STAGE=3 & step_updated_start0 & start0_value=-1 -> (start0_updated'=1);
+  [] STAGE=3 & step_updated_start0 & start0_value>=0 & start0_value<3 -> (start0_value'=start0_value+1) & (start0_updated'=1);
+  [] STAGE=3 & step_updated_start0 & start0_value=3 -> (start0_updated'=1);
+  // Stage 3 -> 1: All updated
+  [] STAGE=3 & psi_all_step_updated -> (STAGE'=1);
+  [] STAGE=1 & step_not_updated_choice3_false4 -> (choice3_false4_updated'=0);
+  [] STAGE=1 & step_not_updated_choice3_true3 -> (choice3_true3_updated'=0);
+  [] STAGE=1 & step_not_updated_end1 -> (end1_updated'=0);
+  [] STAGE=1 & step_not_updated_seq1_mid2 -> (seq1_mid2_updated'=0);
+  [] STAGE=1 & step_not_updated_start0 -> (start0_updated'=0);
+  // Stage 1 -> 0: All reset
+  [] STAGE=1 & psi_all_step_not_updated -> (STAGE'=0);
+  [] STAGE=4 & psi_all_idle_but_nature -> (STAGE'=0);
+endmodule
+
+module choice31
+  choice31_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [] STAGE=0 & psi_idle_choice31 & (seq1_mid2_value >= 0) -> (choice31_state'=1);
+  [] STAGE=0 & psi_idle_choice31 & !(seq1_mid2_value >= 0) -> (choice31_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_choice31 & choice31_state=-1 -> (choice31_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_choice31 & choice31_state=1 -> (choice31_state'=0) & (seq1_mid2_value'=-1) & (choice3_true3_value'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_choice31 & choice31_state=1 -> (choice31_state'=0) & (seq1_mid2_value'=-1) & (choice3_false4_value'=0);
+endmodule
+
+module task20
+  task20_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [fire_task20] STAGE=0 & psi_idle_task20 & (start0_value >= 3) -> (task20_state'=1);
+  [] STAGE=0 & psi_idle_task20 & !(start0_value >= 3) -> (task20_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_task20 & task20_state=-1 -> (task20_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_task20 & task20_state=1 -> (task20_state'=0) & (start0_value'=-1) & (seq1_mid2_value'=0);
+endmodule
+
+module task42
+  task42_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [fire_task42] STAGE=0 & psi_idle_task42 & (choice3_true3_value >= 2) -> (task42_state'=1);
+  [] STAGE=0 & psi_idle_task42 & !(choice3_true3_value >= 2) -> (task42_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_task42 & task42_state=-1 -> (task42_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_task42 & task42_state=1 -> (task42_state'=0) & (choice3_true3_value'=-1) & (end1_value'=0);
+endmodule
+
+module task53
+  task53_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [fire_task53] STAGE=0 & psi_idle_task53 & (choice3_false4_value >= 3) -> (task53_state'=1);
+  [] STAGE=0 & psi_idle_task53 & !(choice3_false4_value >= 3) -> (task53_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_task53 & task53_state=-1 -> (task53_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_task53 & task53_state=1 -> (task53_state'=0) & (choice3_false4_value'=-1) & (end1_value'=0);
+endmodule
+
+
+rewards "impact_0"
+  [fire_task20] true : 0.4;
+  [fire_task42] true : 0.3;
+  [fire_task53] true : 0.5;
+endrewards
+
+rewards "impact_1"
+  [fire_task20] true : 0.5;
+  [fire_task42] true : 0.4;
+  [fire_task53] true : 0.5;
+endrewards

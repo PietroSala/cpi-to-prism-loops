@@ -1,0 +1,179 @@
+mdp 
+
+// Global variables for places
+global STAGE : [0..5] init 0;
+
+// Place value variables
+global end1_value : [-1..0] init -1;
+global loop3_child_entry2_value : [-1..1] init -1;
+global loop3_decision3_value : [-1..0] init -1;
+global start0_value : [-1..0] init 0;
+
+// Place updated variables
+global end1_updated : [0..1] init 0;
+global loop3_child_entry2_updated : [0..1] init 0;
+global loop3_decision3_updated : [0..1] init 0;
+global start0_updated : [0..1] init 0;
+
+// Formulas
+formula is_active_loop3_decision2 = (loop3_decision3_value >= 0);
+formula is_active_loop3_init0 = (start0_value >= 0);
+formula is_active_task51 = (loop3_child_entry2_value >= 1);
+formula psi_at_least_one_remaining_duration = (end1_value >= 0 & end1_value < 0) | (loop3_child_entry2_value >= 0 & loop3_child_entry2_value < 1) | (loop3_decision3_value >= 0 & loop3_decision3_value < 0) | (start0_value >= 0 & start0_value < 0);
+formula psi_step = (!is_active_loop3_decision2 & !is_active_loop3_init0 & !is_active_task51) & psi_at_least_one_remaining_duration;
+formula step_updated_end1 = end1_updated=0;
+formula step_updated_loop3_child_entry2 = loop3_child_entry2_updated=0 & end1_updated=1;
+formula step_updated_loop3_decision3 = loop3_decision3_updated=0 & end1_updated=1 & loop3_child_entry2_updated=1;
+formula step_updated_start0 = start0_updated=0 & end1_updated=1 & loop3_child_entry2_updated=1 & loop3_decision3_updated=1;
+formula psi_all_step_updated = end1_updated=1 & loop3_child_entry2_updated=1 & loop3_decision3_updated=1 & start0_updated=1;
+formula step_not_updated_end1 = end1_updated=1;
+formula step_not_updated_loop3_child_entry2 = loop3_child_entry2_updated=1 & end1_updated=0;
+formula step_not_updated_loop3_decision3 = loop3_decision3_updated=1 & end1_updated=0 & loop3_child_entry2_updated=0;
+formula step_not_updated_start0 = start0_updated=1 & end1_updated=0 & loop3_child_entry2_updated=0 & loop3_decision3_updated=0;
+formula psi_all_step_not_updated = end1_updated=0 & loop3_child_entry2_updated=0 & loop3_decision3_updated=0 & start0_updated=0;
+formula psi_idle_loop3_decision2 = !psi_step & loop3_decision2_state=0;
+formula psi_idle_loop3_init0 = !psi_step & loop3_init0_state=0 & loop3_decision2_state!=0;
+formula psi_idle_task51 = !psi_step & task51_state=0 & loop3_decision2_state!=0 & loop3_init0_state!=0;
+formula psi_first_but_nature_not_idle_loop3_init0 = loop3_init0_state!=0;
+formula psi_first_but_nature_not_idle_task51 = task51_state!=0 & loop3_init0_state=0;
+formula psi_first_nature_not_idle_loop3_decision2 = loop3_decision2_state!=0;
+formula psi_all_idle_but_nature = loop3_init0_state=0 & task51_state=0;
+formula psi_all_idle_nature = loop3_decision2_state=0;
+formula psi_noone_idle = loop3_decision2_state!=0 & loop3_init0_state!=0 & task51_state!=0;
+formula psi_atleastone_active = is_active_loop3_decision2 | is_active_loop3_init0 | is_active_task51;
+
+// State Labels for Simulator
+label "psi_step" = psi_step;
+label "psi_at_least_one_remaining_duration" = psi_at_least_one_remaining_duration;
+label "psi_all_step_updated" = psi_all_step_updated;
+label "psi_all_step_not_updated" = psi_all_step_not_updated;
+label "psi_noone_idle" = psi_noone_idle;
+label "psi_atleastone_active" = psi_atleastone_active;
+label "psi_idle_loop3_decision2" = psi_idle_loop3_decision2;
+label "psi_idle_loop3_init0" = psi_idle_loop3_init0;
+label "psi_idle_task51" = psi_idle_task51;
+label "psi_first_but_nature_not_idle_loop3_init0" = psi_first_but_nature_not_idle_loop3_init0;
+label "psi_first_but_nature_not_idle_task51" = psi_first_but_nature_not_idle_task51;
+label "psi_first_nature_not_idle_loop3_decision2" = psi_first_nature_not_idle_loop3_decision2;
+label "psi_all_idle_but_nature" = psi_all_idle_but_nature;
+label "psi_all_idle_nature" = psi_all_idle_nature;
+label "step_updated_end1" = step_updated_end1;
+label "step_not_updated_end1" = step_not_updated_end1;
+label "step_updated_loop3_child_entry2" = step_updated_loop3_child_entry2;
+label "step_not_updated_loop3_child_entry2" = step_not_updated_loop3_child_entry2;
+label "step_updated_loop3_decision3" = step_updated_loop3_decision3;
+label "step_not_updated_loop3_decision3" = step_not_updated_loop3_decision3;
+label "step_updated_start0" = step_updated_start0;
+label "step_not_updated_start0" = step_not_updated_start0;
+label "is_active_loop3_decision2" = is_active_loop3_decision2;
+label "is_active_loop3_init0" = is_active_loop3_init0;
+label "is_active_task51" = is_active_task51;
+label "stage_0" = STAGE=0;
+label "stage_1" = STAGE=1;
+label "stage_2" = STAGE=2;
+label "stage_3" = STAGE=3;
+label "stage_4" = STAGE=4;
+label "stage_5" = STAGE=5;
+label "state_loop3_decision2_ready" = loop3_decision2_state=1;
+label "state_loop3_decision2_disabled" = loop3_decision2_state=-1;
+label "state_loop3_decision2_idle" = loop3_decision2_state=0;
+label "state_loop3_init0_ready" = loop3_init0_state=1;
+label "state_loop3_init0_disabled" = loop3_init0_state=-1;
+label "state_loop3_init0_idle" = loop3_init0_state=0;
+label "state_task51_ready" = task51_state=1;
+label "state_task51_disabled" = task51_state=-1;
+label "state_task51_idle" = task51_state=0;
+label "place_end1_empty" = end1_value=-1;
+label "place_end1_has_token" = end1_value>=0;
+label "place_end1_duration_met" = end1_value>=0;
+label "place_end1_can_advance" = end1_value>=0 & end1_value<0;
+label "place_end1_updated" = end1_updated=1;
+label "place_loop3_child_entry2_empty" = loop3_child_entry2_value=-1;
+label "place_loop3_child_entry2_has_token" = loop3_child_entry2_value>=0;
+label "place_loop3_child_entry2_duration_met" = loop3_child_entry2_value>=1;
+label "place_loop3_child_entry2_can_advance" = loop3_child_entry2_value>=0 & loop3_child_entry2_value<1;
+label "place_loop3_child_entry2_updated" = loop3_child_entry2_updated=1;
+label "place_loop3_decision3_empty" = loop3_decision3_value=-1;
+label "place_loop3_decision3_has_token" = loop3_decision3_value>=0;
+label "place_loop3_decision3_duration_met" = loop3_decision3_value>=0;
+label "place_loop3_decision3_can_advance" = loop3_decision3_value>=0 & loop3_decision3_value<0;
+label "place_loop3_decision3_updated" = loop3_decision3_updated=1;
+label "place_start0_empty" = start0_value=-1;
+label "place_start0_has_token" = start0_value>=0;
+label "place_start0_duration_met" = start0_value>=0;
+label "place_start0_can_advance" = start0_value>=0 & start0_value<0;
+label "place_start0_updated" = start0_updated=1;
+
+module manager
+  // Stage 0 -> 3: Can do step
+  [] STAGE=0 & psi_step -> (STAGE'=3);
+  // Stage 0 -> 2: Terminated
+  [] STAGE=0 & !psi_step & psi_noone_idle & !psi_atleastone_active -> (STAGE'=2);
+  // Stage 0 -> 4: Fire transitions (FIXED: added psi_noone_idle)
+  [] STAGE=0 & !psi_step & psi_noone_idle & psi_atleastone_active -> (STAGE'=4);
+  // Update end1
+  [] STAGE=3 & step_updated_end1 & end1_value=-1 -> (end1_updated'=1);
+  [] STAGE=3 & step_updated_end1 & end1_value>=0 & end1_value<0 -> (end1_value'=end1_value+1) & (end1_updated'=1);
+  [] STAGE=3 & step_updated_end1 & end1_value=0 -> (end1_updated'=1);
+  // Update loop3_child_entry2
+  [] STAGE=3 & step_updated_loop3_child_entry2 & loop3_child_entry2_value=-1 -> (loop3_child_entry2_updated'=1);
+  [] STAGE=3 & step_updated_loop3_child_entry2 & loop3_child_entry2_value>=0 & loop3_child_entry2_value<1 -> (loop3_child_entry2_value'=loop3_child_entry2_value+1) & (loop3_child_entry2_updated'=1);
+  [] STAGE=3 & step_updated_loop3_child_entry2 & loop3_child_entry2_value=1 -> (loop3_child_entry2_updated'=1);
+  // Update loop3_decision3
+  [] STAGE=3 & step_updated_loop3_decision3 & loop3_decision3_value=-1 -> (loop3_decision3_updated'=1);
+  [] STAGE=3 & step_updated_loop3_decision3 & loop3_decision3_value>=0 & loop3_decision3_value<0 -> (loop3_decision3_value'=loop3_decision3_value+1) & (loop3_decision3_updated'=1);
+  [] STAGE=3 & step_updated_loop3_decision3 & loop3_decision3_value=0 -> (loop3_decision3_updated'=1);
+  // Update start0
+  [] STAGE=3 & step_updated_start0 & start0_value=-1 -> (start0_updated'=1);
+  [] STAGE=3 & step_updated_start0 & start0_value>=0 & start0_value<0 -> (start0_value'=start0_value+1) & (start0_updated'=1);
+  [] STAGE=3 & step_updated_start0 & start0_value=0 -> (start0_updated'=1);
+  // Stage 3 -> 1: All updated
+  [] STAGE=3 & psi_all_step_updated -> (STAGE'=1);
+  [] STAGE=1 & step_not_updated_end1 -> (end1_updated'=0);
+  [] STAGE=1 & step_not_updated_loop3_child_entry2 -> (loop3_child_entry2_updated'=0);
+  [] STAGE=1 & step_not_updated_loop3_decision3 -> (loop3_decision3_updated'=0);
+  [] STAGE=1 & step_not_updated_start0 -> (start0_updated'=0);
+  // Stage 1 -> 0: All reset
+  [] STAGE=1 & psi_all_step_not_updated -> (STAGE'=0);
+  [] STAGE=4 & psi_all_idle_but_nature -> (STAGE'=5);
+  [] STAGE=5 & psi_all_idle_nature -> (STAGE'=0);
+endmodule
+
+module loop3_decision2
+  loop3_decision2_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [] STAGE=0 & psi_idle_loop3_decision2 & (loop3_decision3_value >= 0) -> (loop3_decision2_state'=1);
+  [] STAGE=0 & psi_idle_loop3_decision2 & !(loop3_decision3_value >= 0) -> (loop3_decision2_state'=-1);
+  // Stage 5: Nature transition firing
+  [] STAGE=5 & psi_first_nature_not_idle_loop3_decision2 & loop3_decision2_state=-1 -> (loop3_decision2_state'=0);
+  [] STAGE=5 & psi_first_nature_not_idle_loop3_decision2 & loop3_decision2_state=1 -> 0.3: (loop3_decision2_state'=0) & (loop3_child_entry2_value'=0) & (loop3_decision3_value'=-1) + 0.7: (loop3_decision2_state'=0) & (end1_value'=0) & (loop3_decision3_value'=-1);
+endmodule
+
+module loop3_init0
+  loop3_init0_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [] STAGE=0 & psi_idle_loop3_init0 & (start0_value >= 0) -> (loop3_init0_state'=1);
+  [] STAGE=0 & psi_idle_loop3_init0 & !(start0_value >= 0) -> (loop3_init0_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_loop3_init0 & loop3_init0_state=-1 -> (loop3_init0_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_loop3_init0 & loop3_init0_state=1 -> (loop3_init0_state'=0) & (start0_value'=-1) & (loop3_child_entry2_value'=0);
+endmodule
+
+module task51
+  task51_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [fire_task51] STAGE=0 & psi_idle_task51 & (loop3_child_entry2_value >= 1) -> (task51_state'=1);
+  [] STAGE=0 & psi_idle_task51 & !(loop3_child_entry2_value >= 1) -> (task51_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_task51 & task51_state=-1 -> (task51_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_task51 & task51_state=1 -> (task51_state'=0) & (loop3_child_entry2_value'=-1) & (loop3_decision3_value'=0);
+endmodule
+
+
+rewards "impact_0"
+  [fire_task51] true : 5;
+endrewards
+
+rewards "impact_1"
+  [fire_task51] true : 2;
+endrewards

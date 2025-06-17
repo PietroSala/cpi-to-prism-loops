@@ -1,0 +1,40 @@
+{
+  "timestamp": "2025-06-14T15:58:26.148103",
+  "modules": [
+    "manager",
+    "merge01",
+    "split00",
+    "task12",
+    "task23"
+  ],
+  "variables": [
+    "STAGE",
+    "end1_value",
+    "par0_first_end2_value",
+    "par0_first_start4_value",
+    "par0_second_end3_value",
+    "par0_second_start5_value",
+    "start0_value",
+    "end1_updated",
+    "par0_first_end2_updated",
+    "par0_first_start4_updated",
+    "par0_second_end3_updated",
+    "par0_second_start5_updated",
+    "start0_updated",
+    "merge01_state",
+    "split00_state",
+    "task12_state",
+    "task23_state"
+  ],
+  "task_impacts": {
+    "task1": {
+      "impact_1": 1.0
+    },
+    "task2": {
+      "impact_1": 1.0
+    }
+  },
+  "model_build_time": 0.021,
+  "command": "/media/DATA/emanuelechini/cpi-to-prism-loops/prism-4.8.1-linux64-x86/bin/prism /media/DATA/emanuelechini/cpi-to-prism-loops/models/parallel.nm -exporttransdotstates /media/DATA/emanuelechini/cpi-to-prism-loops/models/parallel.dot -exportstates /media/DATA/emanuelechini/cpi-to-prism-loops/models/parallel_states.csv -exporttrans /media/DATA/emanuelechini/cpi-to-prism-loops/models/parallel_trans.tra -verbose",
+  "prism_output": "PRISM\n=====\n\nVersion: 4.8.1\nDate: Sat Jun 14 15:58:25 CEST 2025\nHostname: thething\nMemory limits: cudd=1g, java(heap)=1g\nCommand line: prism /media/DATA/emanuelechini/cpi-to-prism-loops/models/parallel.nm -exporttransdotstates /media/DATA/emanuelechini/cpi-to-prism-loops/models/parallel.dot -exportstates /media/DATA/emanuelechini/cpi-to-prism-loops/models/parallel_states.csv -exporttrans /media/DATA/emanuelechini/cpi-to-prism-loops/models/parallel_trans.tra -verbose\n\nParsing model file \"/media/DATA/emanuelechini/cpi-to-prism-loops/models/parallel.nm\"...\n\nType:        LTS\nModules:     manager merge01 split00 task12 task23\nVariables:   STAGE end1_value par0_first_end2_value par0_first_start4_value par0_second_end3_value par0_second_start5_value start0_value end1_updated par0_first_end2_updated par0_first_start4_updated par0_second_end3_updated par0_second_start5_updated start0_updated merge01_state split00_state task12_state task23_state\n\nSwitching to explicit engine, which supports LTSs...\n\nBuilding model...\n\nComputing reachable states... 106 states\nReachable states exploration and model construction done in 0.007 secs.\nSorting reachable states list...\n\nTime for model construction: 0.021 seconds.\n\nWarning: Deadlocks detected and fixed in 1 states\n\nType:        LTS\nStates:      106 (1 initial)\nTransitions: 106\n\nExporting transition matrix in plain text format to file \"/media/DATA/emanuelechini/cpi-to-prism-loops/models/parallel_trans.tra\"...\n\nExporting list of reachable states in plain text format to file \"/media/DATA/emanuelechini/cpi-to-prism-loops/models/parallel_states.csv\"...\n\nExporting transition matrix in Dot format (with states) to file \"/media/DATA/emanuelechini/cpi-to-prism-loops/models/parallel.dot\"...\n\n---------------------------------------------------------------------\n\nNote: There was 1 warning during computation.\n\n"
+}

@@ -1,0 +1,27 @@
+{
+  "timestamp": "2025-06-15T19:03:35.789823",
+  "modules": [
+    "manager",
+    "loop3_decision2",
+    "loop3_init0",
+    "task51"
+  ],
+  "variables": [
+    "STAGE",
+    "end1_value",
+    "loop3_child_entry2_value",
+    "loop3_decision3_value",
+    "start0_value",
+    "end1_updated",
+    "loop3_child_entry2_updated",
+    "loop3_decision3_updated",
+    "start0_updated",
+    "loop3_decision2_state",
+    "loop3_init0_state",
+    "task51_state"
+  ],
+  "task_impacts": {},
+  "model_build_time": 0.014,
+  "command": "/media/DATA/emanuelechini/cpi-to-prism-loops/prism-4.8.1-linux64-x86/bin/prism /media/DATA/emanuelechini/cpi-to-prism-loops/models/loop-simple.nm -exporttransdotstates /media/DATA/emanuelechini/cpi-to-prism-loops/models/loop-simple.dot -exportstates /media/DATA/emanuelechini/cpi-to-prism-loops/models/loop-simple_states.csv -exporttrans /media/DATA/emanuelechini/cpi-to-prism-loops/models/loop-simple_trans.tra -verbose",
+  "prism_output": "PRISM\n=====\n\nVersion: 4.8.1\nDate: Sun Jun 15 19:03:35 CEST 2025\nHostname: thething\nMemory limits: cudd=1g, java(heap)=1g\nCommand line: prism /media/DATA/emanuelechini/cpi-to-prism-loops/models/loop-simple.nm -exporttransdotstates /media/DATA/emanuelechini/cpi-to-prism-loops/models/loop-simple.dot -exportstates /media/DATA/emanuelechini/cpi-to-prism-loops/models/loop-simple_states.csv -exporttrans /media/DATA/emanuelechini/cpi-to-prism-loops/models/loop-simple_trans.tra -verbose\n\nParsing model file \"/media/DATA/emanuelechini/cpi-to-prism-loops/models/loop-simple.nm\"...\n\nType:        MDP\nModules:     manager loop3_decision2 loop3_init0 task51\nVariables:   STAGE end1_value loop3_child_entry2_value loop3_decision3_value start0_value end1_updated loop3_child_entry2_updated loop3_decision3_updated start0_updated loop3_decision2_state loop3_init0_state task51_state\n\nBuilding model...\n\nWarning: Guard for command 5 of module \"manager\" is never satisfied.\n\nWarning: Guard for command 11 of module \"manager\" is never satisfied.\n\nWarning: Guard for command 14 of module \"manager\" is never satisfied.\n\nComputing reachable states...\n\nReachability (BFS): 43 iterations in 0.01 seconds (average 0.000233, setup 0.00)\n\nTime for model construction: 0.014 seconds.\n\nWarning: Deadlocks detected and fixed in 1 states\n\nType:        MDP\nStates:      43 (1 initial)\nTransitions: 44\nChoices:     43\n\nTransition matrix: 741 nodes (4 terminal), 44 minterms, vars: 18r/18c/4nd\n\nExporting transition matrix in plain text format to file \"/media/DATA/emanuelechini/cpi-to-prism-loops/models/loop-simple_trans.tra\"...\n\nExporting list of reachable states in plain text format to file \"/media/DATA/emanuelechini/cpi-to-prism-loops/models/loop-simple_states.csv\"...\n\nExporting transition matrix in Dot format (with states) to file \"/media/DATA/emanuelechini/cpi-to-prism-loops/models/loop-simple.dot\"...\n\n---------------------------------------------------------------------\n\nNote: There were 4 warnings during computation.\n\n"
+}

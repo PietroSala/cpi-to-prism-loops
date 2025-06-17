@@ -1,0 +1,66 @@
+{
+  "timestamp": "2025-06-14T12:39:43.534040",
+  "modules": [
+    "manager",
+    "merge01",
+    "nature12",
+    "nature155",
+    "split00",
+    "task23",
+    "task266",
+    "task34",
+    "task3647"
+  ],
+  "variables": [
+    "STAGE",
+    "end1_value",
+    "nature15_false9_value",
+    "nature15_true8_value",
+    "nature1_false7_value",
+    "nature1_true6_value",
+    "par0_first_end2_value",
+    "par0_first_start4_value",
+    "par0_second_end3_value",
+    "par0_second_start5_value",
+    "start0_value",
+    "end1_updated",
+    "nature15_false9_updated",
+    "nature15_true8_updated",
+    "nature1_false7_updated",
+    "nature1_true6_updated",
+    "par0_first_end2_updated",
+    "par0_first_start4_updated",
+    "par0_second_end3_updated",
+    "par0_second_start5_updated",
+    "start0_updated",
+    "merge01_state",
+    "nature12_state",
+    "nature155_state",
+    "split00_state",
+    "task23_state",
+    "task266_state",
+    "task34_state",
+    "task3647_state"
+  ],
+  "task_impacts": {
+    "task2": {
+      "impact_1": 0.6,
+      "impact_2": 0.4
+    },
+    "task3": {
+      "impact_1": 0.4,
+      "impact_2": 0.5
+    },
+    "task26": {
+      "impact_1": 0.6,
+      "impact_2": 0.4
+    },
+    "task364": {
+      "impact_1": 0.4,
+      "impact_2": 0.5
+    }
+  },
+  "model_build_time": 0.079,
+  "command": "/media/DATA/emanuelechini/cpi-to-prism-loops/prism-4.8.1-linux64-x86/bin/prism /media/DATA/emanuelechini/cpi-to-prism-loops/models/parallel-nature.nm -exporttransdotstates /media/DATA/emanuelechini/cpi-to-prism-loops/models/parallel-nature.dot -exportstates /media/DATA/emanuelechini/cpi-to-prism-loops/models/parallel-nature_states.csv -exporttrans /media/DATA/emanuelechini/cpi-to-prism-loops/models/parallel-nature_trans.tra -verbose",
+  "prism_output": "PRISM\n=====\n\nVersion: 4.8.1\nDate: Sat Jun 14 12:39:43 CEST 2025\nHostname: thething\nMemory limits: cudd=1g, java(heap)=1g\nCommand line: prism /media/DATA/emanuelechini/cpi-to-prism-loops/models/parallel-nature.nm -exporttransdotstates /media/DATA/emanuelechini/cpi-to-prism-loops/models/parallel-nature.dot -exportstates /media/DATA/emanuelechini/cpi-to-prism-loops/models/parallel-nature_states.csv -exporttrans /media/DATA/emanuelechini/cpi-to-prism-loops/models/parallel-nature_trans.tra -verbose\n\nParsing model file \"/media/DATA/emanuelechini/cpi-to-prism-loops/models/parallel-nature.nm\"...\n\nType:        MDP\nModules:     manager merge01 nature12 nature155 split00 task23 task266 task34 task3647\nVariables:   STAGE end1_value nature15_false9_value nature15_true8_value nature1_false7_value nature1_true6_value par0_first_end2_value par0_first_start4_value par0_second_end3_value par0_second_start5_value start0_value end1_updated nature15_false9_updated nature15_true8_updated nature1_false7_updated nature1_true6_updated par0_first_end2_updated par0_first_start4_updated par0_second_end3_updated par0_second_start5_updated start0_updated merge01_state nature12_state nature155_state split00_state task23_state task266_state task34_state task3647_state\n\nBuilding model...\n\nWarning: Guard for command 5 of module \"manager\" is never satisfied.\n\nWarning: Guard for command 20 of module \"manager\" is never satisfied.\n\nWarning: Guard for command 23 of module \"manager\" is never satisfied.\n\nWarning: Guard for command 26 of module \"manager\" is never satisfied.\n\nWarning: Guard for command 29 of module \"manager\" is never satisfied.\n\nWarning: Guard for command 32 of module \"manager\" is never satisfied.\n\nComputing reachable states...\n\nReachability (BFS): 162 iterations in 0.04 seconds (average 0.000247, setup 0.00)\n\nTime for model construction: 0.079 seconds.\n\nWarning: Deadlocks detected and fixed in 1 states\n\nType:        MDP\nStates:      513 (1 initial)\nTransitions: 516\nChoices:     513\n\nTransition matrix: 8180 nodes (6 terminal), 516 minterms, vars: 47r/47c/12nd\n\nExporting transition matrix in plain text format to file \"/media/DATA/emanuelechini/cpi-to-prism-loops/models/parallel-nature_trans.tra\"...\n\nExporting list of reachable states in plain text format to file \"/media/DATA/emanuelechini/cpi-to-prism-loops/models/parallel-nature_states.csv\"...\n\nExporting transition matrix in Dot format (with states) to file \"/media/DATA/emanuelechini/cpi-to-prism-loops/models/parallel-nature.dot\"...\n\n---------------------------------------------------------------------\n\nNote: There were 7 warnings during computation.\n\n"
+}

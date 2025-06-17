@@ -1,0 +1,598 @@
+// Global variables for places
+global STAGE : [0..5] init 0;
+
+// Place value variables
+global end1_value : [-1..0] init -1;
+global nature12_false16_value : [-1..1] init -1;
+global nature12_true15_value : [-1..5] init -1;
+global par0_first_end2_value : [-1..0] init -1;
+global par0_first_start4_value : [-1..8] init -1;
+global par0_second_end3_value : [-1..0] init -1;
+global par0_second_start5_value : [-1..0] init -1;
+global par5_first_end8_value : [-1..0] init -1;
+global par5_first_start10_value : [-1..4] init -1;
+global par5_second_end9_value : [-1..0] init -1;
+global par5_second_start11_value : [-1..7] init -1;
+global seq10_mid13_value : [-1..8] init -1;
+global seq11_mid14_value : [-1..9] init -1;
+global seq1_mid6_value : [-1..0] init -1;
+global seq2_mid7_value : [-1..1] init -1;
+global seq7_mid12_value : [-1..7] init -1;
+global start0_value : [-1..0] init 0;
+
+// Place updated variables
+global end1_updated : [0..1] init 0;
+global nature12_false16_updated : [0..1] init 0;
+global nature12_true15_updated : [0..1] init 0;
+global par0_first_end2_updated : [0..1] init 0;
+global par0_first_start4_updated : [0..1] init 0;
+global par0_second_end3_updated : [0..1] init 0;
+global par0_second_start5_updated : [0..1] init 0;
+global par5_first_end8_updated : [0..1] init 0;
+global par5_first_start10_updated : [0..1] init 0;
+global par5_second_end9_updated : [0..1] init 0;
+global par5_second_start11_updated : [0..1] init 0;
+global seq10_mid13_updated : [0..1] init 0;
+global seq11_mid14_updated : [0..1] init 0;
+global seq1_mid6_updated : [0..1] init 0;
+global seq2_mid7_updated : [0..1] init 0;
+global seq7_mid12_updated : [0..1] init 0;
+global start0_updated : [0..1] init 0;
+
+// Formulas
+formula is_active_merge01 = (par0_first_end2_value >= 0) & (par0_second_end3_value >= 0);
+formula is_active_merge55 = (par5_first_end8_value >= 0) & (par5_second_end9_value >= 0);
+formula is_active_nature129 = (par0_second_start5_value >= 0);
+formula is_active_split00 = (start0_value >= 0);
+formula is_active_split54 = (seq1_mid6_value >= 0);
+formula is_active_task1310 = (nature12_true15_value >= 5);
+formula is_active_task1411 = (nature12_false16_value >= 1);
+formula is_active_task1512 = (seq11_mid14_value >= 9);
+formula is_active_task1613 = (seq10_mid13_value >= 8);
+formula is_active_task32 = (par0_first_start4_value >= 8);
+formula is_active_task43 = (seq2_mid7_value >= 1);
+formula is_active_task66 = (par5_first_start10_value >= 4);
+formula is_active_task87 = (par5_second_start11_value >= 7);
+formula is_active_task98 = (seq7_mid12_value >= 7);
+formula psi_at_least_one_remaining_duration = (end1_value >= 0 & end1_value < 0) | (nature12_false16_value >= 0 & nature12_false16_value < 1) | (nature12_true15_value >= 0 & nature12_true15_value < 5) | (par0_first_end2_value >= 0 & par0_first_end2_value < 0) | (par0_first_start4_value >= 0 & par0_first_start4_value < 8) | (par0_second_end3_value >= 0 & par0_second_end3_value < 0) | (par0_second_start5_value >= 0 & par0_second_start5_value < 0) | (par5_first_end8_value >= 0 & par5_first_end8_value < 0) | (par5_first_start10_value >= 0 & par5_first_start10_value < 4) | (par5_second_end9_value >= 0 & par5_second_end9_value < 0) | (par5_second_start11_value >= 0 & par5_second_start11_value < 7) | (seq10_mid13_value >= 0 & seq10_mid13_value < 8) | (seq11_mid14_value >= 0 & seq11_mid14_value < 9) | (seq1_mid6_value >= 0 & seq1_mid6_value < 0) | (seq2_mid7_value >= 0 & seq2_mid7_value < 1) | (seq7_mid12_value >= 0 & seq7_mid12_value < 7) | (start0_value >= 0 & start0_value < 0);
+formula psi_step = (!is_active_merge01 & !is_active_merge55 & !is_active_nature129 & !is_active_split00 & !is_active_split54 & !is_active_task1310 & !is_active_task1411 & !is_active_task1512 & !is_active_task1613 & !is_active_task32 & !is_active_task43 & !is_active_task66 & !is_active_task87 & !is_active_task98) & psi_at_least_one_remaining_duration;
+formula step_updated_end1 = end1_updated=0;
+formula step_updated_nature12_false16 = nature12_false16_updated=0 & end1_updated=1;
+formula step_updated_nature12_true15 = nature12_true15_updated=0 & end1_updated=1 & nature12_false16_updated=1;
+formula step_updated_par0_first_end2 = par0_first_end2_updated=0 & end1_updated=1 & nature12_false16_updated=1 & nature12_true15_updated=1;
+formula step_updated_par0_first_start4 = par0_first_start4_updated=0 & end1_updated=1 & nature12_false16_updated=1 & nature12_true15_updated=1 & par0_first_end2_updated=1;
+formula step_updated_par0_second_end3 = par0_second_end3_updated=0 & end1_updated=1 & nature12_false16_updated=1 & nature12_true15_updated=1 & par0_first_end2_updated=1 & par0_first_start4_updated=1;
+formula step_updated_par0_second_start5 = par0_second_start5_updated=0 & end1_updated=1 & nature12_false16_updated=1 & nature12_true15_updated=1 & par0_first_end2_updated=1 & par0_first_start4_updated=1 & par0_second_end3_updated=1;
+formula step_updated_par5_first_end8 = par5_first_end8_updated=0 & end1_updated=1 & nature12_false16_updated=1 & nature12_true15_updated=1 & par0_first_end2_updated=1 & par0_first_start4_updated=1 & par0_second_end3_updated=1 & par0_second_start5_updated=1;
+formula step_updated_par5_first_start10 = par5_first_start10_updated=0 & end1_updated=1 & nature12_false16_updated=1 & nature12_true15_updated=1 & par0_first_end2_updated=1 & par0_first_start4_updated=1 & par0_second_end3_updated=1 & par0_second_start5_updated=1 & par5_first_end8_updated=1;
+formula step_updated_par5_second_end9 = par5_second_end9_updated=0 & end1_updated=1 & nature12_false16_updated=1 & nature12_true15_updated=1 & par0_first_end2_updated=1 & par0_first_start4_updated=1 & par0_second_end3_updated=1 & par0_second_start5_updated=1 & par5_first_end8_updated=1 & par5_first_start10_updated=1;
+formula step_updated_par5_second_start11 = par5_second_start11_updated=0 & end1_updated=1 & nature12_false16_updated=1 & nature12_true15_updated=1 & par0_first_end2_updated=1 & par0_first_start4_updated=1 & par0_second_end3_updated=1 & par0_second_start5_updated=1 & par5_first_end8_updated=1 & par5_first_start10_updated=1 & par5_second_end9_updated=1;
+formula step_updated_seq10_mid13 = seq10_mid13_updated=0 & end1_updated=1 & nature12_false16_updated=1 & nature12_true15_updated=1 & par0_first_end2_updated=1 & par0_first_start4_updated=1 & par0_second_end3_updated=1 & par0_second_start5_updated=1 & par5_first_end8_updated=1 & par5_first_start10_updated=1 & par5_second_end9_updated=1 & par5_second_start11_updated=1;
+formula step_updated_seq11_mid14 = seq11_mid14_updated=0 & end1_updated=1 & nature12_false16_updated=1 & nature12_true15_updated=1 & par0_first_end2_updated=1 & par0_first_start4_updated=1 & par0_second_end3_updated=1 & par0_second_start5_updated=1 & par5_first_end8_updated=1 & par5_first_start10_updated=1 & par5_second_end9_updated=1 & par5_second_start11_updated=1 & seq10_mid13_updated=1;
+formula step_updated_seq1_mid6 = seq1_mid6_updated=0 & end1_updated=1 & nature12_false16_updated=1 & nature12_true15_updated=1 & par0_first_end2_updated=1 & par0_first_start4_updated=1 & par0_second_end3_updated=1 & par0_second_start5_updated=1 & par5_first_end8_updated=1 & par5_first_start10_updated=1 & par5_second_end9_updated=1 & par5_second_start11_updated=1 & seq10_mid13_updated=1 & seq11_mid14_updated=1;
+formula step_updated_seq2_mid7 = seq2_mid7_updated=0 & end1_updated=1 & nature12_false16_updated=1 & nature12_true15_updated=1 & par0_first_end2_updated=1 & par0_first_start4_updated=1 & par0_second_end3_updated=1 & par0_second_start5_updated=1 & par5_first_end8_updated=1 & par5_first_start10_updated=1 & par5_second_end9_updated=1 & par5_second_start11_updated=1 & seq10_mid13_updated=1 & seq11_mid14_updated=1 & seq1_mid6_updated=1;
+formula step_updated_seq7_mid12 = seq7_mid12_updated=0 & end1_updated=1 & nature12_false16_updated=1 & nature12_true15_updated=1 & par0_first_end2_updated=1 & par0_first_start4_updated=1 & par0_second_end3_updated=1 & par0_second_start5_updated=1 & par5_first_end8_updated=1 & par5_first_start10_updated=1 & par5_second_end9_updated=1 & par5_second_start11_updated=1 & seq10_mid13_updated=1 & seq11_mid14_updated=1 & seq1_mid6_updated=1 & seq2_mid7_updated=1;
+formula step_updated_start0 = start0_updated=0 & end1_updated=1 & nature12_false16_updated=1 & nature12_true15_updated=1 & par0_first_end2_updated=1 & par0_first_start4_updated=1 & par0_second_end3_updated=1 & par0_second_start5_updated=1 & par5_first_end8_updated=1 & par5_first_start10_updated=1 & par5_second_end9_updated=1 & par5_second_start11_updated=1 & seq10_mid13_updated=1 & seq11_mid14_updated=1 & seq1_mid6_updated=1 & seq2_mid7_updated=1 & seq7_mid12_updated=1;
+formula psi_all_step_updated = end1_updated=1 & nature12_false16_updated=1 & nature12_true15_updated=1 & par0_first_end2_updated=1 & par0_first_start4_updated=1 & par0_second_end3_updated=1 & par0_second_start5_updated=1 & par5_first_end8_updated=1 & par5_first_start10_updated=1 & par5_second_end9_updated=1 & par5_second_start11_updated=1 & seq10_mid13_updated=1 & seq11_mid14_updated=1 & seq1_mid6_updated=1 & seq2_mid7_updated=1 & seq7_mid12_updated=1 & start0_updated=1;
+formula step_not_updated_end1 = end1_updated=1;
+formula step_not_updated_nature12_false16 = nature12_false16_updated=1 & end1_updated=0;
+formula step_not_updated_nature12_true15 = nature12_true15_updated=1 & end1_updated=0 & nature12_false16_updated=0;
+formula step_not_updated_par0_first_end2 = par0_first_end2_updated=1 & end1_updated=0 & nature12_false16_updated=0 & nature12_true15_updated=0;
+formula step_not_updated_par0_first_start4 = par0_first_start4_updated=1 & end1_updated=0 & nature12_false16_updated=0 & nature12_true15_updated=0 & par0_first_end2_updated=0;
+formula step_not_updated_par0_second_end3 = par0_second_end3_updated=1 & end1_updated=0 & nature12_false16_updated=0 & nature12_true15_updated=0 & par0_first_end2_updated=0 & par0_first_start4_updated=0;
+formula step_not_updated_par0_second_start5 = par0_second_start5_updated=1 & end1_updated=0 & nature12_false16_updated=0 & nature12_true15_updated=0 & par0_first_end2_updated=0 & par0_first_start4_updated=0 & par0_second_end3_updated=0;
+formula step_not_updated_par5_first_end8 = par5_first_end8_updated=1 & end1_updated=0 & nature12_false16_updated=0 & nature12_true15_updated=0 & par0_first_end2_updated=0 & par0_first_start4_updated=0 & par0_second_end3_updated=0 & par0_second_start5_updated=0;
+formula step_not_updated_par5_first_start10 = par5_first_start10_updated=1 & end1_updated=0 & nature12_false16_updated=0 & nature12_true15_updated=0 & par0_first_end2_updated=0 & par0_first_start4_updated=0 & par0_second_end3_updated=0 & par0_second_start5_updated=0 & par5_first_end8_updated=0;
+formula step_not_updated_par5_second_end9 = par5_second_end9_updated=1 & end1_updated=0 & nature12_false16_updated=0 & nature12_true15_updated=0 & par0_first_end2_updated=0 & par0_first_start4_updated=0 & par0_second_end3_updated=0 & par0_second_start5_updated=0 & par5_first_end8_updated=0 & par5_first_start10_updated=0;
+formula step_not_updated_par5_second_start11 = par5_second_start11_updated=1 & end1_updated=0 & nature12_false16_updated=0 & nature12_true15_updated=0 & par0_first_end2_updated=0 & par0_first_start4_updated=0 & par0_second_end3_updated=0 & par0_second_start5_updated=0 & par5_first_end8_updated=0 & par5_first_start10_updated=0 & par5_second_end9_updated=0;
+formula step_not_updated_seq10_mid13 = seq10_mid13_updated=1 & end1_updated=0 & nature12_false16_updated=0 & nature12_true15_updated=0 & par0_first_end2_updated=0 & par0_first_start4_updated=0 & par0_second_end3_updated=0 & par0_second_start5_updated=0 & par5_first_end8_updated=0 & par5_first_start10_updated=0 & par5_second_end9_updated=0 & par5_second_start11_updated=0;
+formula step_not_updated_seq11_mid14 = seq11_mid14_updated=1 & end1_updated=0 & nature12_false16_updated=0 & nature12_true15_updated=0 & par0_first_end2_updated=0 & par0_first_start4_updated=0 & par0_second_end3_updated=0 & par0_second_start5_updated=0 & par5_first_end8_updated=0 & par5_first_start10_updated=0 & par5_second_end9_updated=0 & par5_second_start11_updated=0 & seq10_mid13_updated=0;
+formula step_not_updated_seq1_mid6 = seq1_mid6_updated=1 & end1_updated=0 & nature12_false16_updated=0 & nature12_true15_updated=0 & par0_first_end2_updated=0 & par0_first_start4_updated=0 & par0_second_end3_updated=0 & par0_second_start5_updated=0 & par5_first_end8_updated=0 & par5_first_start10_updated=0 & par5_second_end9_updated=0 & par5_second_start11_updated=0 & seq10_mid13_updated=0 & seq11_mid14_updated=0;
+formula step_not_updated_seq2_mid7 = seq2_mid7_updated=1 & end1_updated=0 & nature12_false16_updated=0 & nature12_true15_updated=0 & par0_first_end2_updated=0 & par0_first_start4_updated=0 & par0_second_end3_updated=0 & par0_second_start5_updated=0 & par5_first_end8_updated=0 & par5_first_start10_updated=0 & par5_second_end9_updated=0 & par5_second_start11_updated=0 & seq10_mid13_updated=0 & seq11_mid14_updated=0 & seq1_mid6_updated=0;
+formula step_not_updated_seq7_mid12 = seq7_mid12_updated=1 & end1_updated=0 & nature12_false16_updated=0 & nature12_true15_updated=0 & par0_first_end2_updated=0 & par0_first_start4_updated=0 & par0_second_end3_updated=0 & par0_second_start5_updated=0 & par5_first_end8_updated=0 & par5_first_start10_updated=0 & par5_second_end9_updated=0 & par5_second_start11_updated=0 & seq10_mid13_updated=0 & seq11_mid14_updated=0 & seq1_mid6_updated=0 & seq2_mid7_updated=0;
+formula step_not_updated_start0 = start0_updated=1 & end1_updated=0 & nature12_false16_updated=0 & nature12_true15_updated=0 & par0_first_end2_updated=0 & par0_first_start4_updated=0 & par0_second_end3_updated=0 & par0_second_start5_updated=0 & par5_first_end8_updated=0 & par5_first_start10_updated=0 & par5_second_end9_updated=0 & par5_second_start11_updated=0 & seq10_mid13_updated=0 & seq11_mid14_updated=0 & seq1_mid6_updated=0 & seq2_mid7_updated=0 & seq7_mid12_updated=0;
+formula psi_all_step_not_updated = end1_updated=0 & nature12_false16_updated=0 & nature12_true15_updated=0 & par0_first_end2_updated=0 & par0_first_start4_updated=0 & par0_second_end3_updated=0 & par0_second_start5_updated=0 & par5_first_end8_updated=0 & par5_first_start10_updated=0 & par5_second_end9_updated=0 & par5_second_start11_updated=0 & seq10_mid13_updated=0 & seq11_mid14_updated=0 & seq1_mid6_updated=0 & seq2_mid7_updated=0 & seq7_mid12_updated=0 & start0_updated=0;
+formula psi_idle_merge01 = !psi_step & merge01_state=0;
+formula psi_idle_merge55 = !psi_step & merge55_state=0 & merge01_state!=0;
+formula psi_idle_nature129 = !psi_step & nature129_state=0 & merge01_state!=0 & merge55_state!=0;
+formula psi_idle_split00 = !psi_step & split00_state=0 & merge01_state!=0 & merge55_state!=0 & nature129_state!=0;
+formula psi_idle_split54 = !psi_step & split54_state=0 & merge01_state!=0 & merge55_state!=0 & nature129_state!=0 & split00_state!=0;
+formula psi_idle_task1310 = !psi_step & task1310_state=0 & merge01_state!=0 & merge55_state!=0 & nature129_state!=0 & split00_state!=0 & split54_state!=0;
+formula psi_idle_task1411 = !psi_step & task1411_state=0 & merge01_state!=0 & merge55_state!=0 & nature129_state!=0 & split00_state!=0 & split54_state!=0 & task1310_state!=0;
+formula psi_idle_task1512 = !psi_step & task1512_state=0 & merge01_state!=0 & merge55_state!=0 & nature129_state!=0 & split00_state!=0 & split54_state!=0 & task1310_state!=0 & task1411_state!=0;
+formula psi_idle_task1613 = !psi_step & task1613_state=0 & merge01_state!=0 & merge55_state!=0 & nature129_state!=0 & split00_state!=0 & split54_state!=0 & task1310_state!=0 & task1411_state!=0 & task1512_state!=0;
+formula psi_idle_task32 = !psi_step & task32_state=0 & merge01_state!=0 & merge55_state!=0 & nature129_state!=0 & split00_state!=0 & split54_state!=0 & task1310_state!=0 & task1411_state!=0 & task1512_state!=0 & task1613_state!=0;
+formula psi_idle_task43 = !psi_step & task43_state=0 & merge01_state!=0 & merge55_state!=0 & nature129_state!=0 & split00_state!=0 & split54_state!=0 & task1310_state!=0 & task1411_state!=0 & task1512_state!=0 & task1613_state!=0 & task32_state!=0;
+formula psi_idle_task66 = !psi_step & task66_state=0 & merge01_state!=0 & merge55_state!=0 & nature129_state!=0 & split00_state!=0 & split54_state!=0 & task1310_state!=0 & task1411_state!=0 & task1512_state!=0 & task1613_state!=0 & task32_state!=0 & task43_state!=0;
+formula psi_idle_task87 = !psi_step & task87_state=0 & merge01_state!=0 & merge55_state!=0 & nature129_state!=0 & split00_state!=0 & split54_state!=0 & task1310_state!=0 & task1411_state!=0 & task1512_state!=0 & task1613_state!=0 & task32_state!=0 & task43_state!=0 & task66_state!=0;
+formula psi_idle_task98 = !psi_step & task98_state=0 & merge01_state!=0 & merge55_state!=0 & nature129_state!=0 & split00_state!=0 & split54_state!=0 & task1310_state!=0 & task1411_state!=0 & task1512_state!=0 & task1613_state!=0 & task32_state!=0 & task43_state!=0 & task66_state!=0 & task87_state!=0;
+formula psi_first_but_nature_not_idle_merge01 = merge01_state!=0;
+formula psi_first_but_nature_not_idle_merge55 = merge55_state!=0 & merge01_state=0;
+formula psi_first_but_nature_not_idle_split00 = split00_state!=0 & merge01_state=0 & merge55_state=0;
+formula psi_first_but_nature_not_idle_split54 = split54_state!=0 & merge01_state=0 & merge55_state=0 & split00_state=0;
+formula psi_first_but_nature_not_idle_task1310 = task1310_state!=0 & merge01_state=0 & merge55_state=0 & split00_state=0 & split54_state=0;
+formula psi_first_but_nature_not_idle_task1411 = task1411_state!=0 & merge01_state=0 & merge55_state=0 & split00_state=0 & split54_state=0 & task1310_state=0;
+formula psi_first_but_nature_not_idle_task1512 = task1512_state!=0 & merge01_state=0 & merge55_state=0 & split00_state=0 & split54_state=0 & task1310_state=0 & task1411_state=0;
+formula psi_first_but_nature_not_idle_task1613 = task1613_state!=0 & merge01_state=0 & merge55_state=0 & split00_state=0 & split54_state=0 & task1310_state=0 & task1411_state=0 & task1512_state=0;
+formula psi_first_but_nature_not_idle_task32 = task32_state!=0 & merge01_state=0 & merge55_state=0 & split00_state=0 & split54_state=0 & task1310_state=0 & task1411_state=0 & task1512_state=0 & task1613_state=0;
+formula psi_first_but_nature_not_idle_task43 = task43_state!=0 & merge01_state=0 & merge55_state=0 & split00_state=0 & split54_state=0 & task1310_state=0 & task1411_state=0 & task1512_state=0 & task1613_state=0 & task32_state=0;
+formula psi_first_but_nature_not_idle_task66 = task66_state!=0 & merge01_state=0 & merge55_state=0 & split00_state=0 & split54_state=0 & task1310_state=0 & task1411_state=0 & task1512_state=0 & task1613_state=0 & task32_state=0 & task43_state=0;
+formula psi_first_but_nature_not_idle_task87 = task87_state!=0 & merge01_state=0 & merge55_state=0 & split00_state=0 & split54_state=0 & task1310_state=0 & task1411_state=0 & task1512_state=0 & task1613_state=0 & task32_state=0 & task43_state=0 & task66_state=0;
+formula psi_first_but_nature_not_idle_task98 = task98_state!=0 & merge01_state=0 & merge55_state=0 & split00_state=0 & split54_state=0 & task1310_state=0 & task1411_state=0 & task1512_state=0 & task1613_state=0 & task32_state=0 & task43_state=0 & task66_state=0 & task87_state=0;
+formula psi_first_nature_not_idle_nature129 = nature129_state!=0;
+formula psi_all_idle_but_nature = merge01_state=0 & merge55_state=0 & split00_state=0 & split54_state=0 & task1310_state=0 & task1411_state=0 & task1512_state=0 & task1613_state=0 & task32_state=0 & task43_state=0 & task66_state=0 & task87_state=0 & task98_state=0;
+formula psi_all_idle_nature = nature129_state=0;
+formula psi_noone_idle = merge01_state!=0 & merge55_state!=0 & nature129_state!=0 & split00_state!=0 & split54_state!=0 & task1310_state!=0 & task1411_state!=0 & task1512_state!=0 & task1613_state!=0 & task32_state!=0 & task43_state!=0 & task66_state!=0 & task87_state!=0 & task98_state!=0;
+formula psi_atleastone_active = is_active_merge01 | is_active_merge55 | is_active_nature129 | is_active_split00 | is_active_split54 | is_active_task1310 | is_active_task1411 | is_active_task1512 | is_active_task1613 | is_active_task32 | is_active_task43 | is_active_task66 | is_active_task87 | is_active_task98;
+
+// State Labels for Simulator
+label "psi_step" = psi_step;
+label "psi_at_least_one_remaining_duration" = psi_at_least_one_remaining_duration;
+label "psi_all_step_updated" = psi_all_step_updated;
+label "psi_all_step_not_updated" = psi_all_step_not_updated;
+label "psi_noone_idle" = psi_noone_idle;
+label "psi_atleastone_active" = psi_atleastone_active;
+label "psi_idle_merge01" = psi_idle_merge01;
+label "psi_idle_merge55" = psi_idle_merge55;
+label "psi_idle_nature129" = psi_idle_nature129;
+label "psi_idle_split00" = psi_idle_split00;
+label "psi_idle_split54" = psi_idle_split54;
+label "psi_idle_task1310" = psi_idle_task1310;
+label "psi_idle_task1411" = psi_idle_task1411;
+label "psi_idle_task1512" = psi_idle_task1512;
+label "psi_idle_task1613" = psi_idle_task1613;
+label "psi_idle_task32" = psi_idle_task32;
+label "psi_idle_task43" = psi_idle_task43;
+label "psi_idle_task66" = psi_idle_task66;
+label "psi_idle_task87" = psi_idle_task87;
+label "psi_idle_task98" = psi_idle_task98;
+label "psi_first_but_nature_not_idle_merge01" = psi_first_but_nature_not_idle_merge01;
+label "psi_first_but_nature_not_idle_merge55" = psi_first_but_nature_not_idle_merge55;
+label "psi_first_but_nature_not_idle_split00" = psi_first_but_nature_not_idle_split00;
+label "psi_first_but_nature_not_idle_split54" = psi_first_but_nature_not_idle_split54;
+label "psi_first_but_nature_not_idle_task1310" = psi_first_but_nature_not_idle_task1310;
+label "psi_first_but_nature_not_idle_task1411" = psi_first_but_nature_not_idle_task1411;
+label "psi_first_but_nature_not_idle_task1512" = psi_first_but_nature_not_idle_task1512;
+label "psi_first_but_nature_not_idle_task1613" = psi_first_but_nature_not_idle_task1613;
+label "psi_first_but_nature_not_idle_task32" = psi_first_but_nature_not_idle_task32;
+label "psi_first_but_nature_not_idle_task43" = psi_first_but_nature_not_idle_task43;
+label "psi_first_but_nature_not_idle_task66" = psi_first_but_nature_not_idle_task66;
+label "psi_first_but_nature_not_idle_task87" = psi_first_but_nature_not_idle_task87;
+label "psi_first_but_nature_not_idle_task98" = psi_first_but_nature_not_idle_task98;
+label "psi_first_nature_not_idle_nature129" = psi_first_nature_not_idle_nature129;
+label "psi_all_idle_but_nature" = psi_all_idle_but_nature;
+label "psi_all_idle_nature" = psi_all_idle_nature;
+label "step_updated_end1" = step_updated_end1;
+label "step_not_updated_end1" = step_not_updated_end1;
+label "step_updated_nature12_false16" = step_updated_nature12_false16;
+label "step_not_updated_nature12_false16" = step_not_updated_nature12_false16;
+label "step_updated_nature12_true15" = step_updated_nature12_true15;
+label "step_not_updated_nature12_true15" = step_not_updated_nature12_true15;
+label "step_updated_par0_first_end2" = step_updated_par0_first_end2;
+label "step_not_updated_par0_first_end2" = step_not_updated_par0_first_end2;
+label "step_updated_par0_first_start4" = step_updated_par0_first_start4;
+label "step_not_updated_par0_first_start4" = step_not_updated_par0_first_start4;
+label "step_updated_par0_second_end3" = step_updated_par0_second_end3;
+label "step_not_updated_par0_second_end3" = step_not_updated_par0_second_end3;
+label "step_updated_par0_second_start5" = step_updated_par0_second_start5;
+label "step_not_updated_par0_second_start5" = step_not_updated_par0_second_start5;
+label "step_updated_par5_first_end8" = step_updated_par5_first_end8;
+label "step_not_updated_par5_first_end8" = step_not_updated_par5_first_end8;
+label "step_updated_par5_first_start10" = step_updated_par5_first_start10;
+label "step_not_updated_par5_first_start10" = step_not_updated_par5_first_start10;
+label "step_updated_par5_second_end9" = step_updated_par5_second_end9;
+label "step_not_updated_par5_second_end9" = step_not_updated_par5_second_end9;
+label "step_updated_par5_second_start11" = step_updated_par5_second_start11;
+label "step_not_updated_par5_second_start11" = step_not_updated_par5_second_start11;
+label "step_updated_seq10_mid13" = step_updated_seq10_mid13;
+label "step_not_updated_seq10_mid13" = step_not_updated_seq10_mid13;
+label "step_updated_seq11_mid14" = step_updated_seq11_mid14;
+label "step_not_updated_seq11_mid14" = step_not_updated_seq11_mid14;
+label "step_updated_seq1_mid6" = step_updated_seq1_mid6;
+label "step_not_updated_seq1_mid6" = step_not_updated_seq1_mid6;
+label "step_updated_seq2_mid7" = step_updated_seq2_mid7;
+label "step_not_updated_seq2_mid7" = step_not_updated_seq2_mid7;
+label "step_updated_seq7_mid12" = step_updated_seq7_mid12;
+label "step_not_updated_seq7_mid12" = step_not_updated_seq7_mid12;
+label "step_updated_start0" = step_updated_start0;
+label "step_not_updated_start0" = step_not_updated_start0;
+label "is_active_merge01" = is_active_merge01;
+label "is_active_merge55" = is_active_merge55;
+label "is_active_nature129" = is_active_nature129;
+label "is_active_split00" = is_active_split00;
+label "is_active_split54" = is_active_split54;
+label "is_active_task1310" = is_active_task1310;
+label "is_active_task1411" = is_active_task1411;
+label "is_active_task1512" = is_active_task1512;
+label "is_active_task1613" = is_active_task1613;
+label "is_active_task32" = is_active_task32;
+label "is_active_task43" = is_active_task43;
+label "is_active_task66" = is_active_task66;
+label "is_active_task87" = is_active_task87;
+label "is_active_task98" = is_active_task98;
+label "stage_0" = STAGE=0;
+label "stage_1" = STAGE=1;
+label "stage_2" = STAGE=2;
+label "stage_3" = STAGE=3;
+label "stage_4" = STAGE=4;
+label "stage_5" = STAGE=5;
+label "state_merge01_ready" = merge01_state=1;
+label "state_merge01_disabled" = merge01_state=-1;
+label "state_merge01_idle" = merge01_state=0;
+label "state_merge55_ready" = merge55_state=1;
+label "state_merge55_disabled" = merge55_state=-1;
+label "state_merge55_idle" = merge55_state=0;
+label "state_nature129_ready" = nature129_state=1;
+label "state_nature129_disabled" = nature129_state=-1;
+label "state_nature129_idle" = nature129_state=0;
+label "state_split00_ready" = split00_state=1;
+label "state_split00_disabled" = split00_state=-1;
+label "state_split00_idle" = split00_state=0;
+label "state_split54_ready" = split54_state=1;
+label "state_split54_disabled" = split54_state=-1;
+label "state_split54_idle" = split54_state=0;
+label "state_task1310_ready" = task1310_state=1;
+label "state_task1310_disabled" = task1310_state=-1;
+label "state_task1310_idle" = task1310_state=0;
+label "state_task1411_ready" = task1411_state=1;
+label "state_task1411_disabled" = task1411_state=-1;
+label "state_task1411_idle" = task1411_state=0;
+label "state_task1512_ready" = task1512_state=1;
+label "state_task1512_disabled" = task1512_state=-1;
+label "state_task1512_idle" = task1512_state=0;
+label "state_task1613_ready" = task1613_state=1;
+label "state_task1613_disabled" = task1613_state=-1;
+label "state_task1613_idle" = task1613_state=0;
+label "state_task32_ready" = task32_state=1;
+label "state_task32_disabled" = task32_state=-1;
+label "state_task32_idle" = task32_state=0;
+label "state_task43_ready" = task43_state=1;
+label "state_task43_disabled" = task43_state=-1;
+label "state_task43_idle" = task43_state=0;
+label "state_task66_ready" = task66_state=1;
+label "state_task66_disabled" = task66_state=-1;
+label "state_task66_idle" = task66_state=0;
+label "state_task87_ready" = task87_state=1;
+label "state_task87_disabled" = task87_state=-1;
+label "state_task87_idle" = task87_state=0;
+label "state_task98_ready" = task98_state=1;
+label "state_task98_disabled" = task98_state=-1;
+label "state_task98_idle" = task98_state=0;
+label "place_end1_empty" = end1_value=-1;
+label "place_end1_has_token" = end1_value>=0;
+label "place_end1_duration_met" = end1_value>=0;
+label "place_end1_can_advance" = end1_value>=0 & end1_value<0;
+label "place_end1_updated" = end1_updated=1;
+label "place_nature12_false16_empty" = nature12_false16_value=-1;
+label "place_nature12_false16_has_token" = nature12_false16_value>=0;
+label "place_nature12_false16_duration_met" = nature12_false16_value>=1;
+label "place_nature12_false16_can_advance" = nature12_false16_value>=0 & nature12_false16_value<1;
+label "place_nature12_false16_updated" = nature12_false16_updated=1;
+label "place_nature12_true15_empty" = nature12_true15_value=-1;
+label "place_nature12_true15_has_token" = nature12_true15_value>=0;
+label "place_nature12_true15_duration_met" = nature12_true15_value>=5;
+label "place_nature12_true15_can_advance" = nature12_true15_value>=0 & nature12_true15_value<5;
+label "place_nature12_true15_updated" = nature12_true15_updated=1;
+label "place_par0_first_end2_empty" = par0_first_end2_value=-1;
+label "place_par0_first_end2_has_token" = par0_first_end2_value>=0;
+label "place_par0_first_end2_duration_met" = par0_first_end2_value>=0;
+label "place_par0_first_end2_can_advance" = par0_first_end2_value>=0 & par0_first_end2_value<0;
+label "place_par0_first_end2_updated" = par0_first_end2_updated=1;
+label "place_par0_first_start4_empty" = par0_first_start4_value=-1;
+label "place_par0_first_start4_has_token" = par0_first_start4_value>=0;
+label "place_par0_first_start4_duration_met" = par0_first_start4_value>=8;
+label "place_par0_first_start4_can_advance" = par0_first_start4_value>=0 & par0_first_start4_value<8;
+label "place_par0_first_start4_updated" = par0_first_start4_updated=1;
+label "place_par0_second_end3_empty" = par0_second_end3_value=-1;
+label "place_par0_second_end3_has_token" = par0_second_end3_value>=0;
+label "place_par0_second_end3_duration_met" = par0_second_end3_value>=0;
+label "place_par0_second_end3_can_advance" = par0_second_end3_value>=0 & par0_second_end3_value<0;
+label "place_par0_second_end3_updated" = par0_second_end3_updated=1;
+label "place_par0_second_start5_empty" = par0_second_start5_value=-1;
+label "place_par0_second_start5_has_token" = par0_second_start5_value>=0;
+label "place_par0_second_start5_duration_met" = par0_second_start5_value>=0;
+label "place_par0_second_start5_can_advance" = par0_second_start5_value>=0 & par0_second_start5_value<0;
+label "place_par0_second_start5_updated" = par0_second_start5_updated=1;
+label "place_par5_first_end8_empty" = par5_first_end8_value=-1;
+label "place_par5_first_end8_has_token" = par5_first_end8_value>=0;
+label "place_par5_first_end8_duration_met" = par5_first_end8_value>=0;
+label "place_par5_first_end8_can_advance" = par5_first_end8_value>=0 & par5_first_end8_value<0;
+label "place_par5_first_end8_updated" = par5_first_end8_updated=1;
+label "place_par5_first_start10_empty" = par5_first_start10_value=-1;
+label "place_par5_first_start10_has_token" = par5_first_start10_value>=0;
+label "place_par5_first_start10_duration_met" = par5_first_start10_value>=4;
+label "place_par5_first_start10_can_advance" = par5_first_start10_value>=0 & par5_first_start10_value<4;
+label "place_par5_first_start10_updated" = par5_first_start10_updated=1;
+label "place_par5_second_end9_empty" = par5_second_end9_value=-1;
+label "place_par5_second_end9_has_token" = par5_second_end9_value>=0;
+label "place_par5_second_end9_duration_met" = par5_second_end9_value>=0;
+label "place_par5_second_end9_can_advance" = par5_second_end9_value>=0 & par5_second_end9_value<0;
+label "place_par5_second_end9_updated" = par5_second_end9_updated=1;
+label "place_par5_second_start11_empty" = par5_second_start11_value=-1;
+label "place_par5_second_start11_has_token" = par5_second_start11_value>=0;
+label "place_par5_second_start11_duration_met" = par5_second_start11_value>=7;
+label "place_par5_second_start11_can_advance" = par5_second_start11_value>=0 & par5_second_start11_value<7;
+label "place_par5_second_start11_updated" = par5_second_start11_updated=1;
+label "place_seq10_mid13_empty" = seq10_mid13_value=-1;
+label "place_seq10_mid13_has_token" = seq10_mid13_value>=0;
+label "place_seq10_mid13_duration_met" = seq10_mid13_value>=8;
+label "place_seq10_mid13_can_advance" = seq10_mid13_value>=0 & seq10_mid13_value<8;
+label "place_seq10_mid13_updated" = seq10_mid13_updated=1;
+label "place_seq11_mid14_empty" = seq11_mid14_value=-1;
+label "place_seq11_mid14_has_token" = seq11_mid14_value>=0;
+label "place_seq11_mid14_duration_met" = seq11_mid14_value>=9;
+label "place_seq11_mid14_can_advance" = seq11_mid14_value>=0 & seq11_mid14_value<9;
+label "place_seq11_mid14_updated" = seq11_mid14_updated=1;
+label "place_seq1_mid6_empty" = seq1_mid6_value=-1;
+label "place_seq1_mid6_has_token" = seq1_mid6_value>=0;
+label "place_seq1_mid6_duration_met" = seq1_mid6_value>=0;
+label "place_seq1_mid6_can_advance" = seq1_mid6_value>=0 & seq1_mid6_value<0;
+label "place_seq1_mid6_updated" = seq1_mid6_updated=1;
+label "place_seq2_mid7_empty" = seq2_mid7_value=-1;
+label "place_seq2_mid7_has_token" = seq2_mid7_value>=0;
+label "place_seq2_mid7_duration_met" = seq2_mid7_value>=1;
+label "place_seq2_mid7_can_advance" = seq2_mid7_value>=0 & seq2_mid7_value<1;
+label "place_seq2_mid7_updated" = seq2_mid7_updated=1;
+label "place_seq7_mid12_empty" = seq7_mid12_value=-1;
+label "place_seq7_mid12_has_token" = seq7_mid12_value>=0;
+label "place_seq7_mid12_duration_met" = seq7_mid12_value>=7;
+label "place_seq7_mid12_can_advance" = seq7_mid12_value>=0 & seq7_mid12_value<7;
+label "place_seq7_mid12_updated" = seq7_mid12_updated=1;
+label "place_start0_empty" = start0_value=-1;
+label "place_start0_has_token" = start0_value>=0;
+label "place_start0_duration_met" = start0_value>=0;
+label "place_start0_can_advance" = start0_value>=0 & start0_value<0;
+label "place_start0_updated" = start0_updated=1;
+
+module manager
+  // Stage 0 -> 3: Can do step
+  [] STAGE=0 & psi_step -> (STAGE'=3);
+  // Stage 0 -> 2: Terminated
+  [] STAGE=0 & !psi_step & psi_noone_idle & !psi_atleastone_active -> (STAGE'=2);
+  // Stage 0 -> 4: Fire transitions (FIXED: added psi_noone_idle)
+  [] STAGE=0 & !psi_step & psi_noone_idle & psi_atleastone_active -> (STAGE'=4);
+  // Update end1
+  [] STAGE=3 & step_updated_end1 & end1_value=-1 -> (end1_updated'=1);
+  [] STAGE=3 & step_updated_end1 & end1_value>=0 & end1_value<0 -> (end1_value'=end1_value+1) & (end1_updated'=1);
+  [] STAGE=3 & step_updated_end1 & end1_value=0 -> (end1_updated'=1);
+  // Update nature12_false16
+  [] STAGE=3 & step_updated_nature12_false16 & nature12_false16_value=-1 -> (nature12_false16_updated'=1);
+  [] STAGE=3 & step_updated_nature12_false16 & nature12_false16_value>=0 & nature12_false16_value<1 -> (nature12_false16_value'=nature12_false16_value+1) & (nature12_false16_updated'=1);
+  [] STAGE=3 & step_updated_nature12_false16 & nature12_false16_value=1 -> (nature12_false16_updated'=1);
+  // Update nature12_true15
+  [] STAGE=3 & step_updated_nature12_true15 & nature12_true15_value=-1 -> (nature12_true15_updated'=1);
+  [] STAGE=3 & step_updated_nature12_true15 & nature12_true15_value>=0 & nature12_true15_value<5 -> (nature12_true15_value'=nature12_true15_value+1) & (nature12_true15_updated'=1);
+  [] STAGE=3 & step_updated_nature12_true15 & nature12_true15_value=5 -> (nature12_true15_updated'=1);
+  // Update par0_first_end2
+  [] STAGE=3 & step_updated_par0_first_end2 & par0_first_end2_value=-1 -> (par0_first_end2_updated'=1);
+  [] STAGE=3 & step_updated_par0_first_end2 & par0_first_end2_value>=0 & par0_first_end2_value<0 -> (par0_first_end2_value'=par0_first_end2_value+1) & (par0_first_end2_updated'=1);
+  [] STAGE=3 & step_updated_par0_first_end2 & par0_first_end2_value=0 -> (par0_first_end2_updated'=1);
+  // Update par0_first_start4
+  [] STAGE=3 & step_updated_par0_first_start4 & par0_first_start4_value=-1 -> (par0_first_start4_updated'=1);
+  [] STAGE=3 & step_updated_par0_first_start4 & par0_first_start4_value>=0 & par0_first_start4_value<8 -> (par0_first_start4_value'=par0_first_start4_value+1) & (par0_first_start4_updated'=1);
+  [] STAGE=3 & step_updated_par0_first_start4 & par0_first_start4_value=8 -> (par0_first_start4_updated'=1);
+  // Update par0_second_end3
+  [] STAGE=3 & step_updated_par0_second_end3 & par0_second_end3_value=-1 -> (par0_second_end3_updated'=1);
+  [] STAGE=3 & step_updated_par0_second_end3 & par0_second_end3_value>=0 & par0_second_end3_value<0 -> (par0_second_end3_value'=par0_second_end3_value+1) & (par0_second_end3_updated'=1);
+  [] STAGE=3 & step_updated_par0_second_end3 & par0_second_end3_value=0 -> (par0_second_end3_updated'=1);
+  // Update par0_second_start5
+  [] STAGE=3 & step_updated_par0_second_start5 & par0_second_start5_value=-1 -> (par0_second_start5_updated'=1);
+  [] STAGE=3 & step_updated_par0_second_start5 & par0_second_start5_value>=0 & par0_second_start5_value<0 -> (par0_second_start5_value'=par0_second_start5_value+1) & (par0_second_start5_updated'=1);
+  [] STAGE=3 & step_updated_par0_second_start5 & par0_second_start5_value=0 -> (par0_second_start5_updated'=1);
+  // Update par5_first_end8
+  [] STAGE=3 & step_updated_par5_first_end8 & par5_first_end8_value=-1 -> (par5_first_end8_updated'=1);
+  [] STAGE=3 & step_updated_par5_first_end8 & par5_first_end8_value>=0 & par5_first_end8_value<0 -> (par5_first_end8_value'=par5_first_end8_value+1) & (par5_first_end8_updated'=1);
+  [] STAGE=3 & step_updated_par5_first_end8 & par5_first_end8_value=0 -> (par5_first_end8_updated'=1);
+  // Update par5_first_start10
+  [] STAGE=3 & step_updated_par5_first_start10 & par5_first_start10_value=-1 -> (par5_first_start10_updated'=1);
+  [] STAGE=3 & step_updated_par5_first_start10 & par5_first_start10_value>=0 & par5_first_start10_value<4 -> (par5_first_start10_value'=par5_first_start10_value+1) & (par5_first_start10_updated'=1);
+  [] STAGE=3 & step_updated_par5_first_start10 & par5_first_start10_value=4 -> (par5_first_start10_updated'=1);
+  // Update par5_second_end9
+  [] STAGE=3 & step_updated_par5_second_end9 & par5_second_end9_value=-1 -> (par5_second_end9_updated'=1);
+  [] STAGE=3 & step_updated_par5_second_end9 & par5_second_end9_value>=0 & par5_second_end9_value<0 -> (par5_second_end9_value'=par5_second_end9_value+1) & (par5_second_end9_updated'=1);
+  [] STAGE=3 & step_updated_par5_second_end9 & par5_second_end9_value=0 -> (par5_second_end9_updated'=1);
+  // Update par5_second_start11
+  [] STAGE=3 & step_updated_par5_second_start11 & par5_second_start11_value=-1 -> (par5_second_start11_updated'=1);
+  [] STAGE=3 & step_updated_par5_second_start11 & par5_second_start11_value>=0 & par5_second_start11_value<7 -> (par5_second_start11_value'=par5_second_start11_value+1) & (par5_second_start11_updated'=1);
+  [] STAGE=3 & step_updated_par5_second_start11 & par5_second_start11_value=7 -> (par5_second_start11_updated'=1);
+  // Update seq10_mid13
+  [] STAGE=3 & step_updated_seq10_mid13 & seq10_mid13_value=-1 -> (seq10_mid13_updated'=1);
+  [] STAGE=3 & step_updated_seq10_mid13 & seq10_mid13_value>=0 & seq10_mid13_value<8 -> (seq10_mid13_value'=seq10_mid13_value+1) & (seq10_mid13_updated'=1);
+  [] STAGE=3 & step_updated_seq10_mid13 & seq10_mid13_value=8 -> (seq10_mid13_updated'=1);
+  // Update seq11_mid14
+  [] STAGE=3 & step_updated_seq11_mid14 & seq11_mid14_value=-1 -> (seq11_mid14_updated'=1);
+  [] STAGE=3 & step_updated_seq11_mid14 & seq11_mid14_value>=0 & seq11_mid14_value<9 -> (seq11_mid14_value'=seq11_mid14_value+1) & (seq11_mid14_updated'=1);
+  [] STAGE=3 & step_updated_seq11_mid14 & seq11_mid14_value=9 -> (seq11_mid14_updated'=1);
+  // Update seq1_mid6
+  [] STAGE=3 & step_updated_seq1_mid6 & seq1_mid6_value=-1 -> (seq1_mid6_updated'=1);
+  [] STAGE=3 & step_updated_seq1_mid6 & seq1_mid6_value>=0 & seq1_mid6_value<0 -> (seq1_mid6_value'=seq1_mid6_value+1) & (seq1_mid6_updated'=1);
+  [] STAGE=3 & step_updated_seq1_mid6 & seq1_mid6_value=0 -> (seq1_mid6_updated'=1);
+  // Update seq2_mid7
+  [] STAGE=3 & step_updated_seq2_mid7 & seq2_mid7_value=-1 -> (seq2_mid7_updated'=1);
+  [] STAGE=3 & step_updated_seq2_mid7 & seq2_mid7_value>=0 & seq2_mid7_value<1 -> (seq2_mid7_value'=seq2_mid7_value+1) & (seq2_mid7_updated'=1);
+  [] STAGE=3 & step_updated_seq2_mid7 & seq2_mid7_value=1 -> (seq2_mid7_updated'=1);
+  // Update seq7_mid12
+  [] STAGE=3 & step_updated_seq7_mid12 & seq7_mid12_value=-1 -> (seq7_mid12_updated'=1);
+  [] STAGE=3 & step_updated_seq7_mid12 & seq7_mid12_value>=0 & seq7_mid12_value<7 -> (seq7_mid12_value'=seq7_mid12_value+1) & (seq7_mid12_updated'=1);
+  [] STAGE=3 & step_updated_seq7_mid12 & seq7_mid12_value=7 -> (seq7_mid12_updated'=1);
+  // Update start0
+  [] STAGE=3 & step_updated_start0 & start0_value=-1 -> (start0_updated'=1);
+  [] STAGE=3 & step_updated_start0 & start0_value>=0 & start0_value<0 -> (start0_value'=start0_value+1) & (start0_updated'=1);
+  [] STAGE=3 & step_updated_start0 & start0_value=0 -> (start0_updated'=1);
+  // Stage 3 -> 1: All updated
+  [] STAGE=3 & psi_all_step_updated -> (STAGE'=1);
+  [] STAGE=1 & step_not_updated_end1 -> (end1_updated'=0);
+  [] STAGE=1 & step_not_updated_nature12_false16 -> (nature12_false16_updated'=0);
+  [] STAGE=1 & step_not_updated_nature12_true15 -> (nature12_true15_updated'=0);
+  [] STAGE=1 & step_not_updated_par0_first_end2 -> (par0_first_end2_updated'=0);
+  [] STAGE=1 & step_not_updated_par0_first_start4 -> (par0_first_start4_updated'=0);
+  [] STAGE=1 & step_not_updated_par0_second_end3 -> (par0_second_end3_updated'=0);
+  [] STAGE=1 & step_not_updated_par0_second_start5 -> (par0_second_start5_updated'=0);
+  [] STAGE=1 & step_not_updated_par5_first_end8 -> (par5_first_end8_updated'=0);
+  [] STAGE=1 & step_not_updated_par5_first_start10 -> (par5_first_start10_updated'=0);
+  [] STAGE=1 & step_not_updated_par5_second_end9 -> (par5_second_end9_updated'=0);
+  [] STAGE=1 & step_not_updated_par5_second_start11 -> (par5_second_start11_updated'=0);
+  [] STAGE=1 & step_not_updated_seq10_mid13 -> (seq10_mid13_updated'=0);
+  [] STAGE=1 & step_not_updated_seq11_mid14 -> (seq11_mid14_updated'=0);
+  [] STAGE=1 & step_not_updated_seq1_mid6 -> (seq1_mid6_updated'=0);
+  [] STAGE=1 & step_not_updated_seq2_mid7 -> (seq2_mid7_updated'=0);
+  [] STAGE=1 & step_not_updated_seq7_mid12 -> (seq7_mid12_updated'=0);
+  [] STAGE=1 & step_not_updated_start0 -> (start0_updated'=0);
+  // Stage 1 -> 0: All reset
+  [] STAGE=1 & psi_all_step_not_updated -> (STAGE'=0);
+  [] STAGE=4 & psi_all_idle_but_nature -> (STAGE'=5);
+  [] STAGE=5 & psi_all_idle_nature -> (STAGE'=0);
+endmodule
+
+module merge01
+  merge01_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [] STAGE=0 & psi_idle_merge01 & (par0_first_end2_value >= 0 & par0_second_end3_value >= 0) -> (merge01_state'=1);
+  [] STAGE=0 & psi_idle_merge01 & !(par0_first_end2_value >= 0 & par0_second_end3_value >= 0) -> (merge01_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_merge01 & merge01_state=-1 -> (merge01_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_merge01 & merge01_state=1 -> (merge01_state'=0) & (par0_first_end2_value'=-1) & (par0_second_end3_value'=-1) & (end1_value'=0);
+endmodule
+
+module merge55
+  merge55_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [] STAGE=0 & psi_idle_merge55 & (par5_first_end8_value >= 0 & par5_second_end9_value >= 0) -> (merge55_state'=1);
+  [] STAGE=0 & psi_idle_merge55 & !(par5_first_end8_value >= 0 & par5_second_end9_value >= 0) -> (merge55_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_merge55 & merge55_state=-1 -> (merge55_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_merge55 & merge55_state=1 -> (merge55_state'=0) & (par5_first_end8_value'=-1) & (par5_second_end9_value'=-1) & (par0_first_end2_value'=0);
+endmodule
+
+module nature129
+  nature129_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [] STAGE=0 & psi_idle_nature129 & (par0_second_start5_value >= 0) -> (nature129_state'=1);
+  [] STAGE=0 & psi_idle_nature129 & !(par0_second_start5_value >= 0) -> (nature129_state'=-1);
+  // Stage 5: Nature transition firing
+  [] STAGE=5 & psi_first_nature_not_idle_nature129 & nature129_state=-1 -> (nature129_state'=0);
+  [] STAGE=5 & psi_first_nature_not_idle_nature129 & nature129_state=1 -> 0.20874507734446635: (nature129_state'=0) & (nature12_true15_value'=0) & (par0_second_start5_value'=-1) + 0.7912549226555337: (nature129_state'=0) & (nature12_false16_value'=0) & (par0_second_start5_value'=-1);
+endmodule
+
+module split00
+  split00_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [] STAGE=0 & psi_idle_split00 & (start0_value >= 0) -> (split00_state'=1);
+  [] STAGE=0 & psi_idle_split00 & !(start0_value >= 0) -> (split00_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_split00 & split00_state=-1 -> (split00_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_split00 & split00_state=1 -> (split00_state'=0) & (start0_value'=-1) & (par0_first_start4_value'=0) & (par0_second_start5_value'=0);
+endmodule
+
+module split54
+  split54_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [] STAGE=0 & psi_idle_split54 & (seq1_mid6_value >= 0) -> (split54_state'=1);
+  [] STAGE=0 & psi_idle_split54 & !(seq1_mid6_value >= 0) -> (split54_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_split54 & split54_state=-1 -> (split54_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_split54 & split54_state=1 -> (split54_state'=0) & (seq1_mid6_value'=-1) & (par5_first_start10_value'=0) & (par5_second_start11_value'=0);
+endmodule
+
+module task1310
+  task1310_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [fire_task1310] STAGE=0 & psi_idle_task1310 & (nature12_true15_value >= 5) -> (task1310_state'=1);
+  [] STAGE=0 & psi_idle_task1310 & !(nature12_true15_value >= 5) -> (task1310_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_task1310 & task1310_state=-1 -> (task1310_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_task1310 & task1310_state=1 -> (task1310_state'=0) & (nature12_true15_value'=-1) & (seq11_mid14_value'=0);
+endmodule
+
+module task1411
+  task1411_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [fire_task1411] STAGE=0 & psi_idle_task1411 & (nature12_false16_value >= 1) -> (task1411_state'=1);
+  [] STAGE=0 & psi_idle_task1411 & !(nature12_false16_value >= 1) -> (task1411_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_task1411 & task1411_state=-1 -> (task1411_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_task1411 & task1411_state=1 -> (task1411_state'=0) & (nature12_false16_value'=-1) & (seq11_mid14_value'=0);
+endmodule
+
+module task1512
+  task1512_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [fire_task1512] STAGE=0 & psi_idle_task1512 & (seq11_mid14_value >= 9) -> (task1512_state'=1);
+  [] STAGE=0 & psi_idle_task1512 & !(seq11_mid14_value >= 9) -> (task1512_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_task1512 & task1512_state=-1 -> (task1512_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_task1512 & task1512_state=1 -> (task1512_state'=0) & (seq11_mid14_value'=-1) & (seq10_mid13_value'=0);
+endmodule
+
+module task1613
+  task1613_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [fire_task1613] STAGE=0 & psi_idle_task1613 & (seq10_mid13_value >= 8) -> (task1613_state'=1);
+  [] STAGE=0 & psi_idle_task1613 & !(seq10_mid13_value >= 8) -> (task1613_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_task1613 & task1613_state=-1 -> (task1613_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_task1613 & task1613_state=1 -> (task1613_state'=0) & (seq10_mid13_value'=-1) & (par0_second_end3_value'=0);
+endmodule
+
+module task32
+  task32_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [fire_task32] STAGE=0 & psi_idle_task32 & (par0_first_start4_value >= 8) -> (task32_state'=1);
+  [] STAGE=0 & psi_idle_task32 & !(par0_first_start4_value >= 8) -> (task32_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_task32 & task32_state=-1 -> (task32_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_task32 & task32_state=1 -> (task32_state'=0) & (par0_first_start4_value'=-1) & (seq2_mid7_value'=0);
+endmodule
+
+module task43
+  task43_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [fire_task43] STAGE=0 & psi_idle_task43 & (seq2_mid7_value >= 1) -> (task43_state'=1);
+  [] STAGE=0 & psi_idle_task43 & !(seq2_mid7_value >= 1) -> (task43_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_task43 & task43_state=-1 -> (task43_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_task43 & task43_state=1 -> (task43_state'=0) & (seq2_mid7_value'=-1) & (seq1_mid6_value'=0);
+endmodule
+
+module task66
+  task66_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [fire_task66] STAGE=0 & psi_idle_task66 & (par5_first_start10_value >= 4) -> (task66_state'=1);
+  [] STAGE=0 & psi_idle_task66 & !(par5_first_start10_value >= 4) -> (task66_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_task66 & task66_state=-1 -> (task66_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_task66 & task66_state=1 -> (task66_state'=0) & (par5_first_start10_value'=-1) & (par5_first_end8_value'=0);
+endmodule
+
+module task87
+  task87_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [fire_task87] STAGE=0 & psi_idle_task87 & (par5_second_start11_value >= 7) -> (task87_state'=1);
+  [] STAGE=0 & psi_idle_task87 & !(par5_second_start11_value >= 7) -> (task87_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_task87 & task87_state=-1 -> (task87_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_task87 & task87_state=1 -> (task87_state'=0) & (par5_second_start11_value'=-1) & (seq7_mid12_value'=0);
+endmodule
+
+module task98
+  task98_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [fire_task98] STAGE=0 & psi_idle_task98 & (seq7_mid12_value >= 7) -> (task98_state'=1);
+  [] STAGE=0 & psi_idle_task98 & !(seq7_mid12_value >= 7) -> (task98_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_task98 & task98_state=-1 -> (task98_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_task98 & task98_state=1 -> (task98_state'=0) & (seq7_mid12_value'=-1) & (par5_second_end9_value'=0);
+endmodule
+
+
+rewards "impact_0"
+  [fire_task32] true : 0.07782981756122748;
+  [fire_task43] true : 0.028854375736701788;
+  [fire_task66] true : 0.08529702640727252;
+  [fire_task87] true : 0.042224541208959764;
+  [fire_task98] true : 0.05762294309228572;
+  [fire_task1310] true : 0.06586053427939484;
+  [fire_task1411] true : 0.07499378758546676;
+  [fire_task1512] true : 0.0680804903476456;
+  [fire_task1613] true : 0.059124842916624364;
+endrewards

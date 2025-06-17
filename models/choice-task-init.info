@@ -1,0 +1,44 @@
+{
+  "timestamp": "2025-06-14T11:01:45.755692",
+  "modules": [
+    "manager",
+    "choice31",
+    "task20",
+    "task42",
+    "task53"
+  ],
+  "variables": [
+    "STAGE",
+    "choice3_false4_value",
+    "choice3_true3_value",
+    "end1_value",
+    "seq1_mid2_value",
+    "start0_value",
+    "choice3_false4_updated",
+    "choice3_true3_updated",
+    "end1_updated",
+    "seq1_mid2_updated",
+    "start0_updated",
+    "choice31_state",
+    "task20_state",
+    "task42_state",
+    "task53_state"
+  ],
+  "task_impacts": {
+    "task2": {
+      "impact_1": 0.4,
+      "impact_2": 0.5
+    },
+    "task4": {
+      "impact_1": 0.3,
+      "impact_2": 0.4
+    },
+    "task5": {
+      "impact_1": 0.5,
+      "impact_2": 0.5
+    }
+  },
+  "model_build_time": 0.018,
+  "command": "/media/DATA/emanuelechini/cpi-to-prism-loops/prism-4.8.1-linux64-x86/bin/prism /media/DATA/emanuelechini/cpi-to-prism-loops/models/choice-task-init.nm -exporttransdotstates /media/DATA/emanuelechini/cpi-to-prism-loops/models/choice-task-init.dot -exportstates /media/DATA/emanuelechini/cpi-to-prism-loops/models/choice-task-init_states.csv -exporttrans /media/DATA/emanuelechini/cpi-to-prism-loops/models/choice-task-init_trans.tra -verbose",
+  "prism_output": "PRISM\n=====\n\nVersion: 4.8.1\nDate: Sat Jun 14 11:01:44 CEST 2025\nHostname: thething\nMemory limits: cudd=1g, java(heap)=1g\nCommand line: prism /media/DATA/emanuelechini/cpi-to-prism-loops/models/choice-task-init.nm -exporttransdotstates /media/DATA/emanuelechini/cpi-to-prism-loops/models/choice-task-init.dot -exportstates /media/DATA/emanuelechini/cpi-to-prism-loops/models/choice-task-init_states.csv -exporttrans /media/DATA/emanuelechini/cpi-to-prism-loops/models/choice-task-init_trans.tra -verbose\n\nParsing model file \"/media/DATA/emanuelechini/cpi-to-prism-loops/models/choice-task-init.nm\"...\n\nType:        LTS\nModules:     manager choice31 task20 task42 task53\nVariables:   STAGE choice3_false4_value choice3_true3_value end1_value seq1_mid2_value start0_value choice3_false4_updated choice3_true3_updated end1_updated seq1_mid2_updated start0_updated choice31_state task20_state task42_state task53_state\n\nSwitching to explicit engine, which supports LTSs...\n\nBuilding model...\n\nComputing reachable states... 153 states\nReachable states exploration and model construction done in 0.008 secs.\nSorting reachable states list...\n\nTime for model construction: 0.018 seconds.\n\nWarning: Deadlocks detected and fixed in 1 states\n\nType:        LTS\nStates:      153 (1 initial)\nTransitions: 154\n\nExporting transition matrix in plain text format to file \"/media/DATA/emanuelechini/cpi-to-prism-loops/models/choice-task-init_trans.tra\"...\n\nExporting list of reachable states in plain text format to file \"/media/DATA/emanuelechini/cpi-to-prism-loops/models/choice-task-init_states.csv\"...\n\nExporting transition matrix in Dot format (with states) to file \"/media/DATA/emanuelechini/cpi-to-prism-loops/models/choice-task-init.dot\"...\n\n---------------------------------------------------------------------\n\nNote: There was 1 warning during computation.\n\n"
+}

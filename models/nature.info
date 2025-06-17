@@ -1,0 +1,36 @@
+{
+  "timestamp": "2025-06-14T15:58:02.471649",
+  "modules": [
+    "manager",
+    "nature10",
+    "task21",
+    "task32"
+  ],
+  "variables": [
+    "STAGE",
+    "end1_value",
+    "nature1_false3_value",
+    "nature1_true2_value",
+    "start0_value",
+    "end1_updated",
+    "nature1_false3_updated",
+    "nature1_true2_updated",
+    "start0_updated",
+    "nature10_state",
+    "task21_state",
+    "task32_state"
+  ],
+  "task_impacts": {
+    "task2": {
+      "impact_1": 0.6,
+      "impact_2": 0.4
+    },
+    "task3": {
+      "impact_1": 0.4,
+      "impact_2": 0.5
+    }
+  },
+  "model_build_time": 0.015,
+  "command": "/media/DATA/emanuelechini/cpi-to-prism-loops/prism-4.8.1-linux64-x86/bin/prism /media/DATA/emanuelechini/cpi-to-prism-loops/models/nature.nm -exporttransdotstates /media/DATA/emanuelechini/cpi-to-prism-loops/models/nature.dot -exportstates /media/DATA/emanuelechini/cpi-to-prism-loops/models/nature_states.csv -exporttrans /media/DATA/emanuelechini/cpi-to-prism-loops/models/nature_trans.tra -verbose",
+  "prism_output": "PRISM\n=====\n\nVersion: 4.8.1\nDate: Sat Jun 14 15:58:02 CEST 2025\nHostname: thething\nMemory limits: cudd=1g, java(heap)=1g\nCommand line: prism /media/DATA/emanuelechini/cpi-to-prism-loops/models/nature.nm -exporttransdotstates /media/DATA/emanuelechini/cpi-to-prism-loops/models/nature.dot -exportstates /media/DATA/emanuelechini/cpi-to-prism-loops/models/nature_states.csv -exporttrans /media/DATA/emanuelechini/cpi-to-prism-loops/models/nature_trans.tra -verbose\n\nParsing model file \"/media/DATA/emanuelechini/cpi-to-prism-loops/models/nature.nm\"...\n\nType:        MDP\nModules:     manager nature10 task21 task32\nVariables:   STAGE end1_value nature1_false3_value nature1_true2_value start0_value end1_updated nature1_false3_updated nature1_true2_updated start0_updated nature10_state task21_state task32_state\n\nBuilding model...\n\nWarning: Guard for command 5 of module \"manager\" is never satisfied.\n\nWarning: Guard for command 14 of module \"manager\" is never satisfied.\n\nComputing reachable states...\n\nReachability (BFS): 59 iterations in 0.01 seconds (average 0.000169, setup 0.00)\n\nTime for model construction: 0.015 seconds.\n\nWarning: Deadlocks detected and fixed in 1 states\n\nType:        MDP\nStates:      107 (1 initial)\nTransitions: 108\nChoices:     107\n\nTransition matrix: 1063 nodes (4 terminal), 108 minterms, vars: 21r/21c/5nd\n\nExporting transition matrix in plain text format to file \"/media/DATA/emanuelechini/cpi-to-prism-loops/models/nature_trans.tra\"...\n\nExporting list of reachable states in plain text format to file \"/media/DATA/emanuelechini/cpi-to-prism-loops/models/nature_states.csv\"...\n\nExporting transition matrix in Dot format (with states) to file \"/media/DATA/emanuelechini/cpi-to-prism-loops/models/nature.dot\"...\n\n---------------------------------------------------------------------\n\nNote: There were 3 warnings during computation.\n\n"
+}

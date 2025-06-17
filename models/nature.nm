@@ -1,0 +1,179 @@
+// Global variables for places
+global STAGE : [0..5] init 0;
+
+// Place value variables
+global end1_value : [-1..0] init -1;
+global nature1_false3_value : [-1..3] init -1;
+global nature1_true2_value : [-1..4] init -1;
+global start0_value : [-1..0] init 0;
+
+// Place updated variables
+global end1_updated : [0..1] init 0;
+global nature1_false3_updated : [0..1] init 0;
+global nature1_true2_updated : [0..1] init 0;
+global start0_updated : [0..1] init 0;
+
+// Formulas
+formula is_active_nature10 = (start0_value >= 0);
+formula is_active_task21 = (nature1_true2_value >= 4);
+formula is_active_task32 = (nature1_false3_value >= 3);
+formula psi_at_least_one_remaining_duration = (end1_value >= 0 & end1_value < 0) | (nature1_false3_value >= 0 & nature1_false3_value < 3) | (nature1_true2_value >= 0 & nature1_true2_value < 4) | (start0_value >= 0 & start0_value < 0);
+formula psi_step = (!is_active_nature10 & !is_active_task21 & !is_active_task32) & psi_at_least_one_remaining_duration;
+formula step_updated_end1 = end1_updated=0;
+formula step_updated_nature1_false3 = nature1_false3_updated=0 & end1_updated=1;
+formula step_updated_nature1_true2 = nature1_true2_updated=0 & end1_updated=1 & nature1_false3_updated=1;
+formula step_updated_start0 = start0_updated=0 & end1_updated=1 & nature1_false3_updated=1 & nature1_true2_updated=1;
+formula psi_all_step_updated = end1_updated=1 & nature1_false3_updated=1 & nature1_true2_updated=1 & start0_updated=1;
+formula step_not_updated_end1 = end1_updated=1;
+formula step_not_updated_nature1_false3 = nature1_false3_updated=1 & end1_updated=0;
+formula step_not_updated_nature1_true2 = nature1_true2_updated=1 & end1_updated=0 & nature1_false3_updated=0;
+formula step_not_updated_start0 = start0_updated=1 & end1_updated=0 & nature1_false3_updated=0 & nature1_true2_updated=0;
+formula psi_all_step_not_updated = end1_updated=0 & nature1_false3_updated=0 & nature1_true2_updated=0 & start0_updated=0;
+formula psi_idle_nature10 = !psi_step & nature10_state=0;
+formula psi_idle_task21 = !psi_step & task21_state=0 & nature10_state!=0;
+formula psi_idle_task32 = !psi_step & task32_state=0 & nature10_state!=0 & task21_state!=0;
+formula psi_first_but_nature_not_idle_task21 = task21_state!=0;
+formula psi_first_but_nature_not_idle_task32 = task32_state!=0 & task21_state=0;
+formula psi_first_nature_not_idle_nature10 = nature10_state!=0;
+formula psi_all_idle_but_nature = task21_state=0 & task32_state=0;
+formula psi_all_idle_nature = nature10_state=0;
+formula psi_noone_idle = nature10_state!=0 & task21_state!=0 & task32_state!=0;
+formula psi_atleastone_active = is_active_nature10 | is_active_task21 | is_active_task32;
+
+// State Labels for Simulator
+label "psi_step" = psi_step;
+label "psi_at_least_one_remaining_duration" = psi_at_least_one_remaining_duration;
+label "psi_all_step_updated" = psi_all_step_updated;
+label "psi_all_step_not_updated" = psi_all_step_not_updated;
+label "psi_noone_idle" = psi_noone_idle;
+label "psi_atleastone_active" = psi_atleastone_active;
+label "psi_idle_nature10" = psi_idle_nature10;
+label "psi_idle_task21" = psi_idle_task21;
+label "psi_idle_task32" = psi_idle_task32;
+label "psi_first_but_nature_not_idle_task21" = psi_first_but_nature_not_idle_task21;
+label "psi_first_but_nature_not_idle_task32" = psi_first_but_nature_not_idle_task32;
+label "psi_first_nature_not_idle_nature10" = psi_first_nature_not_idle_nature10;
+label "psi_all_idle_but_nature" = psi_all_idle_but_nature;
+label "psi_all_idle_nature" = psi_all_idle_nature;
+label "step_updated_end1" = step_updated_end1;
+label "step_not_updated_end1" = step_not_updated_end1;
+label "step_updated_nature1_false3" = step_updated_nature1_false3;
+label "step_not_updated_nature1_false3" = step_not_updated_nature1_false3;
+label "step_updated_nature1_true2" = step_updated_nature1_true2;
+label "step_not_updated_nature1_true2" = step_not_updated_nature1_true2;
+label "step_updated_start0" = step_updated_start0;
+label "step_not_updated_start0" = step_not_updated_start0;
+label "is_active_nature10" = is_active_nature10;
+label "is_active_task21" = is_active_task21;
+label "is_active_task32" = is_active_task32;
+label "stage_0" = STAGE=0;
+label "stage_1" = STAGE=1;
+label "stage_2" = STAGE=2;
+label "stage_3" = STAGE=3;
+label "stage_4" = STAGE=4;
+label "stage_5" = STAGE=5;
+label "state_nature10_ready" = nature10_state=1;
+label "state_nature10_disabled" = nature10_state=-1;
+label "state_nature10_idle" = nature10_state=0;
+label "state_task21_ready" = task21_state=1;
+label "state_task21_disabled" = task21_state=-1;
+label "state_task21_idle" = task21_state=0;
+label "state_task32_ready" = task32_state=1;
+label "state_task32_disabled" = task32_state=-1;
+label "state_task32_idle" = task32_state=0;
+label "place_end1_empty" = end1_value=-1;
+label "place_end1_has_token" = end1_value>=0;
+label "place_end1_duration_met" = end1_value>=0;
+label "place_end1_can_advance" = end1_value>=0 & end1_value<0;
+label "place_end1_updated" = end1_updated=1;
+label "place_nature1_false3_empty" = nature1_false3_value=-1;
+label "place_nature1_false3_has_token" = nature1_false3_value>=0;
+label "place_nature1_false3_duration_met" = nature1_false3_value>=3;
+label "place_nature1_false3_can_advance" = nature1_false3_value>=0 & nature1_false3_value<3;
+label "place_nature1_false3_updated" = nature1_false3_updated=1;
+label "place_nature1_true2_empty" = nature1_true2_value=-1;
+label "place_nature1_true2_has_token" = nature1_true2_value>=0;
+label "place_nature1_true2_duration_met" = nature1_true2_value>=4;
+label "place_nature1_true2_can_advance" = nature1_true2_value>=0 & nature1_true2_value<4;
+label "place_nature1_true2_updated" = nature1_true2_updated=1;
+label "place_start0_empty" = start0_value=-1;
+label "place_start0_has_token" = start0_value>=0;
+label "place_start0_duration_met" = start0_value>=0;
+label "place_start0_can_advance" = start0_value>=0 & start0_value<0;
+label "place_start0_updated" = start0_updated=1;
+
+module manager
+  // Stage 0 -> 3: Can do step
+  [] STAGE=0 & psi_step -> (STAGE'=3);
+  // Stage 0 -> 2: Terminated
+  [] STAGE=0 & !psi_step & psi_noone_idle & !psi_atleastone_active -> (STAGE'=2);
+  // Stage 0 -> 4: Fire transitions (FIXED: added psi_noone_idle)
+  [] STAGE=0 & !psi_step & psi_noone_idle & psi_atleastone_active -> (STAGE'=4);
+  // Update end1
+  [] STAGE=3 & step_updated_end1 & end1_value=-1 -> (end1_updated'=1);
+  [] STAGE=3 & step_updated_end1 & end1_value>=0 & end1_value<0 -> (end1_value'=end1_value+1) & (end1_updated'=1);
+  [] STAGE=3 & step_updated_end1 & end1_value=0 -> (end1_updated'=1);
+  // Update nature1_false3
+  [] STAGE=3 & step_updated_nature1_false3 & nature1_false3_value=-1 -> (nature1_false3_updated'=1);
+  [] STAGE=3 & step_updated_nature1_false3 & nature1_false3_value>=0 & nature1_false3_value<3 -> (nature1_false3_value'=nature1_false3_value+1) & (nature1_false3_updated'=1);
+  [] STAGE=3 & step_updated_nature1_false3 & nature1_false3_value=3 -> (nature1_false3_updated'=1);
+  // Update nature1_true2
+  [] STAGE=3 & step_updated_nature1_true2 & nature1_true2_value=-1 -> (nature1_true2_updated'=1);
+  [] STAGE=3 & step_updated_nature1_true2 & nature1_true2_value>=0 & nature1_true2_value<4 -> (nature1_true2_value'=nature1_true2_value+1) & (nature1_true2_updated'=1);
+  [] STAGE=3 & step_updated_nature1_true2 & nature1_true2_value=4 -> (nature1_true2_updated'=1);
+  // Update start0
+  [] STAGE=3 & step_updated_start0 & start0_value=-1 -> (start0_updated'=1);
+  [] STAGE=3 & step_updated_start0 & start0_value>=0 & start0_value<0 -> (start0_value'=start0_value+1) & (start0_updated'=1);
+  [] STAGE=3 & step_updated_start0 & start0_value=0 -> (start0_updated'=1);
+  // Stage 3 -> 1: All updated
+  [] STAGE=3 & psi_all_step_updated -> (STAGE'=1);
+  [] STAGE=1 & step_not_updated_end1 -> (end1_updated'=0);
+  [] STAGE=1 & step_not_updated_nature1_false3 -> (nature1_false3_updated'=0);
+  [] STAGE=1 & step_not_updated_nature1_true2 -> (nature1_true2_updated'=0);
+  [] STAGE=1 & step_not_updated_start0 -> (start0_updated'=0);
+  // Stage 1 -> 0: All reset
+  [] STAGE=1 & psi_all_step_not_updated -> (STAGE'=0);
+  [] STAGE=4 & psi_all_idle_but_nature -> (STAGE'=5);
+  [] STAGE=5 & psi_all_idle_nature -> (STAGE'=0);
+endmodule
+
+module nature10
+  nature10_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [] STAGE=0 & psi_idle_nature10 & (start0_value >= 0) -> (nature10_state'=1);
+  [] STAGE=0 & psi_idle_nature10 & !(start0_value >= 0) -> (nature10_state'=-1);
+  // Stage 5: Nature transition firing
+  [] STAGE=5 & psi_first_nature_not_idle_nature10 & nature10_state=-1 -> (nature10_state'=0);
+  [] STAGE=5 & psi_first_nature_not_idle_nature10 & nature10_state=1 -> 0.3: (nature10_state'=0) & (nature1_true2_value'=0) & (start0_value'=-1) + 0.7: (nature10_state'=0) & (nature1_false3_value'=0) & (start0_value'=-1);
+endmodule
+
+module task21
+  task21_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [fire_task21] STAGE=0 & psi_idle_task21 & (nature1_true2_value >= 4) -> (task21_state'=1);
+  [] STAGE=0 & psi_idle_task21 & !(nature1_true2_value >= 4) -> (task21_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_task21 & task21_state=-1 -> (task21_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_task21 & task21_state=1 -> (task21_state'=0) & (nature1_true2_value'=-1) & (end1_value'=0);
+endmodule
+
+module task32
+  task32_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [fire_task32] STAGE=0 & psi_idle_task32 & (nature1_false3_value >= 3) -> (task32_state'=1);
+  [] STAGE=0 & psi_idle_task32 & !(nature1_false3_value >= 3) -> (task32_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_task32 & task32_state=-1 -> (task32_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_task32 & task32_state=1 -> (task32_state'=0) & (nature1_false3_value'=-1) & (end1_value'=0);
+endmodule
+
+
+rewards "impact_0"
+  [fire_task21] true : 0.6;
+  [fire_task32] true : 0.4;
+endrewards
+
+rewards "impact_1"
+  [fire_task21] true : 0.4;
+  [fire_task32] true : 0.5;
+endrewards

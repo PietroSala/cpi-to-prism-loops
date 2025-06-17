@@ -1,0 +1,36 @@
+{
+  "timestamp": "2025-06-15T19:04:44.023482",
+  "modules": [
+    "manager",
+    "choice10",
+    "task21",
+    "task32"
+  ],
+  "variables": [
+    "STAGE",
+    "choice1_false3_value",
+    "choice1_true2_value",
+    "end1_value",
+    "start0_value",
+    "choice1_false3_updated",
+    "choice1_true2_updated",
+    "end1_updated",
+    "start0_updated",
+    "choice10_state",
+    "task21_state",
+    "task32_state"
+  ],
+  "task_impacts": {
+    "task2": {
+      "impact_1": 0.3,
+      "impact_2": 0.4
+    },
+    "task3": {
+      "impact_1": 0.5,
+      "impact_2": 0.5
+    }
+  },
+  "model_build_time": 0.033,
+  "command": "/media/DATA/emanuelechini/cpi-to-prism-loops/prism-4.8.1-linux64-x86/bin/prism /media/DATA/emanuelechini/cpi-to-prism-loops/models/choice.nm -exporttransdotstates /media/DATA/emanuelechini/cpi-to-prism-loops/models/choice.dot -exportstates /media/DATA/emanuelechini/cpi-to-prism-loops/models/choice_states.csv -exporttrans /media/DATA/emanuelechini/cpi-to-prism-loops/models/choice_trans.tra -verbose",
+  "prism_output": "PRISM\n=====\n\nVersion: 4.8.1\nDate: Sun Jun 15 19:04:43 CEST 2025\nHostname: thething\nMemory limits: cudd=1g, java(heap)=1g\nCommand line: prism /media/DATA/emanuelechini/cpi-to-prism-loops/models/choice.nm -exporttransdotstates /media/DATA/emanuelechini/cpi-to-prism-loops/models/choice.dot -exportstates /media/DATA/emanuelechini/cpi-to-prism-loops/models/choice_states.csv -exporttrans /media/DATA/emanuelechini/cpi-to-prism-loops/models/choice_trans.tra -verbose\n\nParsing model file \"/media/DATA/emanuelechini/cpi-to-prism-loops/models/choice.nm\"...\n\nType:        MDP\nModules:     manager choice10 task21 task32\nVariables:   STAGE choice1_false3_value choice1_true2_value end1_value start0_value choice1_false3_updated choice1_true2_updated end1_updated start0_updated choice10_state task21_state task32_state\n\nBuilding model...\n\nWarning: Guard for command 11 of module \"manager\" is never satisfied.\n\nWarning: Guard for command 14 of module \"manager\" is never satisfied.\n\nComputing reachable states...\n\nReachability (BFS): 48 iterations in 0.01 seconds (average 0.000208, setup 0.00)\n\nTime for model construction: 0.033 seconds.\n\nWarning: Deadlocks detected and fixed in 1 states\n\nType:        MDP\nStates:      86 (1 initial)\nTransitions: 87\nChoices:     87\n\nTransition matrix: 889 nodes (2 terminal), 87 minterms, vars: 20r/20c/6nd\n\nExporting transition matrix in plain text format to file \"/media/DATA/emanuelechini/cpi-to-prism-loops/models/choice_trans.tra\"...\n\nExporting list of reachable states in plain text format to file \"/media/DATA/emanuelechini/cpi-to-prism-loops/models/choice_states.csv\"...\n\nExporting transition matrix in Dot format (with states) to file \"/media/DATA/emanuelechini/cpi-to-prism-loops/models/choice.dot\"...\n\n---------------------------------------------------------------------\n\nNote: There were 3 warnings during computation.\n\n"
+}

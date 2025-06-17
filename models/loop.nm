@@ -1,0 +1,589 @@
+// Global variables for places
+global STAGE : [0..5] init 0;
+
+// Place value variables
+global choice9_false13_value : [-1..1] init -1;
+global choice9_true12_value : [-1..0] init -1;
+global end1_value : [-1..0] init -1;
+global loop10_child_entry14_value : [-1..2] init -1;
+global loop10_decision15_value : [-1..0] init -1;
+global loop3_child_entry7_value : [-1..1] init -1;
+global loop3_decision8_value : [-1..0] init -1;
+global nature6_false11_value : [-1..1] init -1;
+global nature6_true10_value : [-1..3] init -1;
+global par2_first_end3_value : [-1..0] init -1;
+global par2_first_start5_value : [-1..0] init -1;
+global par2_second_end4_value : [-1..0] init -1;
+global par2_second_start6_value : [-1..0] init -1;
+global seq0_mid2_value : [-1..0] init -1;
+global seq4_mid9_value : [-1..0] init -1;
+global start0_value : [-1..2] init 0;
+
+// Place updated variables
+global choice9_false13_updated : [0..1] init 0;
+global choice9_true12_updated : [0..1] init 0;
+global end1_updated : [0..1] init 0;
+global loop10_child_entry14_updated : [0..1] init 0;
+global loop10_decision15_updated : [0..1] init 0;
+global loop3_child_entry7_updated : [0..1] init 0;
+global loop3_decision8_updated : [0..1] init 0;
+global nature6_false11_updated : [0..1] init 0;
+global nature6_true10_updated : [0..1] init 0;
+global par2_first_end3_updated : [0..1] init 0;
+global par2_first_start5_updated : [0..1] init 0;
+global par2_second_end4_updated : [0..1] init 0;
+global par2_second_start6_updated : [0..1] init 0;
+global seq0_mid2_updated : [0..1] init 0;
+global seq4_mid9_updated : [0..1] init 0;
+global start0_updated : [0..1] init 0;
+
+// Formulas
+formula is_active_choice99 = (par2_second_start6_value >= 0);
+formula is_active_loop10_decision12 = (loop10_decision15_value >= 0);
+formula is_active_loop10_init10 = (choice9_true12_value >= 0);
+formula is_active_loop3_decision8 = (loop3_decision8_value >= 0);
+formula is_active_loop3_init3 = (par2_first_start5_value >= 0);
+formula is_active_merge22 = (par2_first_end3_value >= 0) & (par2_second_end4_value >= 0);
+formula is_active_nature65 = (seq4_mid9_value >= 0);
+formula is_active_split21 = (seq0_mid2_value >= 0);
+formula is_active_task10 = (start0_value >= 2);
+formula is_active_task1111 = (loop10_child_entry14_value >= 2);
+formula is_active_task1213 = (choice9_false13_value >= 1);
+formula is_active_task54 = (loop3_child_entry7_value >= 1);
+formula is_active_task76 = (nature6_true10_value >= 3);
+formula is_active_task87 = (nature6_false11_value >= 1);
+formula psi_at_least_one_remaining_duration = (choice9_false13_value >= 0 & choice9_false13_value < 1) | (choice9_true12_value >= 0 & choice9_true12_value < 0) | (end1_value >= 0 & end1_value < 0) | (loop10_child_entry14_value >= 0 & loop10_child_entry14_value < 2) | (loop10_decision15_value >= 0 & loop10_decision15_value < 0) | (loop3_child_entry7_value >= 0 & loop3_child_entry7_value < 1) | (loop3_decision8_value >= 0 & loop3_decision8_value < 0) | (nature6_false11_value >= 0 & nature6_false11_value < 1) | (nature6_true10_value >= 0 & nature6_true10_value < 3) | (par2_first_end3_value >= 0 & par2_first_end3_value < 0) | (par2_first_start5_value >= 0 & par2_first_start5_value < 0) | (par2_second_end4_value >= 0 & par2_second_end4_value < 0) | (par2_second_start6_value >= 0 & par2_second_start6_value < 0) | (seq0_mid2_value >= 0 & seq0_mid2_value < 0) | (seq4_mid9_value >= 0 & seq4_mid9_value < 0) | (start0_value >= 0 & start0_value < 2);
+formula psi_step = (!is_active_choice99 & !is_active_loop10_decision12 & !is_active_loop10_init10 & !is_active_loop3_decision8 & !is_active_loop3_init3 & !is_active_merge22 & !is_active_nature65 & !is_active_split21 & !is_active_task10 & !is_active_task1111 & !is_active_task1213 & !is_active_task54 & !is_active_task76 & !is_active_task87) & psi_at_least_one_remaining_duration;
+formula step_updated_choice9_false13 = choice9_false13_updated=0;
+formula step_updated_choice9_true12 = choice9_true12_updated=0 & choice9_false13_updated=1;
+formula step_updated_end1 = end1_updated=0 & choice9_false13_updated=1 & choice9_true12_updated=1;
+formula step_updated_loop10_child_entry14 = loop10_child_entry14_updated=0 & choice9_false13_updated=1 & choice9_true12_updated=1 & end1_updated=1;
+formula step_updated_loop10_decision15 = loop10_decision15_updated=0 & choice9_false13_updated=1 & choice9_true12_updated=1 & end1_updated=1 & loop10_child_entry14_updated=1;
+formula step_updated_loop3_child_entry7 = loop3_child_entry7_updated=0 & choice9_false13_updated=1 & choice9_true12_updated=1 & end1_updated=1 & loop10_child_entry14_updated=1 & loop10_decision15_updated=1;
+formula step_updated_loop3_decision8 = loop3_decision8_updated=0 & choice9_false13_updated=1 & choice9_true12_updated=1 & end1_updated=1 & loop10_child_entry14_updated=1 & loop10_decision15_updated=1 & loop3_child_entry7_updated=1;
+formula step_updated_nature6_false11 = nature6_false11_updated=0 & choice9_false13_updated=1 & choice9_true12_updated=1 & end1_updated=1 & loop10_child_entry14_updated=1 & loop10_decision15_updated=1 & loop3_child_entry7_updated=1 & loop3_decision8_updated=1;
+formula step_updated_nature6_true10 = nature6_true10_updated=0 & choice9_false13_updated=1 & choice9_true12_updated=1 & end1_updated=1 & loop10_child_entry14_updated=1 & loop10_decision15_updated=1 & loop3_child_entry7_updated=1 & loop3_decision8_updated=1 & nature6_false11_updated=1;
+formula step_updated_par2_first_end3 = par2_first_end3_updated=0 & choice9_false13_updated=1 & choice9_true12_updated=1 & end1_updated=1 & loop10_child_entry14_updated=1 & loop10_decision15_updated=1 & loop3_child_entry7_updated=1 & loop3_decision8_updated=1 & nature6_false11_updated=1 & nature6_true10_updated=1;
+formula step_updated_par2_first_start5 = par2_first_start5_updated=0 & choice9_false13_updated=1 & choice9_true12_updated=1 & end1_updated=1 & loop10_child_entry14_updated=1 & loop10_decision15_updated=1 & loop3_child_entry7_updated=1 & loop3_decision8_updated=1 & nature6_false11_updated=1 & nature6_true10_updated=1 & par2_first_end3_updated=1;
+formula step_updated_par2_second_end4 = par2_second_end4_updated=0 & choice9_false13_updated=1 & choice9_true12_updated=1 & end1_updated=1 & loop10_child_entry14_updated=1 & loop10_decision15_updated=1 & loop3_child_entry7_updated=1 & loop3_decision8_updated=1 & nature6_false11_updated=1 & nature6_true10_updated=1 & par2_first_end3_updated=1 & par2_first_start5_updated=1;
+formula step_updated_par2_second_start6 = par2_second_start6_updated=0 & choice9_false13_updated=1 & choice9_true12_updated=1 & end1_updated=1 & loop10_child_entry14_updated=1 & loop10_decision15_updated=1 & loop3_child_entry7_updated=1 & loop3_decision8_updated=1 & nature6_false11_updated=1 & nature6_true10_updated=1 & par2_first_end3_updated=1 & par2_first_start5_updated=1 & par2_second_end4_updated=1;
+formula step_updated_seq0_mid2 = seq0_mid2_updated=0 & choice9_false13_updated=1 & choice9_true12_updated=1 & end1_updated=1 & loop10_child_entry14_updated=1 & loop10_decision15_updated=1 & loop3_child_entry7_updated=1 & loop3_decision8_updated=1 & nature6_false11_updated=1 & nature6_true10_updated=1 & par2_first_end3_updated=1 & par2_first_start5_updated=1 & par2_second_end4_updated=1 & par2_second_start6_updated=1;
+formula step_updated_seq4_mid9 = seq4_mid9_updated=0 & choice9_false13_updated=1 & choice9_true12_updated=1 & end1_updated=1 & loop10_child_entry14_updated=1 & loop10_decision15_updated=1 & loop3_child_entry7_updated=1 & loop3_decision8_updated=1 & nature6_false11_updated=1 & nature6_true10_updated=1 & par2_first_end3_updated=1 & par2_first_start5_updated=1 & par2_second_end4_updated=1 & par2_second_start6_updated=1 & seq0_mid2_updated=1;
+formula step_updated_start0 = start0_updated=0 & choice9_false13_updated=1 & choice9_true12_updated=1 & end1_updated=1 & loop10_child_entry14_updated=1 & loop10_decision15_updated=1 & loop3_child_entry7_updated=1 & loop3_decision8_updated=1 & nature6_false11_updated=1 & nature6_true10_updated=1 & par2_first_end3_updated=1 & par2_first_start5_updated=1 & par2_second_end4_updated=1 & par2_second_start6_updated=1 & seq0_mid2_updated=1 & seq4_mid9_updated=1;
+formula psi_all_step_updated = choice9_false13_updated=1 & choice9_true12_updated=1 & end1_updated=1 & loop10_child_entry14_updated=1 & loop10_decision15_updated=1 & loop3_child_entry7_updated=1 & loop3_decision8_updated=1 & nature6_false11_updated=1 & nature6_true10_updated=1 & par2_first_end3_updated=1 & par2_first_start5_updated=1 & par2_second_end4_updated=1 & par2_second_start6_updated=1 & seq0_mid2_updated=1 & seq4_mid9_updated=1 & start0_updated=1;
+formula step_not_updated_choice9_false13 = choice9_false13_updated=1;
+formula step_not_updated_choice9_true12 = choice9_true12_updated=1 & choice9_false13_updated=0;
+formula step_not_updated_end1 = end1_updated=1 & choice9_false13_updated=0 & choice9_true12_updated=0;
+formula step_not_updated_loop10_child_entry14 = loop10_child_entry14_updated=1 & choice9_false13_updated=0 & choice9_true12_updated=0 & end1_updated=0;
+formula step_not_updated_loop10_decision15 = loop10_decision15_updated=1 & choice9_false13_updated=0 & choice9_true12_updated=0 & end1_updated=0 & loop10_child_entry14_updated=0;
+formula step_not_updated_loop3_child_entry7 = loop3_child_entry7_updated=1 & choice9_false13_updated=0 & choice9_true12_updated=0 & end1_updated=0 & loop10_child_entry14_updated=0 & loop10_decision15_updated=0;
+formula step_not_updated_loop3_decision8 = loop3_decision8_updated=1 & choice9_false13_updated=0 & choice9_true12_updated=0 & end1_updated=0 & loop10_child_entry14_updated=0 & loop10_decision15_updated=0 & loop3_child_entry7_updated=0;
+formula step_not_updated_nature6_false11 = nature6_false11_updated=1 & choice9_false13_updated=0 & choice9_true12_updated=0 & end1_updated=0 & loop10_child_entry14_updated=0 & loop10_decision15_updated=0 & loop3_child_entry7_updated=0 & loop3_decision8_updated=0;
+formula step_not_updated_nature6_true10 = nature6_true10_updated=1 & choice9_false13_updated=0 & choice9_true12_updated=0 & end1_updated=0 & loop10_child_entry14_updated=0 & loop10_decision15_updated=0 & loop3_child_entry7_updated=0 & loop3_decision8_updated=0 & nature6_false11_updated=0;
+formula step_not_updated_par2_first_end3 = par2_first_end3_updated=1 & choice9_false13_updated=0 & choice9_true12_updated=0 & end1_updated=0 & loop10_child_entry14_updated=0 & loop10_decision15_updated=0 & loop3_child_entry7_updated=0 & loop3_decision8_updated=0 & nature6_false11_updated=0 & nature6_true10_updated=0;
+formula step_not_updated_par2_first_start5 = par2_first_start5_updated=1 & choice9_false13_updated=0 & choice9_true12_updated=0 & end1_updated=0 & loop10_child_entry14_updated=0 & loop10_decision15_updated=0 & loop3_child_entry7_updated=0 & loop3_decision8_updated=0 & nature6_false11_updated=0 & nature6_true10_updated=0 & par2_first_end3_updated=0;
+formula step_not_updated_par2_second_end4 = par2_second_end4_updated=1 & choice9_false13_updated=0 & choice9_true12_updated=0 & end1_updated=0 & loop10_child_entry14_updated=0 & loop10_decision15_updated=0 & loop3_child_entry7_updated=0 & loop3_decision8_updated=0 & nature6_false11_updated=0 & nature6_true10_updated=0 & par2_first_end3_updated=0 & par2_first_start5_updated=0;
+formula step_not_updated_par2_second_start6 = par2_second_start6_updated=1 & choice9_false13_updated=0 & choice9_true12_updated=0 & end1_updated=0 & loop10_child_entry14_updated=0 & loop10_decision15_updated=0 & loop3_child_entry7_updated=0 & loop3_decision8_updated=0 & nature6_false11_updated=0 & nature6_true10_updated=0 & par2_first_end3_updated=0 & par2_first_start5_updated=0 & par2_second_end4_updated=0;
+formula step_not_updated_seq0_mid2 = seq0_mid2_updated=1 & choice9_false13_updated=0 & choice9_true12_updated=0 & end1_updated=0 & loop10_child_entry14_updated=0 & loop10_decision15_updated=0 & loop3_child_entry7_updated=0 & loop3_decision8_updated=0 & nature6_false11_updated=0 & nature6_true10_updated=0 & par2_first_end3_updated=0 & par2_first_start5_updated=0 & par2_second_end4_updated=0 & par2_second_start6_updated=0;
+formula step_not_updated_seq4_mid9 = seq4_mid9_updated=1 & choice9_false13_updated=0 & choice9_true12_updated=0 & end1_updated=0 & loop10_child_entry14_updated=0 & loop10_decision15_updated=0 & loop3_child_entry7_updated=0 & loop3_decision8_updated=0 & nature6_false11_updated=0 & nature6_true10_updated=0 & par2_first_end3_updated=0 & par2_first_start5_updated=0 & par2_second_end4_updated=0 & par2_second_start6_updated=0 & seq0_mid2_updated=0;
+formula step_not_updated_start0 = start0_updated=1 & choice9_false13_updated=0 & choice9_true12_updated=0 & end1_updated=0 & loop10_child_entry14_updated=0 & loop10_decision15_updated=0 & loop3_child_entry7_updated=0 & loop3_decision8_updated=0 & nature6_false11_updated=0 & nature6_true10_updated=0 & par2_first_end3_updated=0 & par2_first_start5_updated=0 & par2_second_end4_updated=0 & par2_second_start6_updated=0 & seq0_mid2_updated=0 & seq4_mid9_updated=0;
+formula psi_all_step_not_updated = choice9_false13_updated=0 & choice9_true12_updated=0 & end1_updated=0 & loop10_child_entry14_updated=0 & loop10_decision15_updated=0 & loop3_child_entry7_updated=0 & loop3_decision8_updated=0 & nature6_false11_updated=0 & nature6_true10_updated=0 & par2_first_end3_updated=0 & par2_first_start5_updated=0 & par2_second_end4_updated=0 & par2_second_start6_updated=0 & seq0_mid2_updated=0 & seq4_mid9_updated=0 & start0_updated=0;
+formula psi_idle_choice99 = !psi_step & choice99_state=0;
+formula psi_idle_loop10_decision12 = !psi_step & loop10_decision12_state=0 & choice99_state!=0;
+formula psi_idle_loop10_init10 = !psi_step & loop10_init10_state=0 & choice99_state!=0 & loop10_decision12_state!=0;
+formula psi_idle_loop3_decision8 = !psi_step & loop3_decision8_state=0 & choice99_state!=0 & loop10_decision12_state!=0 & loop10_init10_state!=0;
+formula psi_idle_loop3_init3 = !psi_step & loop3_init3_state=0 & choice99_state!=0 & loop10_decision12_state!=0 & loop10_init10_state!=0 & loop3_decision8_state!=0;
+formula psi_idle_merge22 = !psi_step & merge22_state=0 & choice99_state!=0 & loop10_decision12_state!=0 & loop10_init10_state!=0 & loop3_decision8_state!=0 & loop3_init3_state!=0;
+formula psi_idle_nature65 = !psi_step & nature65_state=0 & choice99_state!=0 & loop10_decision12_state!=0 & loop10_init10_state!=0 & loop3_decision8_state!=0 & loop3_init3_state!=0 & merge22_state!=0;
+formula psi_idle_split21 = !psi_step & split21_state=0 & choice99_state!=0 & loop10_decision12_state!=0 & loop10_init10_state!=0 & loop3_decision8_state!=0 & loop3_init3_state!=0 & merge22_state!=0 & nature65_state!=0;
+formula psi_idle_task10 = !psi_step & task10_state=0 & choice99_state!=0 & loop10_decision12_state!=0 & loop10_init10_state!=0 & loop3_decision8_state!=0 & loop3_init3_state!=0 & merge22_state!=0 & nature65_state!=0 & split21_state!=0;
+formula psi_idle_task1111 = !psi_step & task1111_state=0 & choice99_state!=0 & loop10_decision12_state!=0 & loop10_init10_state!=0 & loop3_decision8_state!=0 & loop3_init3_state!=0 & merge22_state!=0 & nature65_state!=0 & split21_state!=0 & task10_state!=0;
+formula psi_idle_task1213 = !psi_step & task1213_state=0 & choice99_state!=0 & loop10_decision12_state!=0 & loop10_init10_state!=0 & loop3_decision8_state!=0 & loop3_init3_state!=0 & merge22_state!=0 & nature65_state!=0 & split21_state!=0 & task10_state!=0 & task1111_state!=0;
+formula psi_idle_task54 = !psi_step & task54_state=0 & choice99_state!=0 & loop10_decision12_state!=0 & loop10_init10_state!=0 & loop3_decision8_state!=0 & loop3_init3_state!=0 & merge22_state!=0 & nature65_state!=0 & split21_state!=0 & task10_state!=0 & task1111_state!=0 & task1213_state!=0;
+formula psi_idle_task76 = !psi_step & task76_state=0 & choice99_state!=0 & loop10_decision12_state!=0 & loop10_init10_state!=0 & loop3_decision8_state!=0 & loop3_init3_state!=0 & merge22_state!=0 & nature65_state!=0 & split21_state!=0 & task10_state!=0 & task1111_state!=0 & task1213_state!=0 & task54_state!=0;
+formula psi_idle_task87 = !psi_step & task87_state=0 & choice99_state!=0 & loop10_decision12_state!=0 & loop10_init10_state!=0 & loop3_decision8_state!=0 & loop3_init3_state!=0 & merge22_state!=0 & nature65_state!=0 & split21_state!=0 & task10_state!=0 & task1111_state!=0 & task1213_state!=0 & task54_state!=0 & task76_state!=0;
+formula psi_first_but_nature_not_idle_choice99 = choice99_state!=0;
+formula psi_first_but_nature_not_idle_loop10_init10 = loop10_init10_state!=0 & choice99_state=0;
+formula psi_first_but_nature_not_idle_loop3_init3 = loop3_init3_state!=0 & choice99_state=0 & loop10_init10_state=0;
+formula psi_first_but_nature_not_idle_merge22 = merge22_state!=0 & choice99_state=0 & loop10_init10_state=0 & loop3_init3_state=0;
+formula psi_first_but_nature_not_idle_split21 = split21_state!=0 & choice99_state=0 & loop10_init10_state=0 & loop3_init3_state=0 & merge22_state=0;
+formula psi_first_but_nature_not_idle_task10 = task10_state!=0 & choice99_state=0 & loop10_init10_state=0 & loop3_init3_state=0 & merge22_state=0 & split21_state=0;
+formula psi_first_but_nature_not_idle_task1111 = task1111_state!=0 & choice99_state=0 & loop10_init10_state=0 & loop3_init3_state=0 & merge22_state=0 & split21_state=0 & task10_state=0;
+formula psi_first_but_nature_not_idle_task1213 = task1213_state!=0 & choice99_state=0 & loop10_init10_state=0 & loop3_init3_state=0 & merge22_state=0 & split21_state=0 & task10_state=0 & task1111_state=0;
+formula psi_first_but_nature_not_idle_task54 = task54_state!=0 & choice99_state=0 & loop10_init10_state=0 & loop3_init3_state=0 & merge22_state=0 & split21_state=0 & task10_state=0 & task1111_state=0 & task1213_state=0;
+formula psi_first_but_nature_not_idle_task76 = task76_state!=0 & choice99_state=0 & loop10_init10_state=0 & loop3_init3_state=0 & merge22_state=0 & split21_state=0 & task10_state=0 & task1111_state=0 & task1213_state=0 & task54_state=0;
+formula psi_first_but_nature_not_idle_task87 = task87_state!=0 & choice99_state=0 & loop10_init10_state=0 & loop3_init3_state=0 & merge22_state=0 & split21_state=0 & task10_state=0 & task1111_state=0 & task1213_state=0 & task54_state=0 & task76_state=0;
+formula psi_first_nature_not_idle_loop10_decision12 = loop10_decision12_state!=0;
+formula psi_first_nature_not_idle_loop3_decision8 = loop3_decision8_state!=0 & loop10_decision12_state=0;
+formula psi_first_nature_not_idle_nature65 = nature65_state!=0 & loop10_decision12_state=0 & loop3_decision8_state=0;
+formula psi_all_idle_but_nature = choice99_state=0 & loop10_init10_state=0 & loop3_init3_state=0 & merge22_state=0 & split21_state=0 & task10_state=0 & task1111_state=0 & task1213_state=0 & task54_state=0 & task76_state=0 & task87_state=0;
+formula psi_all_idle_nature = loop10_decision12_state=0 & loop3_decision8_state=0 & nature65_state=0;
+formula psi_noone_idle = choice99_state!=0 & loop10_decision12_state!=0 & loop10_init10_state!=0 & loop3_decision8_state!=0 & loop3_init3_state!=0 & merge22_state!=0 & nature65_state!=0 & split21_state!=0 & task10_state!=0 & task1111_state!=0 & task1213_state!=0 & task54_state!=0 & task76_state!=0 & task87_state!=0;
+formula psi_atleastone_active = is_active_choice99 | is_active_loop10_decision12 | is_active_loop10_init10 | is_active_loop3_decision8 | is_active_loop3_init3 | is_active_merge22 | is_active_nature65 | is_active_split21 | is_active_task10 | is_active_task1111 | is_active_task1213 | is_active_task54 | is_active_task76 | is_active_task87;
+
+// State Labels for Simulator
+label "psi_step" = psi_step;
+label "psi_at_least_one_remaining_duration" = psi_at_least_one_remaining_duration;
+label "psi_all_step_updated" = psi_all_step_updated;
+label "psi_all_step_not_updated" = psi_all_step_not_updated;
+label "psi_noone_idle" = psi_noone_idle;
+label "psi_atleastone_active" = psi_atleastone_active;
+label "psi_idle_choice99" = psi_idle_choice99;
+label "psi_idle_loop10_decision12" = psi_idle_loop10_decision12;
+label "psi_idle_loop10_init10" = psi_idle_loop10_init10;
+label "psi_idle_loop3_decision8" = psi_idle_loop3_decision8;
+label "psi_idle_loop3_init3" = psi_idle_loop3_init3;
+label "psi_idle_merge22" = psi_idle_merge22;
+label "psi_idle_nature65" = psi_idle_nature65;
+label "psi_idle_split21" = psi_idle_split21;
+label "psi_idle_task10" = psi_idle_task10;
+label "psi_idle_task1111" = psi_idle_task1111;
+label "psi_idle_task1213" = psi_idle_task1213;
+label "psi_idle_task54" = psi_idle_task54;
+label "psi_idle_task76" = psi_idle_task76;
+label "psi_idle_task87" = psi_idle_task87;
+label "psi_first_but_nature_not_idle_choice99" = psi_first_but_nature_not_idle_choice99;
+label "psi_first_but_nature_not_idle_loop10_init10" = psi_first_but_nature_not_idle_loop10_init10;
+label "psi_first_but_nature_not_idle_loop3_init3" = psi_first_but_nature_not_idle_loop3_init3;
+label "psi_first_but_nature_not_idle_merge22" = psi_first_but_nature_not_idle_merge22;
+label "psi_first_but_nature_not_idle_split21" = psi_first_but_nature_not_idle_split21;
+label "psi_first_but_nature_not_idle_task10" = psi_first_but_nature_not_idle_task10;
+label "psi_first_but_nature_not_idle_task1111" = psi_first_but_nature_not_idle_task1111;
+label "psi_first_but_nature_not_idle_task1213" = psi_first_but_nature_not_idle_task1213;
+label "psi_first_but_nature_not_idle_task54" = psi_first_but_nature_not_idle_task54;
+label "psi_first_but_nature_not_idle_task76" = psi_first_but_nature_not_idle_task76;
+label "psi_first_but_nature_not_idle_task87" = psi_first_but_nature_not_idle_task87;
+label "psi_first_nature_not_idle_loop10_decision12" = psi_first_nature_not_idle_loop10_decision12;
+label "psi_first_nature_not_idle_loop3_decision8" = psi_first_nature_not_idle_loop3_decision8;
+label "psi_first_nature_not_idle_nature65" = psi_first_nature_not_idle_nature65;
+label "psi_all_idle_but_nature" = psi_all_idle_but_nature;
+label "psi_all_idle_nature" = psi_all_idle_nature;
+label "step_updated_choice9_false13" = step_updated_choice9_false13;
+label "step_not_updated_choice9_false13" = step_not_updated_choice9_false13;
+label "step_updated_choice9_true12" = step_updated_choice9_true12;
+label "step_not_updated_choice9_true12" = step_not_updated_choice9_true12;
+label "step_updated_end1" = step_updated_end1;
+label "step_not_updated_end1" = step_not_updated_end1;
+label "step_updated_loop10_child_entry14" = step_updated_loop10_child_entry14;
+label "step_not_updated_loop10_child_entry14" = step_not_updated_loop10_child_entry14;
+label "step_updated_loop10_decision15" = step_updated_loop10_decision15;
+label "step_not_updated_loop10_decision15" = step_not_updated_loop10_decision15;
+label "step_updated_loop3_child_entry7" = step_updated_loop3_child_entry7;
+label "step_not_updated_loop3_child_entry7" = step_not_updated_loop3_child_entry7;
+label "step_updated_loop3_decision8" = step_updated_loop3_decision8;
+label "step_not_updated_loop3_decision8" = step_not_updated_loop3_decision8;
+label "step_updated_nature6_false11" = step_updated_nature6_false11;
+label "step_not_updated_nature6_false11" = step_not_updated_nature6_false11;
+label "step_updated_nature6_true10" = step_updated_nature6_true10;
+label "step_not_updated_nature6_true10" = step_not_updated_nature6_true10;
+label "step_updated_par2_first_end3" = step_updated_par2_first_end3;
+label "step_not_updated_par2_first_end3" = step_not_updated_par2_first_end3;
+label "step_updated_par2_first_start5" = step_updated_par2_first_start5;
+label "step_not_updated_par2_first_start5" = step_not_updated_par2_first_start5;
+label "step_updated_par2_second_end4" = step_updated_par2_second_end4;
+label "step_not_updated_par2_second_end4" = step_not_updated_par2_second_end4;
+label "step_updated_par2_second_start6" = step_updated_par2_second_start6;
+label "step_not_updated_par2_second_start6" = step_not_updated_par2_second_start6;
+label "step_updated_seq0_mid2" = step_updated_seq0_mid2;
+label "step_not_updated_seq0_mid2" = step_not_updated_seq0_mid2;
+label "step_updated_seq4_mid9" = step_updated_seq4_mid9;
+label "step_not_updated_seq4_mid9" = step_not_updated_seq4_mid9;
+label "step_updated_start0" = step_updated_start0;
+label "step_not_updated_start0" = step_not_updated_start0;
+label "is_active_choice99" = is_active_choice99;
+label "is_active_loop10_decision12" = is_active_loop10_decision12;
+label "is_active_loop10_init10" = is_active_loop10_init10;
+label "is_active_loop3_decision8" = is_active_loop3_decision8;
+label "is_active_loop3_init3" = is_active_loop3_init3;
+label "is_active_merge22" = is_active_merge22;
+label "is_active_nature65" = is_active_nature65;
+label "is_active_split21" = is_active_split21;
+label "is_active_task10" = is_active_task10;
+label "is_active_task1111" = is_active_task1111;
+label "is_active_task1213" = is_active_task1213;
+label "is_active_task54" = is_active_task54;
+label "is_active_task76" = is_active_task76;
+label "is_active_task87" = is_active_task87;
+label "stage_0" = STAGE=0;
+label "stage_1" = STAGE=1;
+label "stage_2" = STAGE=2;
+label "stage_3" = STAGE=3;
+label "stage_4" = STAGE=4;
+label "stage_5" = STAGE=5;
+label "state_choice99_ready" = choice99_state=1;
+label "state_choice99_disabled" = choice99_state=-1;
+label "state_choice99_idle" = choice99_state=0;
+label "state_loop10_decision12_ready" = loop10_decision12_state=1;
+label "state_loop10_decision12_disabled" = loop10_decision12_state=-1;
+label "state_loop10_decision12_idle" = loop10_decision12_state=0;
+label "state_loop10_init10_ready" = loop10_init10_state=1;
+label "state_loop10_init10_disabled" = loop10_init10_state=-1;
+label "state_loop10_init10_idle" = loop10_init10_state=0;
+label "state_loop3_decision8_ready" = loop3_decision8_state=1;
+label "state_loop3_decision8_disabled" = loop3_decision8_state=-1;
+label "state_loop3_decision8_idle" = loop3_decision8_state=0;
+label "state_loop3_init3_ready" = loop3_init3_state=1;
+label "state_loop3_init3_disabled" = loop3_init3_state=-1;
+label "state_loop3_init3_idle" = loop3_init3_state=0;
+label "state_merge22_ready" = merge22_state=1;
+label "state_merge22_disabled" = merge22_state=-1;
+label "state_merge22_idle" = merge22_state=0;
+label "state_nature65_ready" = nature65_state=1;
+label "state_nature65_disabled" = nature65_state=-1;
+label "state_nature65_idle" = nature65_state=0;
+label "state_split21_ready" = split21_state=1;
+label "state_split21_disabled" = split21_state=-1;
+label "state_split21_idle" = split21_state=0;
+label "state_task10_ready" = task10_state=1;
+label "state_task10_disabled" = task10_state=-1;
+label "state_task10_idle" = task10_state=0;
+label "state_task1111_ready" = task1111_state=1;
+label "state_task1111_disabled" = task1111_state=-1;
+label "state_task1111_idle" = task1111_state=0;
+label "state_task1213_ready" = task1213_state=1;
+label "state_task1213_disabled" = task1213_state=-1;
+label "state_task1213_idle" = task1213_state=0;
+label "state_task54_ready" = task54_state=1;
+label "state_task54_disabled" = task54_state=-1;
+label "state_task54_idle" = task54_state=0;
+label "state_task76_ready" = task76_state=1;
+label "state_task76_disabled" = task76_state=-1;
+label "state_task76_idle" = task76_state=0;
+label "state_task87_ready" = task87_state=1;
+label "state_task87_disabled" = task87_state=-1;
+label "state_task87_idle" = task87_state=0;
+label "place_choice9_false13_empty" = choice9_false13_value=-1;
+label "place_choice9_false13_has_token" = choice9_false13_value>=0;
+label "place_choice9_false13_duration_met" = choice9_false13_value>=1;
+label "place_choice9_false13_can_advance" = choice9_false13_value>=0 & choice9_false13_value<1;
+label "place_choice9_false13_updated" = choice9_false13_updated=1;
+label "place_choice9_true12_empty" = choice9_true12_value=-1;
+label "place_choice9_true12_has_token" = choice9_true12_value>=0;
+label "place_choice9_true12_duration_met" = choice9_true12_value>=0;
+label "place_choice9_true12_can_advance" = choice9_true12_value>=0 & choice9_true12_value<0;
+label "place_choice9_true12_updated" = choice9_true12_updated=1;
+label "place_end1_empty" = end1_value=-1;
+label "place_end1_has_token" = end1_value>=0;
+label "place_end1_duration_met" = end1_value>=0;
+label "place_end1_can_advance" = end1_value>=0 & end1_value<0;
+label "place_end1_updated" = end1_updated=1;
+label "place_loop10_child_entry14_empty" = loop10_child_entry14_value=-1;
+label "place_loop10_child_entry14_has_token" = loop10_child_entry14_value>=0;
+label "place_loop10_child_entry14_duration_met" = loop10_child_entry14_value>=2;
+label "place_loop10_child_entry14_can_advance" = loop10_child_entry14_value>=0 & loop10_child_entry14_value<2;
+label "place_loop10_child_entry14_updated" = loop10_child_entry14_updated=1;
+label "place_loop10_decision15_empty" = loop10_decision15_value=-1;
+label "place_loop10_decision15_has_token" = loop10_decision15_value>=0;
+label "place_loop10_decision15_duration_met" = loop10_decision15_value>=0;
+label "place_loop10_decision15_can_advance" = loop10_decision15_value>=0 & loop10_decision15_value<0;
+label "place_loop10_decision15_updated" = loop10_decision15_updated=1;
+label "place_loop3_child_entry7_empty" = loop3_child_entry7_value=-1;
+label "place_loop3_child_entry7_has_token" = loop3_child_entry7_value>=0;
+label "place_loop3_child_entry7_duration_met" = loop3_child_entry7_value>=1;
+label "place_loop3_child_entry7_can_advance" = loop3_child_entry7_value>=0 & loop3_child_entry7_value<1;
+label "place_loop3_child_entry7_updated" = loop3_child_entry7_updated=1;
+label "place_loop3_decision8_empty" = loop3_decision8_value=-1;
+label "place_loop3_decision8_has_token" = loop3_decision8_value>=0;
+label "place_loop3_decision8_duration_met" = loop3_decision8_value>=0;
+label "place_loop3_decision8_can_advance" = loop3_decision8_value>=0 & loop3_decision8_value<0;
+label "place_loop3_decision8_updated" = loop3_decision8_updated=1;
+label "place_nature6_false11_empty" = nature6_false11_value=-1;
+label "place_nature6_false11_has_token" = nature6_false11_value>=0;
+label "place_nature6_false11_duration_met" = nature6_false11_value>=1;
+label "place_nature6_false11_can_advance" = nature6_false11_value>=0 & nature6_false11_value<1;
+label "place_nature6_false11_updated" = nature6_false11_updated=1;
+label "place_nature6_true10_empty" = nature6_true10_value=-1;
+label "place_nature6_true10_has_token" = nature6_true10_value>=0;
+label "place_nature6_true10_duration_met" = nature6_true10_value>=3;
+label "place_nature6_true10_can_advance" = nature6_true10_value>=0 & nature6_true10_value<3;
+label "place_nature6_true10_updated" = nature6_true10_updated=1;
+label "place_par2_first_end3_empty" = par2_first_end3_value=-1;
+label "place_par2_first_end3_has_token" = par2_first_end3_value>=0;
+label "place_par2_first_end3_duration_met" = par2_first_end3_value>=0;
+label "place_par2_first_end3_can_advance" = par2_first_end3_value>=0 & par2_first_end3_value<0;
+label "place_par2_first_end3_updated" = par2_first_end3_updated=1;
+label "place_par2_first_start5_empty" = par2_first_start5_value=-1;
+label "place_par2_first_start5_has_token" = par2_first_start5_value>=0;
+label "place_par2_first_start5_duration_met" = par2_first_start5_value>=0;
+label "place_par2_first_start5_can_advance" = par2_first_start5_value>=0 & par2_first_start5_value<0;
+label "place_par2_first_start5_updated" = par2_first_start5_updated=1;
+label "place_par2_second_end4_empty" = par2_second_end4_value=-1;
+label "place_par2_second_end4_has_token" = par2_second_end4_value>=0;
+label "place_par2_second_end4_duration_met" = par2_second_end4_value>=0;
+label "place_par2_second_end4_can_advance" = par2_second_end4_value>=0 & par2_second_end4_value<0;
+label "place_par2_second_end4_updated" = par2_second_end4_updated=1;
+label "place_par2_second_start6_empty" = par2_second_start6_value=-1;
+label "place_par2_second_start6_has_token" = par2_second_start6_value>=0;
+label "place_par2_second_start6_duration_met" = par2_second_start6_value>=0;
+label "place_par2_second_start6_can_advance" = par2_second_start6_value>=0 & par2_second_start6_value<0;
+label "place_par2_second_start6_updated" = par2_second_start6_updated=1;
+label "place_seq0_mid2_empty" = seq0_mid2_value=-1;
+label "place_seq0_mid2_has_token" = seq0_mid2_value>=0;
+label "place_seq0_mid2_duration_met" = seq0_mid2_value>=0;
+label "place_seq0_mid2_can_advance" = seq0_mid2_value>=0 & seq0_mid2_value<0;
+label "place_seq0_mid2_updated" = seq0_mid2_updated=1;
+label "place_seq4_mid9_empty" = seq4_mid9_value=-1;
+label "place_seq4_mid9_has_token" = seq4_mid9_value>=0;
+label "place_seq4_mid9_duration_met" = seq4_mid9_value>=0;
+label "place_seq4_mid9_can_advance" = seq4_mid9_value>=0 & seq4_mid9_value<0;
+label "place_seq4_mid9_updated" = seq4_mid9_updated=1;
+label "place_start0_empty" = start0_value=-1;
+label "place_start0_has_token" = start0_value>=0;
+label "place_start0_duration_met" = start0_value>=2;
+label "place_start0_can_advance" = start0_value>=0 & start0_value<2;
+label "place_start0_updated" = start0_updated=1;
+
+module manager
+  // Stage 0 -> 3: Can do step
+  [] STAGE=0 & psi_step -> (STAGE'=3);
+  // Stage 0 -> 2: Terminated
+  [] STAGE=0 & !psi_step & psi_noone_idle & !psi_atleastone_active -> (STAGE'=2);
+  // Stage 0 -> 4: Fire transitions (FIXED: added psi_noone_idle)
+  [] STAGE=0 & !psi_step & psi_noone_idle & psi_atleastone_active -> (STAGE'=4);
+  // Update choice9_false13
+  [] STAGE=3 & step_updated_choice9_false13 & choice9_false13_value=-1 -> (choice9_false13_updated'=1);
+  [] STAGE=3 & step_updated_choice9_false13 & choice9_false13_value>=0 & choice9_false13_value<1 -> (choice9_false13_value'=choice9_false13_value+1) & (choice9_false13_updated'=1);
+  [] STAGE=3 & step_updated_choice9_false13 & choice9_false13_value=1 -> (choice9_false13_updated'=1);
+  // Update choice9_true12
+  [] STAGE=3 & step_updated_choice9_true12 & choice9_true12_value=-1 -> (choice9_true12_updated'=1);
+  [] STAGE=3 & step_updated_choice9_true12 & choice9_true12_value>=0 & choice9_true12_value<0 -> (choice9_true12_value'=choice9_true12_value+1) & (choice9_true12_updated'=1);
+  [] STAGE=3 & step_updated_choice9_true12 & choice9_true12_value=0 -> (choice9_true12_updated'=1);
+  // Update end1
+  [] STAGE=3 & step_updated_end1 & end1_value=-1 -> (end1_updated'=1);
+  [] STAGE=3 & step_updated_end1 & end1_value>=0 & end1_value<0 -> (end1_value'=end1_value+1) & (end1_updated'=1);
+  [] STAGE=3 & step_updated_end1 & end1_value=0 -> (end1_updated'=1);
+  // Update loop10_child_entry14
+  [] STAGE=3 & step_updated_loop10_child_entry14 & loop10_child_entry14_value=-1 -> (loop10_child_entry14_updated'=1);
+  [] STAGE=3 & step_updated_loop10_child_entry14 & loop10_child_entry14_value>=0 & loop10_child_entry14_value<2 -> (loop10_child_entry14_value'=loop10_child_entry14_value+1) & (loop10_child_entry14_updated'=1);
+  [] STAGE=3 & step_updated_loop10_child_entry14 & loop10_child_entry14_value=2 -> (loop10_child_entry14_updated'=1);
+  // Update loop10_decision15
+  [] STAGE=3 & step_updated_loop10_decision15 & loop10_decision15_value=-1 -> (loop10_decision15_updated'=1);
+  [] STAGE=3 & step_updated_loop10_decision15 & loop10_decision15_value>=0 & loop10_decision15_value<0 -> (loop10_decision15_value'=loop10_decision15_value+1) & (loop10_decision15_updated'=1);
+  [] STAGE=3 & step_updated_loop10_decision15 & loop10_decision15_value=0 -> (loop10_decision15_updated'=1);
+  // Update loop3_child_entry7
+  [] STAGE=3 & step_updated_loop3_child_entry7 & loop3_child_entry7_value=-1 -> (loop3_child_entry7_updated'=1);
+  [] STAGE=3 & step_updated_loop3_child_entry7 & loop3_child_entry7_value>=0 & loop3_child_entry7_value<1 -> (loop3_child_entry7_value'=loop3_child_entry7_value+1) & (loop3_child_entry7_updated'=1);
+  [] STAGE=3 & step_updated_loop3_child_entry7 & loop3_child_entry7_value=1 -> (loop3_child_entry7_updated'=1);
+  // Update loop3_decision8
+  [] STAGE=3 & step_updated_loop3_decision8 & loop3_decision8_value=-1 -> (loop3_decision8_updated'=1);
+  [] STAGE=3 & step_updated_loop3_decision8 & loop3_decision8_value>=0 & loop3_decision8_value<0 -> (loop3_decision8_value'=loop3_decision8_value+1) & (loop3_decision8_updated'=1);
+  [] STAGE=3 & step_updated_loop3_decision8 & loop3_decision8_value=0 -> (loop3_decision8_updated'=1);
+  // Update nature6_false11
+  [] STAGE=3 & step_updated_nature6_false11 & nature6_false11_value=-1 -> (nature6_false11_updated'=1);
+  [] STAGE=3 & step_updated_nature6_false11 & nature6_false11_value>=0 & nature6_false11_value<1 -> (nature6_false11_value'=nature6_false11_value+1) & (nature6_false11_updated'=1);
+  [] STAGE=3 & step_updated_nature6_false11 & nature6_false11_value=1 -> (nature6_false11_updated'=1);
+  // Update nature6_true10
+  [] STAGE=3 & step_updated_nature6_true10 & nature6_true10_value=-1 -> (nature6_true10_updated'=1);
+  [] STAGE=3 & step_updated_nature6_true10 & nature6_true10_value>=0 & nature6_true10_value<3 -> (nature6_true10_value'=nature6_true10_value+1) & (nature6_true10_updated'=1);
+  [] STAGE=3 & step_updated_nature6_true10 & nature6_true10_value=3 -> (nature6_true10_updated'=1);
+  // Update par2_first_end3
+  [] STAGE=3 & step_updated_par2_first_end3 & par2_first_end3_value=-1 -> (par2_first_end3_updated'=1);
+  [] STAGE=3 & step_updated_par2_first_end3 & par2_first_end3_value>=0 & par2_first_end3_value<0 -> (par2_first_end3_value'=par2_first_end3_value+1) & (par2_first_end3_updated'=1);
+  [] STAGE=3 & step_updated_par2_first_end3 & par2_first_end3_value=0 -> (par2_first_end3_updated'=1);
+  // Update par2_first_start5
+  [] STAGE=3 & step_updated_par2_first_start5 & par2_first_start5_value=-1 -> (par2_first_start5_updated'=1);
+  [] STAGE=3 & step_updated_par2_first_start5 & par2_first_start5_value>=0 & par2_first_start5_value<0 -> (par2_first_start5_value'=par2_first_start5_value+1) & (par2_first_start5_updated'=1);
+  [] STAGE=3 & step_updated_par2_first_start5 & par2_first_start5_value=0 -> (par2_first_start5_updated'=1);
+  // Update par2_second_end4
+  [] STAGE=3 & step_updated_par2_second_end4 & par2_second_end4_value=-1 -> (par2_second_end4_updated'=1);
+  [] STAGE=3 & step_updated_par2_second_end4 & par2_second_end4_value>=0 & par2_second_end4_value<0 -> (par2_second_end4_value'=par2_second_end4_value+1) & (par2_second_end4_updated'=1);
+  [] STAGE=3 & step_updated_par2_second_end4 & par2_second_end4_value=0 -> (par2_second_end4_updated'=1);
+  // Update par2_second_start6
+  [] STAGE=3 & step_updated_par2_second_start6 & par2_second_start6_value=-1 -> (par2_second_start6_updated'=1);
+  [] STAGE=3 & step_updated_par2_second_start6 & par2_second_start6_value>=0 & par2_second_start6_value<0 -> (par2_second_start6_value'=par2_second_start6_value+1) & (par2_second_start6_updated'=1);
+  [] STAGE=3 & step_updated_par2_second_start6 & par2_second_start6_value=0 -> (par2_second_start6_updated'=1);
+  // Update seq0_mid2
+  [] STAGE=3 & step_updated_seq0_mid2 & seq0_mid2_value=-1 -> (seq0_mid2_updated'=1);
+  [] STAGE=3 & step_updated_seq0_mid2 & seq0_mid2_value>=0 & seq0_mid2_value<0 -> (seq0_mid2_value'=seq0_mid2_value+1) & (seq0_mid2_updated'=1);
+  [] STAGE=3 & step_updated_seq0_mid2 & seq0_mid2_value=0 -> (seq0_mid2_updated'=1);
+  // Update seq4_mid9
+  [] STAGE=3 & step_updated_seq4_mid9 & seq4_mid9_value=-1 -> (seq4_mid9_updated'=1);
+  [] STAGE=3 & step_updated_seq4_mid9 & seq4_mid9_value>=0 & seq4_mid9_value<0 -> (seq4_mid9_value'=seq4_mid9_value+1) & (seq4_mid9_updated'=1);
+  [] STAGE=3 & step_updated_seq4_mid9 & seq4_mid9_value=0 -> (seq4_mid9_updated'=1);
+  // Update start0
+  [] STAGE=3 & step_updated_start0 & start0_value=-1 -> (start0_updated'=1);
+  [] STAGE=3 & step_updated_start0 & start0_value>=0 & start0_value<2 -> (start0_value'=start0_value+1) & (start0_updated'=1);
+  [] STAGE=3 & step_updated_start0 & start0_value=2 -> (start0_updated'=1);
+  // Stage 3 -> 1: All updated
+  [] STAGE=3 & psi_all_step_updated -> (STAGE'=1);
+  [] STAGE=1 & step_not_updated_choice9_false13 -> (choice9_false13_updated'=0);
+  [] STAGE=1 & step_not_updated_choice9_true12 -> (choice9_true12_updated'=0);
+  [] STAGE=1 & step_not_updated_end1 -> (end1_updated'=0);
+  [] STAGE=1 & step_not_updated_loop10_child_entry14 -> (loop10_child_entry14_updated'=0);
+  [] STAGE=1 & step_not_updated_loop10_decision15 -> (loop10_decision15_updated'=0);
+  [] STAGE=1 & step_not_updated_loop3_child_entry7 -> (loop3_child_entry7_updated'=0);
+  [] STAGE=1 & step_not_updated_loop3_decision8 -> (loop3_decision8_updated'=0);
+  [] STAGE=1 & step_not_updated_nature6_false11 -> (nature6_false11_updated'=0);
+  [] STAGE=1 & step_not_updated_nature6_true10 -> (nature6_true10_updated'=0);
+  [] STAGE=1 & step_not_updated_par2_first_end3 -> (par2_first_end3_updated'=0);
+  [] STAGE=1 & step_not_updated_par2_first_start5 -> (par2_first_start5_updated'=0);
+  [] STAGE=1 & step_not_updated_par2_second_end4 -> (par2_second_end4_updated'=0);
+  [] STAGE=1 & step_not_updated_par2_second_start6 -> (par2_second_start6_updated'=0);
+  [] STAGE=1 & step_not_updated_seq0_mid2 -> (seq0_mid2_updated'=0);
+  [] STAGE=1 & step_not_updated_seq4_mid9 -> (seq4_mid9_updated'=0);
+  [] STAGE=1 & step_not_updated_start0 -> (start0_updated'=0);
+  // Stage 1 -> 0: All reset
+  [] STAGE=1 & psi_all_step_not_updated -> (STAGE'=0);
+  [] STAGE=4 & psi_all_idle_but_nature -> (STAGE'=5);
+  [] STAGE=5 & psi_all_idle_nature -> (STAGE'=0);
+endmodule
+
+module choice99
+  choice99_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [] STAGE=0 & psi_idle_choice99 & (par2_second_start6_value >= 0) -> (choice99_state'=1);
+  [] STAGE=0 & psi_idle_choice99 & !(par2_second_start6_value >= 0) -> (choice99_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_choice99 & choice99_state=-1 -> (choice99_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_choice99 & choice99_state=1 -> (choice99_state'=0) & (par2_second_start6_value'=-1) & (choice9_true12_value'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_choice99 & choice99_state=1 -> (choice99_state'=0) & (par2_second_start6_value'=-1) & (choice9_false13_value'=0);
+endmodule
+
+module loop10_decision12
+  loop10_decision12_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [] STAGE=0 & psi_idle_loop10_decision12 & (loop10_decision15_value >= 0) -> (loop10_decision12_state'=1);
+  [] STAGE=0 & psi_idle_loop10_decision12 & !(loop10_decision15_value >= 0) -> (loop10_decision12_state'=-1);
+  // Stage 5: Nature transition firing
+  [] STAGE=5 & psi_first_nature_not_idle_loop10_decision12 & loop10_decision12_state=-1 -> (loop10_decision12_state'=0);
+  [] STAGE=5 & psi_first_nature_not_idle_loop10_decision12 & loop10_decision12_state=1 -> 0.8: (loop10_decision12_state'=0) & (loop10_child_entry14_value'=0) & (loop10_decision15_value'=-1) + 0.19999999999999996: (loop10_decision12_state'=0) & (par2_second_end4_value'=0) & (loop10_decision15_value'=-1);
+endmodule
+
+module loop10_init10
+  loop10_init10_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [] STAGE=0 & psi_idle_loop10_init10 & (choice9_true12_value >= 0) -> (loop10_init10_state'=1);
+  [] STAGE=0 & psi_idle_loop10_init10 & !(choice9_true12_value >= 0) -> (loop10_init10_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_loop10_init10 & loop10_init10_state=-1 -> (loop10_init10_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_loop10_init10 & loop10_init10_state=1 -> (loop10_init10_state'=0) & (choice9_true12_value'=-1) & (loop10_child_entry14_value'=0);
+endmodule
+
+module loop3_decision8
+  loop3_decision8_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [] STAGE=0 & psi_idle_loop3_decision8 & (loop3_decision8_value >= 0) -> (loop3_decision8_state'=1);
+  [] STAGE=0 & psi_idle_loop3_decision8 & !(loop3_decision8_value >= 0) -> (loop3_decision8_state'=-1);
+  // Stage 5: Nature transition firing
+  [] STAGE=5 & psi_first_nature_not_idle_loop3_decision8 & loop3_decision8_state=-1 -> (loop3_decision8_state'=0);
+  [] STAGE=5 & psi_first_nature_not_idle_loop3_decision8 & loop3_decision8_state=1 -> 0.3: (loop3_decision8_state'=0) & (loop3_child_entry7_value'=0) & (loop3_decision8_value'=-1) + 0.7: (loop3_decision8_state'=0) & (par2_first_end3_value'=0) & (loop3_decision8_value'=-1);
+endmodule
+
+module loop3_init3
+  loop3_init3_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [] STAGE=0 & psi_idle_loop3_init3 & (par2_first_start5_value >= 0) -> (loop3_init3_state'=1);
+  [] STAGE=0 & psi_idle_loop3_init3 & !(par2_first_start5_value >= 0) -> (loop3_init3_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_loop3_init3 & loop3_init3_state=-1 -> (loop3_init3_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_loop3_init3 & loop3_init3_state=1 -> (loop3_init3_state'=0) & (par2_first_start5_value'=-1) & (loop3_child_entry7_value'=0);
+endmodule
+
+module merge22
+  merge22_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [] STAGE=0 & psi_idle_merge22 & (par2_first_end3_value >= 0 & par2_second_end4_value >= 0) -> (merge22_state'=1);
+  [] STAGE=0 & psi_idle_merge22 & !(par2_first_end3_value >= 0 & par2_second_end4_value >= 0) -> (merge22_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_merge22 & merge22_state=-1 -> (merge22_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_merge22 & merge22_state=1 -> (merge22_state'=0) & (par2_first_end3_value'=-1) & (par2_second_end4_value'=-1) & (end1_value'=0);
+endmodule
+
+module nature65
+  nature65_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [] STAGE=0 & psi_idle_nature65 & (seq4_mid9_value >= 0) -> (nature65_state'=1);
+  [] STAGE=0 & psi_idle_nature65 & !(seq4_mid9_value >= 0) -> (nature65_state'=-1);
+  // Stage 5: Nature transition firing
+  [] STAGE=5 & psi_first_nature_not_idle_nature65 & nature65_state=-1 -> (nature65_state'=0);
+  [] STAGE=5 & psi_first_nature_not_idle_nature65 & nature65_state=1 -> 0.7: (nature65_state'=0) & (nature6_true10_value'=0) & (seq4_mid9_value'=-1) + 0.30000000000000004: (nature65_state'=0) & (nature6_false11_value'=0) & (seq4_mid9_value'=-1);
+endmodule
+
+module split21
+  split21_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [] STAGE=0 & psi_idle_split21 & (seq0_mid2_value >= 0) -> (split21_state'=1);
+  [] STAGE=0 & psi_idle_split21 & !(seq0_mid2_value >= 0) -> (split21_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_split21 & split21_state=-1 -> (split21_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_split21 & split21_state=1 -> (split21_state'=0) & (seq0_mid2_value'=-1) & (par2_first_start5_value'=0) & (par2_second_start6_value'=0);
+endmodule
+
+module task10
+  task10_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [fire_task10] STAGE=0 & psi_idle_task10 & (start0_value >= 2) -> (task10_state'=1);
+  [] STAGE=0 & psi_idle_task10 & !(start0_value >= 2) -> (task10_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_task10 & task10_state=-1 -> (task10_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_task10 & task10_state=1 -> (task10_state'=0) & (start0_value'=-1) & (seq0_mid2_value'=0);
+endmodule
+
+module task1111
+  task1111_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [fire_task1111] STAGE=0 & psi_idle_task1111 & (loop10_child_entry14_value >= 2) -> (task1111_state'=1);
+  [] STAGE=0 & psi_idle_task1111 & !(loop10_child_entry14_value >= 2) -> (task1111_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_task1111 & task1111_state=-1 -> (task1111_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_task1111 & task1111_state=1 -> (task1111_state'=0) & (loop10_child_entry14_value'=-1) & (loop10_decision15_value'=0);
+endmodule
+
+module task1213
+  task1213_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [fire_task1213] STAGE=0 & psi_idle_task1213 & (choice9_false13_value >= 1) -> (task1213_state'=1);
+  [] STAGE=0 & psi_idle_task1213 & !(choice9_false13_value >= 1) -> (task1213_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_task1213 & task1213_state=-1 -> (task1213_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_task1213 & task1213_state=1 -> (task1213_state'=0) & (choice9_false13_value'=-1) & (par2_second_end4_value'=0);
+endmodule
+
+module task54
+  task54_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [fire_task54] STAGE=0 & psi_idle_task54 & (loop3_child_entry7_value >= 1) -> (task54_state'=1);
+  [] STAGE=0 & psi_idle_task54 & !(loop3_child_entry7_value >= 1) -> (task54_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_task54 & task54_state=-1 -> (task54_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_task54 & task54_state=1 -> (task54_state'=0) & (loop3_child_entry7_value'=-1) & (seq4_mid9_value'=0);
+endmodule
+
+module task76
+  task76_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [fire_task76] STAGE=0 & psi_idle_task76 & (nature6_true10_value >= 3) -> (task76_state'=1);
+  [] STAGE=0 & psi_idle_task76 & !(nature6_true10_value >= 3) -> (task76_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_task76 & task76_state=-1 -> (task76_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_task76 & task76_state=1 -> (task76_state'=0) & (nature6_true10_value'=-1) & (loop3_decision8_value'=0);
+endmodule
+
+module task87
+  task87_state : [-1..1] init 0;
+  // Stage 0: Activation check
+  [fire_task87] STAGE=0 & psi_idle_task87 & (nature6_false11_value >= 1) -> (task87_state'=1);
+  [] STAGE=0 & psi_idle_task87 & !(nature6_false11_value >= 1) -> (task87_state'=-1);
+  // Stage 4: Non-nature transition firing
+  [] STAGE=4 & psi_first_but_nature_not_idle_task87 & task87_state=-1 -> (task87_state'=0);
+  [] STAGE=4 & psi_first_but_nature_not_idle_task87 & task87_state=1 -> (task87_state'=0) & (nature6_false11_value'=-1) & (loop3_decision8_value'=0);
+endmodule
+
+
+rewards "impact_0"
+  [fire_task10] true : 20;
+  [fire_task54] true : 5;
+  [fire_task76] true : 10;
+  [fire_task87] true : 3;
+  [fire_task1111] true : 12;
+  [fire_task1213] true : 2;
+endrewards
+
+rewards "impact_1"
+  [fire_task10] true : 5;
+  [fire_task54] true : 2;
+  [fire_task76] true : 5;
+  [fire_task87] true : 1;
+  [fire_task1111] true : 4;
+  [fire_task1213] true : 1;
+endrewards
