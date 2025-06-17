@@ -61,7 +61,8 @@ class SPINtoPRISM:
         
     def generate_prism_variables(self) -> str:
         """Generate PRISM global variables for places"""
-        lines = ["// Global variables for places"]
+        lines = ["mdp \n"]
+        lines.append("// Global variables for places")
         
         # Manager stage variable first
         lines.append("global STAGE : [0..5] init 0;")
