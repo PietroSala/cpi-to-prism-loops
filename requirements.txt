@@ -1,3 +1,6 @@
 graphviz~=0.20.3
 requests~=2.32.3
-notebook~=7.3.3
+ipython~=9.2.0
+pandas~=2.3.0
+matplotlib~=3.10.3
+numpy~=2.2.6

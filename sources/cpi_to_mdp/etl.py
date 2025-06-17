@@ -1,6 +1,8 @@
 import json
 import os
-from process_to_mdp import cpi_to_mdp
+from cpi_to_mdp.cpitospin import CPIToSPINConverter
+from cpi_to_mdp.process_to_mdp import cpi_to_mdp
+
 
 def cpi_to_model(filename):
     """
@@ -29,11 +31,15 @@ def cpi_to_model(filename):
         # Read CPI file
         with open(input_path, 'r') as f:
             cpi_dict = json.load(f)
-        
-        # Convert to PRISM model with optional rewards
-        prism_model = cpi_to_mdp(cpi_dict)
-        
-        # Write to output file
+
+        try:
+            prism_model = cpi_to_mdp(cpi_dict)
+        except ValueError as e:
+            #print(f"Loops detected in CPI file {input_path}: {str(e)}")
+            
+            spin_model = CPIToSPINConverter().convert_cpi_to_spin(cpi_dict)
+            prism_model = spin_model.generate_prism_model()
+
         with open(output_path, 'w') as f:
             f.write(prism_model)
             

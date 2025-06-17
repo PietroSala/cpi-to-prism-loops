@@ -46,6 +46,12 @@ Generating PRISM code
    PRISM_PATH = "prism-4.8.1-linux64/bin/prism"
    ```
 
+2. **Using docker**
+   In terminal: 
+     ```bash
+      docker build -t dockerfile . 
+      docker run -p 8888 dockerfile
+      ```
 
 ## Running Benchmark
 

@@ -1,13 +1,13 @@
-from cpi_to_mdp.formula_generators import (
+from formula_generators import (
     generate_closing_pending_formula,
     generate_ready_pending_formula,
     generate_step_ready_formula,
     generate_active_ready_pending_formula,
     generate_active_closing_pending_formula
 )
-from cpi_to_mdp.module_generators import generate_module
-from cpi_to_mdp.parent_info import get_parent_info
-from cpi_to_mdp.rewards_generators import generate_rewards, integrate_rewards_to_mdp
+from module_generators import generate_module
+from parent_info import get_parent_info
+from rewards_generators import generate_rewards, integrate_rewards_to_mdp
 
 
 def cpi_to_mdp(root_dict):
@@ -35,6 +35,8 @@ def cpi_to_mdp(root_dict):
         elif node['type'] in ['choice','nature']:
             collect_regions(node['true'])
             collect_regions(node['false'])
+        else:
+            raise ValueError(f"Unknown node type: {node['type']}")
     
     collect_regions(root_dict)
     

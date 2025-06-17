@@ -14,3 +14,6 @@ models/current_benchmark.pctl
 benchmarks.sqlite
 
 benchmark_output.log
+
+!CPIs/test_loop1.cpi
+sources/env.py
