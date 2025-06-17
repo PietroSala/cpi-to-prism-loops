@@ -1,7 +1,7 @@
 # CPI to MDP Pipeline
 ![Python Version](https://img.shields.io/badge/python-3.12%2B-blue)
 
-The main notebook demonstrates how to convert a Control Process Interface (CPI) dictionary that is used to calculate the strategy in https://github.com/danielamadori98/PACO into a Markov Decision Process (MDP) format suitable for the PRISM model checker. We'll walk through:
+The main notebook demonstrates how to convert a Control Process Interface (CPI) dictionary that is used to calculate the strategy in https://github.com/danielamadori/PACO into a Markov Decision Process (MDP) format suitable for the PRISM model checker. We'll walk through:
 
 Loading and examining a CPI dictionary
 Understanding the conversion process
@@ -59,7 +59,7 @@ Ensure all dependencies are installed and your environment is correctly configur
 
 ### Preparing CPI Bundle
 
-Place your CPI bundle into the `CPIs` folder. If you don't have a CPI bundle, you can create one by following the instructions in the repository [synthetic-cpi-generation](https://github.com/danielamadori98/synthetic-cpi-generation), or you can download the pre-built bundle used in the paper for validation [here](https://univr-my.sharepoint.com/:f:/g/personal/emanuele_chini_univr_it/EuMjJi6L03lCp0e348YPAYwBMJ5jTGO1lojwuIlOAhpaaA?e=u9oXl1).
+Place your CPI bundle into the `CPIs` folder. If you don't have a CPI bundle, you can create one by following the instructions in the repository [synthetic-cpi-generation](https://github.com/danielamadori/synthetic-cpi-generation), or you can download the pre-built bundle used in the paper for validation [here](https://univr-my.sharepoint.com/:f:/g/personal/emanuele_chini_univr_it/EuMjJi6L03lCp0e348YPAYwBMJ5jTGO1lojwuIlOAhpaaA?e=u9oXl1).
 
 ### Running the Script
 
