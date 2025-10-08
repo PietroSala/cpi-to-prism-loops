@@ -7,8 +7,8 @@ from read import read_cpi_bundles
 from sources.experiment import single_execution
 from sources.telegram.telegram_bot import send_telegram_message
 
-BENCHMARKS_DB = 'benchmarks.sqlite'
-LOG_FILENAME = 'benchmark_output.log'
+BENCHMARKS_DB = 'benchmarks1251.sqlite'
+LOG_FILENAME = 'benchmark_output1251.log'
 
 conn = sqlite3.connect(BENCHMARKS_DB)
 cursor = conn.cursor()

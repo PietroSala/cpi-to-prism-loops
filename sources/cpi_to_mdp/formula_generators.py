@@ -1,4 +1,4 @@
-from .parent_info import get_parent_info
+from cpi_to_mdp.parent_info import get_parent_info
 
 def generate_closing_pending_formula(region):
     """Generate ClosingPending formula for a region.

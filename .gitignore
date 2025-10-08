@@ -17,3 +17,6 @@ benchmark_output.log
 
 !CPIs/test_loop1.cpi
 sources/env.py
+.ipynb_checkpoints/
+*.ipynb_checkpoints/
+*.pyc

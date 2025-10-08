@@ -35,7 +35,7 @@ def cpi_to_model(filename):
         try:
             prism_model = cpi_to_mdp(cpi_dict)
         except ValueError as e:
-            #print(f"Loops detected in CPI file {input_path}: {str(e)}")
+            print(f"Loops detected in CPI file {input_path}: {str(e)}")
             
             spin_model = CPIToSPINConverter().convert_cpi_to_spin(cpi_dict)
             prism_model = spin_model.generate_prism_model()
