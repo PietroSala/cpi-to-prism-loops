@@ -5,7 +5,7 @@ from cpi_to_mdp.etl import cpi_to_model
 from sampler import sample_expected_impact
 from analysis import analyze_bounds
 
-def refine_bounds(process_name: str, num_refinements: int, verbose: bool=False) -> Dict[str, float]:
+def refine_bounds(process_name: str, num_refinements: int, verbose: bool=False, prism: bool=False) -> Dict[str, float]:
     """
     Refine impact bounds through dichotomous search.
     
@@ -53,7 +53,7 @@ def refine_bounds(process_name: str, num_refinements: int, verbose: bool=False) 
             }
             
             # Test these bounds
-            result = analyze_bounds(process_name, test_bounds)
+            result = analyze_bounds(process_name, test_bounds, prism = prism)
             
             # Update interval based on result
             if result['result']:  # Property satisfied
@@ -68,7 +68,7 @@ def refine_bounds(process_name: str, num_refinements: int, verbose: bool=False) 
             print_refinement_progress(iteration, current_impact, intervals, test_bounds, result['result']) if verbose else None
 
 
-    result = analyze_bounds(process_name, final_bounds)
+    result = analyze_bounds(process_name, final_bounds, prism = prism)
 
     s = ""
     if not result['result']: # Solution not found

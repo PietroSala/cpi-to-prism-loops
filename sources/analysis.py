@@ -1,8 +1,9 @@
 import os
 import subprocess
+import time
 from typing import Dict, Any, Optional, Union
-
-from sources.env import PRISM_PATH
+import stormpy
+from env import PRISM_PATH
 
 
 def generate_multi_rewards_requirement(thresholds: Dict[str, float]) -> str:
@@ -62,7 +63,7 @@ def parse_states_line(line: str) -> tuple[Optional[int], Optional[int]]:
         pass
     return None, None
 
-def analyze_bounds(model_name: str, thresholds: Dict[str, float]) -> Dict[str, Any]:
+def analyze_bounds(model_name: str, thresholds: Dict[str, float], prism = False) -> Dict[str, Any]:
     """
     Analyze a model against multi-reward bounds.
     
@@ -96,116 +97,164 @@ def analyze_bounds(model_name: str, thresholds: Dict[str, float]) -> Dict[str, A
             'warnings': [],
             'property': property_str
         }
-
+    
     print("pctl_path: ", pctl_path)
     print("model_path: ", model_path)
-    
-    # Run PRISM with the model and property files
-    cmd = [
-        os.path.abspath(PRISM_PATH) if PRISM_PATH else "prism",
-        "-cuddmaxmem",
-        "10g",
-        "-javamaxmem",
-        "2g",
-        os.path.abspath(model_path),
-        os.path.abspath(pctl_path),
-        "-verbose"
-    ]
-    print(cmd)
-    try:
-        result = subprocess.run(cmd, 
-                              capture_output=True, 
-                              text=True, 
-                              check=True)
-        
-        # Parse PRISM output
-        prism_output = result.stdout
-        model_info: Dict[str, Any] = {}
-        timings: Dict[str, Optional[float]] = {}
-        states_info: Dict[str, Optional[int]] = {}
-        result_value: Optional[bool] = None
-        warnings: list[str] = []
-
-        print(f'Prism output:\n{prism_output}')
-        
-        for line in prism_output.split('\n'):
-            line = line.strip()
+    if prism:
+        # Run PRISM with the model and property files
+        cmd = [
+            os.path.abspath(PRISM_PATH) if PRISM_PATH else "prism",
+            "-cuddmaxmem",
+            "10g",
+            "-javamaxmem",
+            "2g",
+            os.path.abspath(model_path),
+            os.path.abspath(pctl_path),
+            "-verbose"
+        ]
+        print(cmd)
+        try:
+            result = subprocess.run(cmd, 
+                                capture_output=True, 
+                                text=True, 
+                                check=True)
             
-            # Version and basic info
-            if value := parse_line_value(line, 'Version:'): 
-                model_info['version'] = value
-            elif value := parse_line_value(line, 'Type:'): 
-                model_info['type'] = value
-            elif value := parse_line_value(line, 'Modules:'):
-                model_info['modules'] = value.split()
-            elif value := parse_line_value(line, 'Variables:'):
-                model_info['variables'] = value.split()
+            # Parse PRISM output
+            prism_output = result.stdout
+            model_info: Dict[str, Any] = {}
+            timings: Dict[str, Optional[float]] = {}
+            states_info: Dict[str, Optional[int]] = {}
+            result_value: Optional[bool] = None
+            warnings: list[str] = []
+
+            print(f'Prism output:\n{prism_output}')
+            
+            for line in prism_output.split('\n'):
+                line = line.strip()
                 
-            # Timing information
-            elif 'Time for model construction:' in line:
-                if value := parse_line_value(line, 'Time for model construction:'):
-                    timings['model_construction'] = safe_float_conversion(value)
-            elif 'Time for model checking:' in line:
-                if value := parse_line_value(line, 'Time for model checking:'):
-                    timings['model_checking'] = safe_float_conversion(value)
-                
-            # States information
-            elif line.startswith('States:'):
-                total, initial = parse_states_line(line)
-                states_info['total'] = total
-                states_info['initial'] = initial
-            elif value := parse_line_value(line, 'Transitions:'):
-                states_info['transitions'] = safe_int_conversion(value)
-            elif value := parse_line_value(line, 'Choices:'):
-                states_info['choices'] = safe_int_conversion(value)
-                
-            # Result
-            elif value := parse_line_value(line, 'Result:'):
-                result_value = value.lower() == 'true'
-                
-            # Warnings
-            elif line.startswith('Warning:'):
-                warnings.append(line.split('Warning:', 1)[1].strip())
+                # Version and basic info
+                if value := parse_line_value(line, 'Version:'): 
+                    model_info['version'] = value
+                elif value := parse_line_value(line, 'Type:'): 
+                    model_info['type'] = value
+                elif value := parse_line_value(line, 'Modules:'):
+                    model_info['modules'] = value.split()
+                elif value := parse_line_value(line, 'Variables:'):
+                    model_info['variables'] = value.split()
+                    
+                # Timing information
+                elif 'Time for model construction:' in line:
+                    if value := parse_line_value(line, 'Time for model construction:'):
+                        timings['model_construction'] = safe_float_conversion(value)
+                elif 'Time for model checking:' in line:
+                    if value := parse_line_value(line, 'Time for model checking:'):
+                        timings['model_checking'] = safe_float_conversion(value)
+                    
+                # States information
+                elif line.startswith('States:'):
+                    total, initial = parse_states_line(line)
+                    states_info['total'] = total
+                    states_info['initial'] = initial
+                elif value := parse_line_value(line, 'Transitions:'):
+                    states_info['transitions'] = safe_int_conversion(value)
+                elif value := parse_line_value(line, 'Choices:'):
+                    states_info['choices'] = safe_int_conversion(value)
+                    
+                # Result
+                elif value := parse_line_value(line, 'Result:'):
+                    result_value = value.lower() == 'true'
+                    
+                # Warnings
+                elif line.startswith('Warning:'):
+                    warnings.append(line.split('Warning:', 1)[1].strip())
+            
+            # Compile complete results
+            analysis_info = {
+                'command': ' '.join(cmd),
+                'prism_output': prism_output,
+                'model_info': model_info,
+                'timings': timings,
+                'states_info': states_info,
+                'property': property_str,
+                'result': result_value,
+                'warnings': warnings,
+                'return_code': result.returncode,
+                'error_output': result.stderr if result.stderr else None
+            }
+            
+            return analysis_info
+            
+        except subprocess.CalledProcessError as e:
+            return {
+                'command': ' '.join(cmd),
+                'error': str(e),
+                'prism_output': e.output if hasattr(e, 'output') else None,
+                'return_code': e.returncode,
+                'error_output': e.stderr if hasattr(e, 'stderr') else None,
+                'result': None,
+                'model_info': {},
+                'timings': {},
+                'states_info': {},
+                'warnings': [],
+                'property': property_str
+            }
+        except Exception as e:
+            return {
+                'command': ' '.join(cmd),
+                'error': str(e),
+                'return_code': -1,
+                'result': None,
+                'model_info': {},
+                'timings': {},
+                'states_info': {},
+                'warnings': [],
+                'property': property_str
+            }
         
-        # Compile complete results
-        analysis_info = {
-            'command': ' '.join(cmd),
-            'prism_output': prism_output,
-            'model_info': model_info,
-            'timings': timings,
-            'states_info': states_info,
-            'property': property_str,
-            'result': result_value,
-            'warnings': warnings,
-            'return_code': result.returncode,
-            'error_output': result.stderr if result.stderr else None
-        }
+    else:
+        print("Using STORM for analysis")
+        try:
+            storm_start_time = time.time()
+            # Parse PRISM program
+            parse_start = time.time()
+            prism_program = stormpy.parse_prism_program(os.path.abspath(model_path))
+            parse_time = time.time() - parse_start
+            
+            # Build model
+            build_start = time.time()
+            model = stormpy.build_model(prism_program)
+            build_time = time.time() - build_start
+            
+            # Parse properties
+            prop_parse_start = time.time()
+            properties = stormpy.parse_properties(property_str, prism_program)
+            prop_parse_time = time.time() - prop_parse_start
+            
+            # Model checking
+            checking_start = time.time()
+            result = stormpy.model_checking(model, properties[0])
+            checking_time = time.time() - checking_start
+            
+            storm_total_time = time.time() - storm_start_time
+            
+            return {
+                'result': result,                
+                'total_time': storm_total_time,
+                'parse_program': parse_time,
+                'build_model': build_time,
+                'parse_properties': prop_parse_time,
+                'model_checking': checking_time,
+                'states': model.nr_states,
+                'states_info': model.nr_transitions,
+                'choices': model.nr_choices,
+                'property': property_str,
+                'return_code': model
+            }
         
-        return analysis_info
-        
-    except subprocess.CalledProcessError as e:
-        return {
-            'command': ' '.join(cmd),
-            'error': str(e),
-            'prism_output': e.output if hasattr(e, 'output') else None,
-            'return_code': e.returncode,
-            'error_output': e.stderr if hasattr(e, 'stderr') else None,
-            'result': None,
-            'model_info': {},
-            'timings': {},
-            'states_info': {},
-            'warnings': [],
-            'property': property_str
-        }
-    except Exception as e:
-        return {
-            'command': ' '.join(cmd),
-            'error': str(e),
-            'return_code': -1,
-            'result': None,
-            'model_info': {},
-            'timings': {},
-            'states_info': {},
-            'warnings': [],
-            'property': property_str
-        }
+        except Exception as e:
+            storm_total_time = time.time() - storm_start_time
+            print(f"STORM error: {str(e)}")
+            return {
+                'error': str(e),
+                'total_time': storm_total_time
+            }

@@ -1,11 +1,11 @@
 import datetime
 import json
 
-from sources.refinements import refine_bounds
+from refinements import refine_bounds
 from telegram.telegram_bot import send_telegram_message
 
 
-def single_execution(cursor, conn, x, y, w, bundle):
+def single_execution(cursor, conn, x, y, w, bundle, prism = False):
     # Check if the experiment already exists
     cursor.execute(
         "SELECT COUNT(*) FROM experiments WHERE x=? AND y=? AND w=?",
@@ -20,7 +20,7 @@ def single_execution(cursor, conn, x, y, w, bundle):
     T = D.pop('metadata')
 
     # Write to current_benchmark.cpi
-    with open('CPIs/current_benchmark.cpi', 'w') as f:
+    with open('/media/DATA/emanuelechini/cpi-to-prism-loops/CPIs/current_benchmark.cpi', 'w') as f:
         json.dump(D, f)
 
     # Record start time
@@ -56,7 +56,7 @@ def single_execution(cursor, conn, x, y, w, bundle):
     print(f"\nRunning benchmark for x={x}, y={y}, w={w}")
 
     try:
-        initial_bounds, final_bounds, error = refine_bounds('current_benchmark', 10, verbose=True)
+        initial_bounds, final_bounds, error = refine_bounds('current_benchmark', 3, verbose=True, prism = prism)
     except Exception as e:
         s = f"Error during benchmark x={x}, y={y}, w={w}: {str(e)}"
         send_telegram_message(s)

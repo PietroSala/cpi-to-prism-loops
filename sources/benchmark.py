@@ -4,11 +4,11 @@ import sys
 import time
 from datetime import datetime
 from read import read_cpi_bundles
-from sources.experiment import single_execution
-from sources.telegram.telegram_bot import send_telegram_message
-
-BENCHMARKS_DB = 'benchmarks1251.sqlite'
-LOG_FILENAME = 'benchmark_output1251.log'
+from experiment import single_execution
+from telegram.telegram_bot import send_telegram_message
+#nohup python benchmark.py  > stormExperiments.log 2>&1 & 61894
+BENCHMARKS_DB = 'benchmarksStorm.sqlite'
+LOG_FILENAME = 'benchmark_output_storm.log'
 
 conn = sqlite3.connect(BENCHMARKS_DB)
 cursor = conn.cursor()
@@ -56,12 +56,12 @@ def run_benchmarks():
     last_time = time.time() + 10
 
     try:
-        for k in range(2, 21):
+        for k in range(2, 3):
             for x in range(1, k):
                 y = k - x
 
                 if x <= 10 and y <= 10:
-                    bundle = read_cpi_bundles(x=x, y=y)
+                    bundle = read_cpi_bundles(directory='/media/DATA/emanuelechini/cpi-to-prism-loops/CPIs/', x=x, y=y)
 
                     if not bundle:
                         s = f"No bundle found for x={x}, y={y}"
